@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% load static %}
+<img src="{% static "main/JobSSUl.jpg" %}"/>
+
+ <table class="table table-dark">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>Title</th>
+      <th>별점</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for post in post %}
+    <tr>
+      <td>{{ post.id }}</td>
+
+      <td>
+           <a href="{{  post.id }}">{{ post.title }}</a></td>
+      <td>{{ post.recommend }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</body>
+{% endblock %}
