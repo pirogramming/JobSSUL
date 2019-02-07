@@ -16,7 +16,7 @@ def main_post(request):
 def main_detail(request, pk):
     post = Post.objects.get(pk=pk)
     data = {
-        'post' : post
+        'post': post,
     }
     return render(request, 'detail.html', data)
 
