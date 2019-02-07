@@ -10,7 +10,7 @@ def main_post(request):
     data = {
         'post': post
     }
-    return render(request, 'main.html', data)
+    return render(request, 'main/main.html', data)
 
 
 def main_detail(request, pk):
@@ -18,5 +18,5 @@ def main_detail(request, pk):
     data = {
         'post': post,
     }
-    return render(request, 'detail.html', data)
+    return render(request, 'main/detail.html', data)
 
