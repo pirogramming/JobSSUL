@@ -2,7 +2,7 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #CCFF99;" >
-  <a class="navbar-brand" href="{% url "main:main" %}">
+  <a href="{% url "main:main" %}">
     <img src={% static "main/logo.png"%} width="119" height="44" alt="" style="padding: 0;">
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,37 +17,43 @@
       <li class="nav-item">
         <a class="nav-link" href="#">건의게시판</a>
       </li>
-      <li class="nav-item dropdown">
-        <div class="btn-group" data-toggle="buttons">
-          <label class="btn btn-secondary active">
-            <input type="checkbox" checked autocomplete="off"> 체크박스 1 (기본선택)
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-          </label>
-          <label class="btn btn-secondary">
-            <input type="checkbox" autocomplete="off"> 체크박스 2
-          </label>
-          <label class="btn btn-secondary">
-            <input type="checkbox" autocomplete="off"> 체크박스 3
-          </label>
-        </div>
-      </li>
+
+
+{#      <li class="nav-item dropdown">#}
+{#        <div class="btn-group" data-toggle="buttons">#}
+{#          <label class="btn btn-secondary active">#}
+{#            <input type="checkbox" checked autocomplete="off"> 지역선택(기본선택)#}
+{#                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">#}
+{#                    <a class="dropdown-item" href="#">Action</a>#}
+{#                    <a class="dropdown-item" href="#">Another action</a>#}
+{#                    <a class="dropdown-item" href="#">Something else here</a>#}
+{#                </div>#}
+{#          </label>#}
+{#          <label class="btn btn-secondary">#}
+{#            <input type="checkbox" autocomplete="off"> 직종선택#}
+{#          </label>#}
+{#          <label class="btn btn-secondary">#}
+{#            <input type="checkbox" autocomplete="off"> 시간#}
+{#          </label>#}
+{#        </div>#}
+{#      </li>#}
+
+
     </ul>
     <ul class="nav navbar-nav navbar-right">
         {% if not user.is_authenticated %}
-            <li><a href="{% url "accounts:signup" %}">회원가입</a></li>
-{#            <li><a href="{% url "login" %}?next={{ request.path }}">로그인</a></li>#}
-{#        {% else %}#}
+
+            <li><a href="{% url "accounts: signup" %}">회원가입</a></li>
+            <li><a href="{% url "login" %}?next={{ request.path }}">로그인</a></li>
+        {% else %}
 {#            <li><a href="{% url "profile" %}">프로필</a></li>#}
-{#            <li><a href="{% url "logout" %}?next={{ request.path }}">로그아웃</a></li>#}
+            <li><a href="{% url "logout" %}?next={{ request.path }}">로그아웃</a></li>
         {% endif %}
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
+
   </div>
 </nav>
