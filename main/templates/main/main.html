@@ -1,14 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+
 {% load static %}
 <img src="{% static "main/logo.png" %}"/>
-
-<a href="{% url 'post' %}">잡썰 보러가기</a>
-</body>
+<a href="{% url 'main:post' %}">잡썰 보러가기</a>
 {% endblock %}
