@@ -38,6 +38,9 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('main:main_detail', args=[self.pk])
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.CharField(max_length=20)
@@ -47,9 +50,6 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-id']
-
-    def get_absolute_url(self):
-        return reverse('main:detail', args=[self.post.pk, self.pk])
 
     def get_edit_url(self):
         return reverse('main:comment_edit', args=[self.post.pk, self.pk])

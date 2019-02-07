@@ -22,7 +22,6 @@ def main_detail(request, pk):
     return render(request, 'main/detail.html', data)
 
 
-
 @login_required
 def comment_new(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
@@ -46,12 +45,13 @@ def comment_new(request, post_pk):
 def comment_edit(request, post_pk, pk):
     comment = get_object_or_404(Comment, pk=pk)
     if comment.author != request.user:
-        return redirect('main')
+        return redirect(comment.post)
+
     if request.method == 'POST':
-        form = CommentForm(request.POST, request.FILES, instant=comment)
+        form = CommentForm(request.POST, request.FILES, instance=comment)
         if form.is_valid():
             comment = form.save()
-            return redirect('main')
+            return redirect(comment.post)
     else:
         form = CommentForm(instance=comment)
     return render(request, 'main/comment_form.html', {
@@ -63,7 +63,8 @@ def comment_edit(request, post_pk, pk):
 def comment_delete(request, post_pk, pk):
     comment = get_object_or_404(Comment, pk=pk)
     if comment.author != request.user:
-        return redirect('main')
+        return redirect(comment.post)
+
     if request.method == 'POST':
         comment.delete()
         return redirect(comment.post)
