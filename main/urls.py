@@ -2,6 +2,7 @@ from django.urls import path, re_path
 from . import views
 from main.views import main_post, main_detail
 
+app_name='main'
 
 urlpatterns = [
     path('', views.main_post, name='main'),
