@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <table class="table">
+      <thead class = "thread-dark">
+        <tr>
+          <th>id</th>
+          <th>Title</th>
+          <th>별점</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for post in post %}
+        <tr>
+          <td>{{ post.id }}</td>
+
+          <td>
+               <a href="{{ post.id }}">{{ post.title }}</a></td>
+          <td>{{ post.recommend }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+</table>
+<a href="{% url 'create' %}">게시글 생성</a>
+
+{% endblock %}
