@@ -8,5 +8,31 @@
     <p>별점: {{ post.recommend }}</p>
     <p>직종: {{ post.work_type }}</p>
 
-    <a href="{% url "main" %}">메인으로 돌아가기</a>
+    <a href="{% url "main:main" %}">메인으로 돌아가기</a>
+
+    <h3>Comments</h3>
+    <ul>
+    {% for comment in post.comment_set.all %}
+        <li>
+            <div>{{ comment.updated_at}}</div>
+            <div><strong>{{ comment.author}}</strong></div>
+            <p>{{ comment.message }}</p>
+
+            {% if comment.author == request.user %}
+                <a href="{{ comment.get_edit_url }}">
+                    수정
+                </a>
+                <a href="{{ comment.get_delete_url }}" class="text-danger">
+                    삭제
+                </a>
+            {% endif %}
+
+        </li>
+    {% endfor %}
+    </ul>
+
+    <div class="panel-footer">
+        <a href="{% url "main:comment_new" post.pk %}" class="btn btn-primary">댓글쓰기</a>
+    </div>
+
 {% endblock %}

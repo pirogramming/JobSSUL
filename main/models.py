@@ -1,7 +1,7 @@
 from django.core.validators import MinLengthValidator
 from django.db import models
-
-# Create your models here.
+from django.urls import reverse
+from jobssul import settings
 
 
 class Post(models.Model):
@@ -35,5 +35,23 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('main:main_detail', args=[self.pk])
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.CharField(max_length=20)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-id']
+
+    def get_edit_url(self):
+        return reverse('main:comment_edit', args=[self.post.pk, self.pk])
+
+    def get_delete_url(self):
+        return reverse('main:delete_', args=[self.post.pk, self.pk])
 
 
