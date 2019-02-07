@@ -17,7 +17,8 @@
             <div>{{ comment.updated_at}}</div>
             <div><strong>{{ comment.author}}</strong></div>
             <p>{{ comment.message }}</p>
-
+            comment:{{ comment.author.id }}
+            request: {{ request.user.id }}
             {% if comment.author == request.user %}
                 <a href="{{ comment.get_edit_url }}">
                     수정

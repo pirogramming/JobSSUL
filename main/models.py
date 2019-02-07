@@ -6,6 +6,8 @@ from django.db import models
 from django.urls import reverse
 from jobssul import settings
 
+from accounts.models import User
+
 
 class Post(models.Model):
     PAYMENT_LEVEL = (
@@ -43,7 +45,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    author = models.CharField(max_length=20)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -52,10 +54,10 @@ class Comment(models.Model):
         ordering = ['-id']
 
     def get_edit_url(self):
-        return reverse('main:comment_edit', args=[self.post.pk, self.pk])
+        return reverse('main:comment_edit', args=[self.pk])
 
     def get_delete_url(self):
-        return reverse('main:delete_delete', args=[self.post.pk, self.pk])
+        return reverse('main:comment_delete', args=[self.pk])
 
     def get_absolute_url(self):
         return reverse('main:main_detail', args=[self.pk])
