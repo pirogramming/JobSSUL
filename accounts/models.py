@@ -16,7 +16,7 @@ class UserManager(BaseUserManager):
         user = self.model(
             email=self.normalize_email(email),
             nickname=nickname,
-            name = name,
+            name=name,
         )
 
         user.set_password(password)
@@ -38,8 +38,6 @@ class UserManager(BaseUserManager):
 
         user.save(using=self._db)
         return user
-
-
 
 
 class User(AbstractBaseUser, PermissionsMixin):
