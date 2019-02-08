@@ -34,13 +34,6 @@ def main_detail(request, post_pk):
 def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
-        # title = request.POST.title
-        # content = request.POST.content
-        # payment = request.POST.payment
-        # workplace = request.POST.payment
-        # recommend = request.POST.recommend
-        # work_type = request.POST.work_type
-
         if form.is_valid():
             post = Post.objects.create(title = form.cleaned_data['title'], content=form.cleaned_data['content'],
                                        payment = form.cleaned_data['payment'], workplace = form.cleaned_data['recommend'],
@@ -48,9 +41,11 @@ def main_create(request):
             return redirect('main:post')
     else:
         form = PostForm()
-    return render(request, 'main/create.html' , {
+    return render(request, 'main/create.html', {
         'form': form
     })
+
+
 
 @login_required
 def comment_new(request, post_pk):

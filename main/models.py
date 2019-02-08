@@ -38,7 +38,8 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
-
+    def edit_post_url(self):
+        return reverse()
 
 
 class Comment(models.Model):
