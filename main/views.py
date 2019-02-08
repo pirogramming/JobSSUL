@@ -31,6 +31,8 @@ def main_detail(request, post_pk):
     }
     return render(request, 'main/detail.html', data)
 
+
+@login_required
 def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
