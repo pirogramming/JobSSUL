@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.as_table }}
+
+    <button type="submit" class="btn btn-primary">생성</button>
+
+</form>
+
+
+{% endblock %}
