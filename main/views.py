@@ -20,7 +20,7 @@ def main_page(request):
 def main_post(request):
     post = Post.objects.all()
     data = {
-        'post':post
+        'posts': post
     }
     return render(request, 'main/post.html', data)
 
@@ -31,6 +31,8 @@ def main_detail(request, post_pk):
     }
     return render(request, 'main/detail.html', data)
 
+
+@login_required
 def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
@@ -67,16 +69,16 @@ def comment_new(request, post_pk):
 
 
 @login_required
-def comment_edit(request, post_pk, pk):
+def comment_edit(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     if comment.author != request.user:
-        return redirect(comment.post)
+        return redirect(f'/main/post/{comment.post.pk}') # '/main/post/{0}/'.format(comment.post.pk)
 
     if request.method == 'POST':
         form = CommentForm(request.POST, request.FILES, instance=comment)
         if form.is_valid():
             comment = form.save()
-            return redirect(comment.post)
+            return redirect(f'/main/post/{comment.post.pk}')
     else:
         form = CommentForm(instance=comment)
     return render(request, 'main/comment_form.html', {
@@ -85,14 +87,14 @@ def comment_edit(request, post_pk, pk):
 
 
 @login_required
-def comment_delete(request, post_pk, pk):
+def comment_delete(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     if comment.author != request.user:
-        return redirect(comment.post)
+        return redirect(f'/main/post/{comment.post.pk}')
 
     if request.method == 'POST':
         comment.delete()
-        return redirect(comment.post)
+        return redirect(f'/main/post/{comment.post.pk}')
 
     return render(request, 'main/comment_confirm_delete.html', {
         'comment': comment,
