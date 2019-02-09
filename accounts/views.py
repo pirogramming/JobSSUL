@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 
 
+
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
@@ -28,14 +29,21 @@ def signup(request):
     else:
         form = CustomUserCreationForm()
 
+
+
+
         return render(request, 'accounts/signup_form.html', {
         'form': form,
     })
 
 @login_required
+
 def mypage(request):
     if request.method =='GET':
         user = request.user
+
+
+
 
         data = {
             'profile_user' : user,
