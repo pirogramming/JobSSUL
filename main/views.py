@@ -1,6 +1,8 @@
-
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+
 from .forms import CommentForm
 from main.models import Post, Comment
 from main.forms import PostForm
@@ -24,12 +26,29 @@ def main_post(request):
     }
     return render(request, 'main/post.html', data)
 
+
 def main_detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
+    is_liked = False
+    if post.likes.filter(id=request.user.id).exists():
+        is_liked = True
     data = {
         'post': post,
+        'is_liked': is_liked,
+        'total_likes': post.total_likes(),
     }
     return render(request, 'main/detail.html', data)
+
+
+def like_post(request):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+        is_liked = False
+    else:
+        post.likes.add(request.user)
+        is_liked = True
+    return HttpResponseRedirect(post.get_absolute_url())
 
 
 @login_required
@@ -53,6 +72,7 @@ def main_create(request):
     return render(request, 'main/create.html' , {
         'form': form
     })
+
 
 @login_required
 def comment_new(request, post_pk):
@@ -104,4 +124,8 @@ def comment_delete(request, pk):
     return render(request, 'main/comment_confirm_delete.html', {
         'comment': comment,
     })
+
+
+
+
 
