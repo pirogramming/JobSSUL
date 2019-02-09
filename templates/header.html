@@ -84,6 +84,7 @@
     {% else %}
 {#            <li class="nav-item"><a class="nav-link" href="{% url "profile" %}">프로필</a></li>#}
         <li class="nav-item"><a class="nav-link" href="{% url "accounts:user_profile" username='d' %}?next={{ request.path }}">마이페이지</a></li>
+
         <li class="nav-item"><a class="nav-link" href="{% url "accounts:logout" %}?next={{ request.path }}">로그아웃</a></li>
     {% endif %}
     </ul>

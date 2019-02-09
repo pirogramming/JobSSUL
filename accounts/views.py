@@ -1,4 +1,5 @@
 from django.conf import settings
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
@@ -6,6 +7,10 @@ from .models import *
 
 # Create your views here.
 from django.views.generic import TemplateView
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+
 
 
 def signup(request):
@@ -16,6 +21,7 @@ def signup(request):
             return redirect(redirect(settings.LOGIN_URL))
     else:
         form = UserCreationForm()
+
         return render(request, 'accounts/signup_form.html', {
         'form': form,
     })

@@ -2,8 +2,10 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import CommentForm
+
 from .models import Post, Comment
 from .forms import PostForm
+
 
 
 # Create your views here.
@@ -31,6 +33,7 @@ def main_detail(request, post_pk):
     }
     return render(request, 'main/detail.html', data)
 
+@login_required
 def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
