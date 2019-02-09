@@ -4,8 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 
 from .forms import CommentForm
-from main.models import Post, Comment
-from main.forms import PostForm
+
+from .models import Post, Comment
+from .forms import PostForm
+
 
 
 # Create your views here.
@@ -49,6 +51,7 @@ def like_post(request):
         post.likes.add(request.user)
         is_liked = True
     return HttpResponseRedirect(post.get_absolute_url())
+
 
 
 @login_required
