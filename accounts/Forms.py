@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from .models import User, UserManager
 
 
+#회원가입폼
 class UserCreationForm(forms.ModelForm):
     email = forms.EmailField(
         label=_('Email'),
@@ -23,19 +24,29 @@ class UserCreationForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': _('Nickname'),
+                'placeholder': _('닉네임'),
                 'required': 'True',
             }
         )
     )
-    name = forms.CharField(
+    username = forms.CharField(
         label=_('Name'),
         required=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': _('Nickname'),
+                'placeholder': _('이름'),
                 'required': 'True',
+            }
+        )
+    )
+    reside = forms.CharField(
+        label=_('Reside'),
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('거주지'),
             }
         )
     )
@@ -62,7 +73,13 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'nickname')
+        # fields = ('email', 'nickname')
+        fields = ('email', 'nickname', 'password1', 'password2', 'reside', 'username')
+
+        def __init__(self):
+            self.cleaned_data = None
+            super(UserCreationForm, self).__init__(*args, **kargs)
+            # self.fields['reside'].required=False
 
         def clean_password2(self):
             # 두 비밀번호 입력 일치 확인
@@ -71,7 +88,6 @@ class UserCreationForm(forms.ModelForm):
             if password1 and password2 and password1 != password2:
                 raise forms.ValidationError("Passwords don't match")
             return password2
-
 
         def save(self, commit=True):
             # Save the provided password in hashed format
@@ -91,7 +107,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'name', 'nickname', 'is_superuser')
+        fields = ('email', 'password', 'username', 'nickname', 'is_superuser')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -102,5 +118,4 @@ class UserChangeForm(forms.ModelForm):
 
 class LoginForm(AuthenticationForm):
     pass
-
 

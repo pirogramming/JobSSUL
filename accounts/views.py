@@ -1,43 +1,66 @@
 from django.conf import settings
+from django.contrib.auth import authenticate
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import *
+from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
-
 from django.urls import reverse
-
-from .Forms import UserCreationForm
-from django.contrib.auth.views import LoginView
-from allauth.socialaccount.models import SocialApp
-from allauth.socialaccount.templatetags.socialaccount import get_providers
-from .Forms import LoginForm
+from .Forms import UserCreationForm, LoginForm
+from django.contrib.auth import login as auth_login
 
 
+
+
+#회원가입
 def signup(request):
 
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect('main:main')
+            return redirect(settings.LOGIN_URL)
+        else:
+            return render(request, 'accounts/signup_form.html', {
+                'form': form,
+            })
     else:
         form = UserCreationForm()
-    return render(request, 'accounts/signup_form.html', {
+        return render(request, 'accounts/signup_form.html', {
         'form': form,
     })
 
 
-auth_login = LoginView.as_view()
-#잠시만
+#로그인
 def login(request):
-    providers = []
-    for provider in get_providers():
-        try:
-            provider.social_app = SocialApp.objects.get(provider=provider.id, sites=settings.SITE_ID)
-        except SocialApp.DoesNotExist:
-            provider.social_app = None
-        providers.append(provider)
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
 
-    return auth_login(request,
-                      authentication_form=LoginForm,
-                      template_name='login_form.html',
-                      extra_context={'providers':providers})
+        if user is not None:
+            auth_login(request, user)
+            return redirect ('main:main')
+        else:
+            return HttpResponse('로그인 실패. 다시 시도 해보세요.')
+    else:
+        form = LoginForm()
+        return render(request, 'accounts/login_form.html',{
+            'form': form
+        })
 
+      
+@login_required
+
+def mypage(request):
+    if request.method =='GET':
+        user = request.user
+
+
+        data = {
+            'profile_user' : user,
+        }
+        return render(request, 'about.html', data)
 

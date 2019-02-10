@@ -1,0 +1,10 @@
+{% block body_block %}
+        {% if user.is_authenticated %}
+        <h3>프로필 페이지</h3>
+        <h6>이름: {{ user.name }}</h6>
+        <h6>별명: {{ user.nickname }}</h6>
+        <h6>주소: {{ user.reside }}</h6>
+        <h6>이메일: {{ user.email }}</h6>
+        <h6>가입날짜: {{ user.date_joined }}</h6>
+        {% endif %}
+{% endblock %}
