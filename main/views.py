@@ -77,11 +77,8 @@ def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
 
-
         if form.is_valid():
-            post = Post.objects.create(title = form.cleaned_data['title'], content=form.cleaned_data['content'],
-                                       payment = form.cleaned_data['payment'], workplace = form.cleaned_data['recommend'],
-                                       work_type = form.cleaned_data['work_type'], recommend = form.cleaned_data['recommend'])
+            post = form.save()
             messages.info(request, '새 글이 등록되었습니다.')
             return redirect('main:post')
     else:
