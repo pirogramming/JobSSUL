@@ -17,4 +17,5 @@ urlpatterns = [
 
 
     path('mypage/', views.mypage, name='user_profile'),
+    ]
 
