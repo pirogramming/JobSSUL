@@ -100,6 +100,7 @@ def main_edit(request, post_pk):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save()
+
             return redirect(f'/main/post/{post.pk}')
     else:
         form = PostForm(instance=post)
