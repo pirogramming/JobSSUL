@@ -38,13 +38,16 @@ def login(request):
         form = LoginForm(request.POST)
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(username=username, password=password)
+        user = authenticate(email=username, password=password)
+        print(user)
 
         if user is not None:
             auth_login(request, user)
             return redirect ('main:main')
         else:
+
             return HttpResponse('로그인 실패. 다시 시도 해보세요.')
+
     else:
         form = LoginForm()
         return render(request, 'accounts/login_form.html',{
