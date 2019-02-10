@@ -1,14 +1,12 @@
 
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .forms import CommentForm
 
 from .models import Post, Comment
 from .forms import PostForm
 
-
-
-# Create your views here.
 
 
 def main_page(request):
@@ -26,6 +24,7 @@ def main_post(request):
     }
     return render(request, 'main/post.html', data)
 
+
 def main_detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
     data = {
@@ -37,17 +36,12 @@ def main_detail(request, post_pk):
 def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
-        # title = request.POST.title
-        # content = request.POST.content
-        # payment = request.POST.payment
-        # workplace = request.POST.payment
-        # recommend = request.POST.recommend
-        # work_type = request.POST.work_type
 
         if form.is_valid():
             post = Post.objects.create(title = form.cleaned_data['title'], content=form.cleaned_data['content'],
                                        payment = form.cleaned_data['payment'], workplace = form.cleaned_data['recommend'],
                                        work_type = form.cleaned_data['work_type'], recommend = form.cleaned_data['recommend'])
+            messages.info(request, '새 글이 등록되었습니다.')
             return redirect('main:post')
     else:
         form = PostForm()
@@ -65,6 +59,7 @@ def comment_new(request, post_pk):
             comment.post = post
             comment.author = request.user
             comment.save()
+            messages.info(request, '댓글이 작성되었습니다.')
             return redirect('main:detail', post.pk)
     else:
         form = CommentForm()
@@ -84,6 +79,7 @@ def comment_edit(request, pk):
         form = CommentForm(request.POST, request.FILES, instance=comment)
         if form.is_valid():
             comment = form.save()
+            messages.success(request, '댓글이 수정되었습니다.')
             return redirect(f'/main/post/{comment.post.pk}')
     else:
         form = CommentForm(instance=comment)
@@ -100,6 +96,7 @@ def comment_delete(request, pk):
 
     if request.method == 'POST':
         comment.delete()
+        messages.error(request, '댓글이 삭제되었습니다.')
         return redirect(f'/main/post/{comment.post.pk}')
 
     return render(request, 'main/comment_confirm_delete.html', {

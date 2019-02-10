@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -39,9 +40,10 @@ def login(request):
 
         if user is not None:
             auth_login(request, user)
-            return redirect ('main:main')
+            return redirect('main:main')
         else:
-            return HttpResponse('로그인 실패. 다시 시도 해보세요.')
+            messages.error(request, '로그인 실패. 다시 시도 해보세요.')
+            return redirect('accounts:login')
     else:
         form = LoginForm()
         return render(request, 'accounts/login_form.html',{

@@ -22,6 +22,17 @@
 </div>
       <h3>모든 알바 후기가 모이는 곳</h3>
 
+
+  {% if messages %}
+      <div class="container">
+          {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                {{ message.message }}
+              </div>
+          {% endfor %}
+      </div>
+  {% endif %}
+
   {% block content %}
 
   {% endblock %}
