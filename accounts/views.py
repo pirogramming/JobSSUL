@@ -3,11 +3,12 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm
+from .Forms import UserCreationForm
 from .models import *
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from .Forms import UserCreationForm, LoginForm
+from django.contrib.auth import login as auth_login
 
 
 
@@ -19,13 +20,11 @@ def signup(request):
             user = form.save()
             return redirect(settings.LOGIN_URL)
         else:
-            form = UserCreationForm()
+            return render(request, 'accounts/signup_form.html', {
+                'form': form,
+            })
     else:
         form = UserCreationForm()
-
-
-
-
         return render(request, 'accounts/signup_form.html', {
         'form': form,
     })
@@ -40,8 +39,8 @@ def login(request):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            login(request, user)
-            return redirect ('index')
+            auth_login(request, user)
+            return redirect ('main:main')
         else:
             return HttpResponse('로그인 실패. 다시 시도 해보세요.')
     else:
