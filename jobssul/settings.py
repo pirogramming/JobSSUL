@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'jobssul',
 ]
 
+SITE_ID = 1
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
