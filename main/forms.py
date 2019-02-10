@@ -8,7 +8,7 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ('likes', 'author')
+        exclude = ['likes']
 
 
 class CommentForm(forms.ModelForm):
