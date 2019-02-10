@@ -1,19 +1,23 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .Forms import UserCreationForm
 from .models import *
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from .Forms import UserCreationForm, LoginForm
+from main.models import Post, Comment
 from django.contrib.auth import login as auth_login
 
 
 
-#회원가입
+
+
 def signup(request):
+
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -40,9 +44,10 @@ def login(request):
 
         if user is not None:
             auth_login(request, user)
-            return redirect ('main:main')
+            return redirect('main:main')
         else:
-            return HttpResponse('로그인 실패. 다시 시도 해보세요.')
+            messages.error(request, '로그인 실패. 다시 시도 해보세요.')
+            return redirect('accounts:login')
     else:
         form = LoginForm()
         return render(request, 'accounts/login_form.html',{
@@ -55,12 +60,12 @@ def login(request):
 def mypage(request):
     if request.method =='GET':
         user = request.user
-
-
-
-
+        user_posts = Post.objects.filter(author=user)
+        user_comments = Comment.objects.filter(author=user)
         data = {
-            'profile_user' : user,
+            'profile_user': user,
+            'my_posts': user_posts,
+            'my_comments': user_comments,
         }
         return render(request, 'about.html', data)
 

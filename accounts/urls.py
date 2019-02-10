@@ -1,6 +1,9 @@
 
-from django.conf.urls import url
+# from allauth.account.views import LoginView
+from django.contrib.auth.views import LoginView
 
+
+from django.conf.urls import url
 from django.urls import path
 from . import views
 from django.conf import settings
@@ -14,8 +17,6 @@ urlpatterns = [
     # path('login/', views.login, name='login'),
     path('login/', views.login, name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGIN_URL), name='logout'),
-
-
     path('mypage/', views.mypage, name='user_profile'),
-    ]
+]
 
