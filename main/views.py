@@ -4,11 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 
-
-from .forms import CommentForm
+from .Forms import CommentForm
 
 from .models import Post, Comment
-from .forms import PostForm
+from .Forms import PostForm
 
 
 
