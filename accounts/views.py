@@ -40,7 +40,8 @@ def login(request):
         form = LoginForm(request.POST)
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(username=username, password=password)
+        user = authenticate(email=username, password=password)
+        print(user)
 
         if user is not None:
             auth_login(request, user)

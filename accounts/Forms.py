@@ -117,6 +117,7 @@ class UserChangeForm(forms.ModelForm):
 
 
 class LoginForm(AuthenticationForm):
+
     class Meta:
         model = User
         fields = ['email', 'password']
