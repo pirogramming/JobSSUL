@@ -1,10 +1,9 @@
 from django.conf import settings
+from django.contrib.auth import authenticate
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from .Forms import UserCreationForm
-from django.contrib.auth.views import LoginView
-from allauth.socialaccount.models import SocialApp
-from allauth.socialaccount.templatetags.socialaccount import get_providers
+from .Forms import UserCreationForm, LoginForm
 
 
 #회원가입
@@ -25,17 +24,21 @@ def signup(request):
 
 #로그인
 def login(request):
-    providers = []
-    for provider in get_providers():
-        try:
-            provider.social_app = SocialApp.objects.get(provider=provider.id, sites=settings.SITE_ID)
-        except SocialApp.DoesNotExist:
-            provider.social_app = None
-        providers.append(provider)
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
 
-    return LoginView.as_view(
-        template_name='accounts/login_form.html',
-        extra_context={'providers': providers}
-    )(request)
+        if user is not None:
+            login(request, user)
+            return redirect ('index')
+        else:
+            return HttpResponse('로그인 실패. 다시 시도 해보세요.')
+    else:
+        form = LoginForm()
+        return render(request, 'accounts/login_form.html',{
+            'form': form
+        })
 
 
