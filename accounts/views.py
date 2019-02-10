@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm
+from .Forms import UserCreationForm
 from .models import *
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
@@ -19,10 +19,11 @@ def signup(request):
             user = form.save()
             return redirect(settings.LOGIN_URL)
         else:
-            form = UserCreationForm()
+            return render(request, 'accounts/signup_form.html', {
+                'form': form,
+            })
     else:
         form = UserCreationForm()
-
         return render(request, 'accounts/signup_form.html', {
         'form': form,
     })
