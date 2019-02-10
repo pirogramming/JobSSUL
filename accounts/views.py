@@ -1,33 +1,29 @@
 from django.conf import settings
-
+from django.contrib.auth import authenticate
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
-
-# Create your views here.
 from django.views.generic import TemplateView
-
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from .Forms import UserCreationForm, LoginForm
 
 
 
-class CustomUserCreationForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ("nickname",)
-        # field_classes = {'username': UsernameField}
 
 def signup(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect(redirect(settings.LOGIN_URL))
+
+            return redirect(settings.LOGIN_URL)
+        else:
+            form = UserCreationForm()
 
     else:
-        form = CustomUserCreationForm()
+        form = UserCreationForm()
 
 
 
@@ -36,6 +32,27 @@ def signup(request):
         'form': form,
     })
 
+
+#로그인
+def login(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect ('index')
+        else:
+            return HttpResponse('로그인 실패. 다시 시도 해보세요.')
+    else:
+        form = LoginForm()
+        return render(request, 'accounts/login_form.html',{
+            'form': form
+        })
+
+      
 @login_required
 
 def mypage(request):
@@ -49,3 +66,4 @@ def mypage(request):
             'profile_user' : user,
         }
         return render(request, 'about.html', data)
+
