@@ -33,6 +33,8 @@ class Post(models.Model):
     workplace = models.CharField(max_length=50, verbose_name='지점')
     recommend = models.CharField(max_length=5, choices=RECOMMEND_LEVEL, verbose_name = '별점')
     work_type = models.CharField(max_length=10, choices=WORK_TYPE, verbose_name='직종')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     # created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now = True)
