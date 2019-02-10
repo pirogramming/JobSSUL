@@ -1,11 +1,7 @@
 from django.core.validators import MinLengthValidator
 from django.db import models
-
-
-# Create your models here.
 from django.urls import reverse
 from jobssul import settings
-
 from accounts.models import User
 
 
@@ -36,10 +32,16 @@ class Post(models.Model):
     workplace = models.CharField(max_length=50, verbose_name='지점')
     recommend = models.CharField(max_length=5, choices=RECOMMEND_LEVEL, verbose_name = '별점')
     work_type = models.CharField(max_length=10, choices=WORK_TYPE, verbose_name='직종')
+    likes = models.ManyToManyField(User, related_name='likes', blank=True)
 
     def __str__(self):
         return self.title
 
+    def total_likes(self):
+        return self.likes.count()
+
+    def get_absolute_url(self):
+        return reverse('main:detail', args=[self.pk])
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -47,6 +49,8 @@ class Comment(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    reply = models.ForeignKey('Comment', null=True, related_name='replies', on_delete=models.CASCADE)
+
 
     class Meta:
         ordering = ['-id']
@@ -58,4 +62,10 @@ class Comment(models.Model):
         return reverse('main:comment_delete', args=[self.pk])
 
     def get_absolute_url(self):
-        return reverse('main:main_detail', args=[self.pk])
+        return reverse('main:detail', args=[self.pk])
+
+
+
+
+
+
