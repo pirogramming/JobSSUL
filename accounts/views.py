@@ -2,8 +2,8 @@ from django.conf import settings
 from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
 from .Forms import UserCreationForm, LoginForm
+from django.contrib.auth import login as auth_login
 
 
 #회원가입
@@ -31,8 +31,8 @@ def login(request):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            login(request, user)
-            return redirect ('index')
+            auth_login(request, user)
+            return redirect ('main:main')
         else:
             return HttpResponse('로그인 실패. 다시 시도 해보세요.')
     else:
