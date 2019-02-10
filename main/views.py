@@ -31,13 +31,33 @@ def main_post(request):
 
 def main_detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
+    comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
     is_liked = False
     if post.likes.filter(id=request.user.id).exists():
         is_liked = True
+    comment_form = CommentForm()
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST or None)
+        if comment_form.is_valid():
+            message = request.POST.get('message')
+            reply_id = request.POST.get('comment_id')
+            comment_qs = None
+
+            if reply_id:
+                comment_qs = Comment.objects.get(id=reply_id)
+
+            comment = Comment.objects.create(post=post, author=request.user, message=message, reply=comment_qs)
+            comment.save()
+            return HttpResponseRedirect(post.get_absolute_url())
+        else:
+            comment_form = CommentForm()
+
     data = {
         'post': post,
         'is_liked': is_liked,
         'total_likes': post.total_likes(),
+        'comments': comments,
+        'comment_form': comment_form,
     }
     return render(request, 'main/detail.html', data)
 
