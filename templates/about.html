@@ -1,0 +1,12 @@
+{% block title %}{{ user.name }}{% endblock %}
+
+{% block body_block %}
+        {% if user.is_authenticated %}
+        <h1>{{ user.name }} welcome to your profile page</h1>
+        <h2>{{ user.nickname }}</h2>
+        <h2>{{ user.reside }}</h2>
+        <h2>{{ user.email }}</h2>
+        <h2>{{ user.date_joined }}</h2>
+        {% endif %}
+
+{% endblock %}
