@@ -1,12 +1,10 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-<<<<<<< HEAD
 from django.contrib import messages
-=======
 from django.views.decorators.http import require_POST
 
->>>>>>> 0072589f500a274a9eec74b7f6f6fdd682f33a6e
+
 from .forms import CommentForm
 
 from .models import Post, Comment
