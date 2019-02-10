@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #계정으로 로그인
+
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -121,7 +121,7 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
-SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+# SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
 
 
 # Internationalization
@@ -144,8 +144,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
 
+ACCOUNTS_USER_USERNAME_FIELD = "name"

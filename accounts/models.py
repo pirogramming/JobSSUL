@@ -8,27 +8,28 @@ from django.core.mail import send_mail
 from django.utils.translation import ugettext_lazy as _
 
 
+#유저생성관리자
 class UserManager(BaseUserManager):
-    def create_user(self, name, nickname, email, password=None):
+    def create_user(self, username, nickname, email, password=None):
         if not email:
             raise ValueError(_('Users must have an email address'))
 
         user = self.model(
             email=self.normalize_email(email),
             nickname=nickname,
-            name=name,
+            username=username,
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, name, nickname, email, password):
+    def create_superuser(self, username, nickname, email, password):
         user = self.create_user(
             email=email,
             password=password,
             nickname=nickname,
-            name = name,
+            username = username,
         )
 
         user.is_superuser= True
@@ -40,9 +41,10 @@ class UserManager(BaseUserManager):
         return user
 
 
+#유저모델
 class User(AbstractBaseUser, PermissionsMixin):
-    name = models.CharField(max_length=30, verbose_name='이름')
-    nickname= models.CharField(max_length=10, unique=True, verbose_name='닉네임')
+    username = models.CharField(max_length=30, verbose_name='이름')
+    nickname = models.CharField(max_length=10, unique=True, verbose_name='닉네임')
     email = models.EmailField(max_length=255, unique=True, verbose_name='이메일')
     reside = models.CharField(max_length=50, verbose_name='거주지', blank=True)    # 나중에 위젯이랑 연결
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -59,9 +61,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         ordering = ('-date_joined',)
 
     def __str__(self):
-        return self.name + "(nickname:{})".format(self.nickname)
+        return self.username + "(nickname:{})".format(self.nickname)
+
     def get_full_name(self):
         return self.nickname
+
     def get_short_name(self):
         return self.nickname
 
