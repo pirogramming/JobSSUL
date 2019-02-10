@@ -6,5 +6,19 @@
         <h6>주소: {{ user.reside }}</h6>
         <h6>이메일: {{ user.email }}</h6>
         <h6>가입날짜: {{ user.date_joined }}</h6>
+
+        <div>
+        <h3>내가쓴글</h3>
+        {% for post in my_posts %}
+            글제목: {{ post.title }} <small>작성날짜: {{ post.created_at }} 수정날짜: {{ post.updated_at }}</small>
+        {% endfor %}
+        </div>
+
+        <div>
+        <h3>내가쓴댓글</h3>
+        {% for comment in my_comments %}
+            글제목: {{ comment.post.title }} <small>댓글작성날짜: {{ comment.created_at }} 댓글글수정날짜: {{ coment.updated_at }}</small>
+        {% endfor %}
+        </div>
         {% endif %}
 {% endblock %}

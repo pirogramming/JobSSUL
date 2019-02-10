@@ -8,7 +8,7 @@ from .models import *
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from .Forms import UserCreationForm, LoginForm
-
+from main.models import Post, Comment
 
 
 
@@ -58,12 +58,12 @@ def login(request):
 def mypage(request):
     if request.method =='GET':
         user = request.user
-
-
-
-
+        user_posts = Post.objects.filter(author=user)
+        user_comments = Comment.objects.filter(author=user)
         data = {
-            'profile_user' : user,
+            'profile_user': user,
+            'my_posts': user_posts,
+            'my_comments': user_comments,
         }
         return render(request, 'about.html', data)
 
