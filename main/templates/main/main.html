@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
 
+.button_container{
+    text-align : center;
+    margin-top: 100px;
+}
+
+.main_button{
+    text-decoration: none;
+}
+</style>
 {% load static %}
-<a href="{% url 'main:post' %}">잡썰 보러가기</a>
+    <div class="button_container">
+<a href="{% url 'main:post' %}" class="btn btn-outline-info btn-lg main_button">잡썰 보러가기</a>
+</div>
 {% endblock %}
