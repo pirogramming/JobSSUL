@@ -55,7 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', 'nickname',]
+    REQUIRED_FIELDS = ['username', 'nickname',]
 
     class Meta:
         ordering = ('-date_joined',)
@@ -73,5 +73,5 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_staff(self):
         return self.is_superuser
 
-    def email_user(self, subject, message, from_email=None):
-        send_mail(subject, message, from_email, [self.email])
+    # def email_user(self, subject, message, from_email=None):
+    #     send_mail(subject, message, from_email, [self.email])

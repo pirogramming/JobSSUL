@@ -24,7 +24,7 @@ class UserCreationForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': _('Nickname'),
+                'placeholder': _('닉네임'),
                 'required': 'True',
             }
         )
@@ -35,19 +35,18 @@ class UserCreationForm(forms.ModelForm):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': _('Nickname'),
+                'placeholder': _('이름'),
                 'required': 'True',
             }
         )
     )
     reside = forms.CharField(
         label=_('Reside'),
-        required=True,
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': _('Nickname'),
-                'required': 'True',
+                'placeholder': _('거주지'),
             }
         )
     )
@@ -74,11 +73,13 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'nickname')
+        # fields = ('email', 'nickname')
+        fields = ('email', 'nickname', 'password1', 'password2', 'reside', 'username')
 
         def __init__(self):
             self.cleaned_data = None
             super(UserCreationForm, self).__init__(*args, **kargs)
+            # self.fields['reside'].required=False
 
         def clean_password2(self):
             # 두 비밀번호 입력 일치 확인
@@ -117,3 +118,4 @@ class UserChangeForm(forms.ModelForm):
 
 class LoginForm(AuthenticationForm):
     pass
+
