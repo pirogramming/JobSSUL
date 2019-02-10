@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>제목: {{ post.title }}</p>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(event){
+            $('.reply-btn').click(function() {
+                $(this).parent().next('.replied-comments').fadeToggle()
+            });
+        });
+    </script>
+
+    <p>작성자: {{ post.author }}</p>
+    <p>제목: {{ post.title }}</p>
     <p>내용: {{ post.content }}</p>
     <p>시급: {{ post.payment }}</p>
     <p>지점: {{ post.workplace }}</p>
@@ -9,32 +21,83 @@
     <p>직종: {{ post.work_type }}</p>
 
 
+    <a href="{% url 'main:edit' post.pk %}">게시글 수정</a>
+    <a href="{% url 'main:delete' post.pk %}">게시글 삭제</a>
 
-    <h3>Comments</h3>
-    <ul>
-    {% for comment in post.comment_set.all %}
-        <li>
-            <div>{{ comment.updated_at}}</div>
-            <div><strong>{{ comment.author}}</strong></div>
-            <p>{{ comment.message }}</p>
-            comment:{{ comment.author.id }}
-            request: {{ request.user.id }}
-            {% if comment.author == request.user %}
-                <a href="{{ comment.get_edit_url }}">
+<p style="text-align: center; margin-top: 10%; font-weight: bold;">{{ total_likes }}명이 이 글을 추천했어요</p>
+    {% if request.user.is_authenticated %}
+     <form action="{% url 'main:like_post' %}" method="post">
+         {% csrf_token %}
+         {% if is_liked %}
+         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary" style="margin-left:auto;margin-right:auto;display:block;margin-bottom:5%">추천을 취소할래요!</button>
+         {% else %}
+         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary" style="margin-left:auto;margin-right:auto;display:block;margin-bottom:5%">이 게시글을 추천할래요!</button>
+         {% endif %}
+     </form>
+    {% endif %}
+
+<div class="main-comment-section" style="margin-left: 5%;">
+    <div class="container-fluid mt-2">
+        <div class="form-group row">
+            <form method="post">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                {% if request.user.is_authenticated %}
+                    <input type="submit" value="댓글 쓰기" class="btn btn-outline-success">
+                {% else %}
+                    <input type="submit" value="댓글 쓰기" class="btn btn-outline-success" disabled>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    <div style="font-size: 25px; font-weight: bold; margin-bottom: 10px;">{{ comments.count }}개의 댓글</div>
+    {% for comment in comments %}
+    <blockquote class="blockquote">
+        <div><small>{{ comment.updated_at}}</small></div>
+        <div><strong>{{ comment.author.nickname}}</strong></div>
+        <p>{{ comment.message }}</p>
+        {% if comment.author == request.user %}
+            <a href="{{ comment.get_edit_url }}">
+                수정
+            </a>
+            <a href="{{ comment.get_delete_url }}" class="text-danger">
+                삭제
+            </a>
+            <button type="button" name="button" class="reply-btn btn btn-outline-dark btn-sm ml-2">대댓글</button>
+        {% endif %}
+    </blockquote>
+
+    <div class="replied-comments container mt-2" style="display:none;">
+        {% for reply in comment.replies.all %}
+        <blockquote class="blockquote">
+            <div>{{ reply.updated_at}}</div>
+            <div><strong>{{ reply.author.nickname}}</strong></div>
+            <p>{{ reply.message }}</p>
+            {% if reply.author == request.user %}
+                <a href="{{ reply.get_edit_url }}">
                     수정
                 </a>
-                <a href="{{ comment.get_delete_url }}" class="text-danger">
+                <a href="{{ reply.get_delete_url }}" class="text-danger">
                     삭제
                 </a>
             {% endif %}
-
-        </li>
-    {% endfor %}
-    </ul>
-
-    <div class="panel-footer">
-        <a href="{% url "main:comment_new" post.pk %}" class="btn btn-primary">댓글쓰기</a>
+        </blockquote>
+        {% endfor %}
+        <div class="form-group row">
+             <form method="post">
+                 {% csrf_token %}
+                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                 {{ comment_form.as_p }}
+                 {% if request.user.is_authenticated %}
+                     <input type="submit" value="Submit" class="btn btn-outline-success">
+                 {% else %}
+                    <input type="submit" value="Submit" class="btn btn-outline-success" disabled>
+                 {% endif %}
+             </form>
+        </div>
     </div>
+    {% endfor %}
+</div>
 
     <a href="{% url "main:main" %}">메인으로 돌아가기</a>
 {% endblock %}
