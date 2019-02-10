@@ -11,6 +11,7 @@ from .Forms import UserCreationForm, LoginForm
 from django.contrib.auth import login as auth_login
 
 
+
 #회원가입
 def signup(request):
     if request.method == 'POST':
@@ -50,9 +51,13 @@ def login(request):
 
       
 @login_required
-def mypage(request, username):
+
+def mypage(request):
     if request.method =='GET':
-        user = get_object_or_404(User, name=username)
+        user = request.user
+
+
+
 
         data = {
             'profile_user' : user,
