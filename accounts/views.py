@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect
 from .Forms import UserCreationForm, LoginForm
 
 
+
 #회원가입
 def signup(request):
     if request.method == 'POST':
@@ -21,6 +22,9 @@ def signup(request):
             form = UserCreationForm()
     else:
         form = UserCreationForm()
+
+
+
 
         return render(request, 'accounts/signup_form.html', {
         'form': form,
@@ -48,9 +52,13 @@ def login(request):
 
       
 @login_required
-def mypage(request, username):
+
+def mypage(request):
     if request.method =='GET':
-        user = get_object_or_404(User, name=username)
+        user = request.user
+
+
+
 
         data = {
             'profile_user' : user,
