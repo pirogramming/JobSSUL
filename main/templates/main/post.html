@@ -1,26 +1,58 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <table class="table">
+    <style>
+    .post_list_container{
+        margin-top: 30px;
+        margin-left: 50px;
+        margin-right: 50px;
+
+    }
+
+    .create_post_button{
+        text-decoration: none;
+        color: white;
+        margin-right: 50px;
+
+
+    }
+
+    .create_post_button_container{
+            text-align: right;
+            margin-bottom: 50px;
+        }
+
+    .category{
+        text-decoration: none;
+        font-weight: 700;
+        color: black;
+    }
+    </style>
+    <div class="post_list_container">
+    <table class="table table-bordered table-hover">
       <thead class = "thread-dark">
         <tr>
-          <th>id</th>
-          <th>Title</th>
+
+          <th>제목</th>
+            <th>작성자</th>
           <th>별점</th>
         </tr>
       </thead>
       <tbody>
       {% for post in posts %}
         <tr>
-          <td>{{ post.id }}</td>
+
 
           <td>
-               <a href="{{ post.id }}">{{ post.title }}</a></td>
+               <a href="{{ post.id }}" class="category">{{ post.title }}</a></td>
+            <td>{{ post.author }}</td>
           <td>{{ post.recommend }}</td>
         </tr>
       {% endfor %}
       </tbody>
 </table>
-<a href="{% url 'main:create' %}">게시글 생성</a>
-
+    </div>
+    <div class="create_post_button_container">
+<a href="{% url 'main:create' %}" class="btn btn-dark btn btn-primary btn-lg create_post_button">게시글 생성</a>
+</div>
 {% endblock %}
