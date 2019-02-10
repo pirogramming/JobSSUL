@@ -1,11 +1,36 @@
-<form action="" method="post">
-    {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <input type="submit" />
-</form>
+{#<form action="" method="post">#}
+{#    {% csrf_token %}#}
+{#    <table>#}
+{#        {{ form.as_table }}#}
+{#    </table>#}
+{#    <input type="submit" />#}
+{#</form>#}
 
 
 {# 이거 나중에 profile에 추가 #}
 {#<img src="{{ user.socialaccount_set.all.first.get_avatar_url }}"/>#}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>로그인</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="{% static "login_form_styles.css" %}/>
+  <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
+</head>
+<body>
+  <div class="login-form">
+    <form>
+      <input type="text" name="email" class="text-field" placeholder="아이디"><br>
+      <input type="password" name="password" class="text-field" placeholder="비밀번호"><br>
+      <input type="submit" value="로그인" class="submit-btn">
+    </form>
+
+    <div class="links">
+      <a href="#">비밀번호를 잊어버리셨나요?</a>
+    </div>
+  </div>
+</body>
+</html>
