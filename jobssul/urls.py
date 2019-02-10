@@ -24,5 +24,4 @@ urlpatterns = [
     path('main/', include('main.urls', namespace='main')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('mypage/', include('accounts.urls', namespace='mypage')),
-
 ]
