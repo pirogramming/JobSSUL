@@ -3,17 +3,19 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .Forms import UserCreationForm
 from .models import *
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from .Forms import UserCreationForm, LoginForm
 from django.contrib.auth import login as auth_login
 
 
 
+
 #회원가입
 def signup(request):
+
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -55,8 +57,6 @@ def login(request):
 def mypage(request):
     if request.method =='GET':
         user = request.user
-
-
 
 
         data = {

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script type="text/javascript">
@@ -11,12 +12,17 @@
         });
     </script>
 
-<p>제목: {{ post.title }}</p>
+    <p>작성자: {{ post.author }}</p>
+    <p>제목: {{ post.title }}</p>
     <p>내용: {{ post.content }}</p>
     <p>시급: {{ post.payment }}</p>
     <p>지점: {{ post.workplace }}</p>
     <p>별점: {{ post.recommend }}</p>
     <p>직종: {{ post.work_type }}</p>
+
+
+    <a href="{% url 'main:edit' post.pk %}">게시글 수정</a>
+    <a href="{% url 'main:delete' post.pk %}">게시글 삭제</a>
 
 <p style="text-align: center; margin-top: 10%; font-weight: bold;">{{ total_likes }}명이 이 글을 추천했어요</p>
     {% if request.user.is_authenticated %}

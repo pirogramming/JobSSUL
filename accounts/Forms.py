@@ -118,3 +118,4 @@ class UserChangeForm(forms.ModelForm):
 
 class LoginForm(AuthenticationForm):
     pass
+
