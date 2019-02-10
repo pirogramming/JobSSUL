@@ -37,17 +37,46 @@ def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = Post.objects.create(title = form.cleaned_data['title'], content=form.cleaned_data['content'],
-                                       payment = form.cleaned_data['payment'], workplace = form.cleaned_data['recommend'],
-                                       work_type = form.cleaned_data['work_type'], recommend = form.cleaned_data['recommend'])
+            post = Post.objects.create(author=form.cleaned_data['author'], title=form.cleaned_data['title'], content=form.cleaned_data['content'],
+                                       payment=form.cleaned_data['payment'], workplace=form.cleaned_data['recommend'],
+                                       work_type=form.cleaned_data['work_type'], recommend=form.cleaned_data['recommend'])
+
             return redirect('main:post')
     else:
-        form = PostForm()
+        form = PostForm(initial={'author': request.user})
     return render(request, 'main/create.html', {
         'form': form
     })
 
+@login_required
+def main_edit(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    if post.author != request.user:
+        return redirect(f'/main/post/{post.pk}')
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save()
+            return redirect(f'/main/post/{post.pk}')
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'main/edit.html', {
+        'form': form
+    })
 
+@login_required
+def main_delete(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    if post.author != request.user:
+        return redirect(f'/main/post/{post.pk}')
+
+    if request.method == "POST":
+        post.delete()
+        return redirect('main:post')
+
+    return render(request, 'main/delete.html', {
+        'post': post
+    })
 
 @login_required
 def comment_new(request, post_pk):
@@ -73,7 +102,6 @@ def comment_edit(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     if comment.author != request.user:
         return redirect(f'/main/post/{comment.post.pk}') # '/main/post/{0}/'.format(comment.post.pk)
-
     if request.method == 'POST':
         form = CommentForm(request.POST, request.FILES, instance=comment)
         if form.is_valid():

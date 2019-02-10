@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>제목: {{ post.title }}</p>
+    <p>작성자: {{ post.author }}</p>
+    <p>제목: {{ post.title }}</p>
     <p>내용: {{ post.content }}</p>
     <p>시급: {{ post.payment }}</p>
     <p>지점: {{ post.workplace }}</p>
     <p>별점: {{ post.recommend }}</p>
     <p>직종: {{ post.work_type }}</p>
 
-
+    <a href="{% url 'main:edit' post.pk %}">게시글 수정</a>
+    <a href="{% url 'main:delete' post.pk %}">게시글 삭제</a>
 
     <h3>Comments</h3>
     <ul>

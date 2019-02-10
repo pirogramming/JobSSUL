@@ -13,10 +13,10 @@ from .Forms import LoginForm
 def signup(request):
 
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect(reverse('main:main'))
+            return redirect('main:main')
     else:
         form = UserCreationForm()
     return render(request, 'accounts/signup_form.html', {
@@ -37,7 +37,7 @@ def login(request):
 
     return auth_login(request,
                       authentication_form=LoginForm,
-                      template_name='accounts/login_form.html',
+                      template_name='login_form.html',
                       extra_context={'providers':providers})
 
 
