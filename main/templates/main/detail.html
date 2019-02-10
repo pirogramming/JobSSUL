@@ -28,7 +28,7 @@
          <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary" style="margin-left:auto;margin-right:auto;display:block;margin-bottom:5%">이 게시글을 추천할래요!</button>
          {% endif %}
      </form>
-{% endif %}
+    {% endif %}
 
 <div class="main-comment-section" style="margin-left: 5%;">
     <div class="container-fluid mt-2">
@@ -48,7 +48,7 @@
     {% for comment in comments %}
     <blockquote class="blockquote">
         <div><small>{{ comment.updated_at}}</small></div>
-        <div><strong>{{ comment.author}}</strong></div>
+        <div><strong>{{ comment.author.nickname}}</strong></div>
         <p>{{ comment.message }}</p>
         {% if comment.author == request.user %}
             <a href="{{ comment.get_edit_url }}">
@@ -65,7 +65,7 @@
         {% for reply in comment.replies.all %}
         <blockquote class="blockquote">
             <div>{{ reply.updated_at}}</div>
-            <div><strong>{{ reply.author}}</strong></div>
+            <div><strong>{{ reply.author.nickname}}</strong></div>
             <p>{{ reply.message }}</p>
             {% if reply.author == request.user %}
                 <a href="{{ reply.get_edit_url }}">
