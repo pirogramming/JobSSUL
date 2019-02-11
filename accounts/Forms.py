@@ -116,7 +116,7 @@ class UserChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-class LoginForm(AuthenticationForm):
+class LoginForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'password']
