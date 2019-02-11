@@ -71,5 +71,5 @@ def mypage(request):
             'my_posts': user_posts,
             'my_comments': user_comments,
         }
-        return render(request, 'about.html', data)
+        return render(request, 'accounts/about.html', data)
 

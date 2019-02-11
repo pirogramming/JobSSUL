@@ -1,10 +1,83 @@
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>프로필</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
 {% load static %}
 
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #CCFF99;" >
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Yeon+Sung');
+    .navbar {
+        padding: 10px 20px;
+        {#font-family: 'Yeon Sung', cursive;#}
+    }
+
+    .navbar .nav-item{
+        float: left;
+        display: block;
+        text-align: center;
+        padding: 12px 14px;
+        font-size: 17px;
+        border-bottom: 3px solid transparent;
+        border-radius: 0;
+    }
+
+    a {
+        color: #85d4be;
+        font-weight: 500;
+    }
+
+    a:hover{
+        color: #85d4be;
+        font-weight: bold;
+    }
+
+
+    .navbar .nav-item:hover{
+        background-color: #f2f2f2;
+        border-bottom: 3px solid #96dfd8;
+    }
+
+    .navbar .nav-item:active{
+        border-bottom: 3px solid #96dfd8;
+    }
+
+
+    {#a:hover{#}
+    {#    background-color: #f2f2f2;#}
+    {#    color: #85d4be;#}
+    {#}
+
+    #btnGroupDrop1 {
+        background-color: #96dfd8;
+        border-color: white;
+        padding: 12px 20px;
+    }
+
+    {#toggle때문에 ^^..#}
+    {##btnGroupDrop1:visited {#}
+    {#    background-color: #85d4be;#}
+    {#}#}
+    {##}
+    {#.show:active {#}
+    {#    background-color: #85d4be;#}
+    {#}#}
+
+    #info{
+        float: right;
+    }
+</style>
+
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: white;" >
   <a href="{% url "main:main" %}">
     <img src={% static "main/logo.png"%} width="119" height="44" alt="" style="padding: 0;">
   </a>
+
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -71,24 +144,17 @@
         </div>
       </div>
     </div>
-
-    <form class="form-inline my-2 mr-2 ml-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-
-  <ul class="nav nav-pills">
-    {% if not user.is_authenticated %}
-        <li class="nav-item"><a class="nav-link" href="{% url "accounts:signup" %}">회원가입</a></li>
-        <li class="nav=item"><a class="nav-link" href="{% url "accounts:login" %}?next={{ request.path }}">로그인</a></li>
-    {% else %}
-{#            <li class="nav-item"><a class="nav-link" href="{% url "profile" %}">프로필</a></li>#}
-        
-        <li class="nav-item"><a class="nav-link" href="{% url "accounts:user_profile" %}">마이페이지</a></li>
-
-
-        <li class="nav-item"><a class="nav-link" href="{% url "accounts:logout" %}?next={{ request.path }}">로그아웃</a></li>
-    {% endif %}
-    </ul>
+        <ul id="info" class="nav nav-pills">
+                {% if not user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url "accounts:signup" %}">회원가입</a></li>
+                    <li class="nav=item"><a class="nav-link" href="{% url "accounts:login" %}?next={{ request.path }}">로그인</a></li>
+                {% else %}
+            {#            <li class="nav-item"><a class="nav-link" href="{% url "profile" %}">프로필</a></li>#}
+                    <li class="nav-item"><a class="nav-link" href="{% url "accounts:user_profile" %}">마이페이지</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url "accounts:logout" %}?next={{ request.path }}">로그아웃</a></li>
+                {% endif %}
+        </ul>
   </div>
 </nav>
+{% block content %}
+{% endblock %}
