@@ -121,3 +121,14 @@ class LoginForm(forms.ModelForm):
         model = User
         fields = ['email', 'password']
 
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        for key, field in self.fields.items():
+            if isinstance(field.widget, forms.TextInput) or \
+                    isinstance(field.widget, forms.Textarea) or \
+                    isinstance(field.widget, forms.DateInput) or \
+                    isinstance(field.widget, forms.EmailInput) or \
+                    isinstance(field.widget, forms.DateTimeInput) or \
+                    isinstance(field.widget, forms.TimeInput):
+                field.widget.attrs.update({'placeholder': field.label})
+
