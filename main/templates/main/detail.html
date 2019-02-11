@@ -11,19 +11,45 @@
             });
         });
     </script>
+    <style>
+    .post_category{
+        @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+        font-family: 'Jeju Gothic', sans-serif;
+        font-size: 20px;
+        margin-left: 50px;
+    }
 
-    <p>작성자: {{ post.author.nickname }}</p>
-    <p>제목: {{ post.title }}</p>
-    <p>내용: {{ post.content }}</p>
-    <p>시급: {{ post.payment }}</p>
-    <p>지점: {{ post.workplace }}</p>
-    <p>별점: {{ post.recommend }}</p>
-    <p>직종: {{ post.work_type }}</p>
+        .button_container{
+            text-align: right;
+            padding-right: 50px;
+        }
 
-
-    <a href="{% url 'main:edit' post.pk %}">게시글 수정</a>
-    <a href="{% url 'main:delete' post.pk %}">게시글 삭제</a>
-
+        .content_container{
+            background-color: beige;
+            margin-left: 50px;
+            margin-right: 50px;
+            padding-top: 3px;
+            padding-bottom: 15px;
+        }
+    .main_button_container{
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    </style>
+    <div class="content_container">
+        <p class="post_category">작성자: {{ post.author.nickname }}</p>
+        <p class="post_category">제목: <span>{{ post.title }}</span></p>
+        <p class="post_category">내용: </p>
+        <textarea rows="15" cols="150" class="post_category">{{ post.content }}</textarea>
+        <p class="post_category">시급: {{ post.payment }}</p>
+        <p class="post_category">지점: {{ post.workplace }}</p>
+        <p class="post_category">별점: {{ post.recommend }}</p>
+        <p class="post_category">직종: {{ post.work_type }}</p>
+</div>
+    <div class="button_container">
+    <a href="{% url 'main:edit' post.pk %}" class="btn btn-warning btn btn-primary btn-lg">게시글 수정</a>
+    <a href="{% url 'main:delete' post.pk %}" class="btn btn-danger btn btn-primary btn-lg">게시글 삭제</a>
+    </div>
 <p style="text-align: center; margin-top: 10%; font-weight: bold;">{{ total_likes }}명이 이 글을 추천했어요</p>
     {% if request.user.is_authenticated %}
      <form action="{% url 'main:like_post' %}" method="post">
@@ -98,6 +124,7 @@
     </div>
     {% endfor %}
 </div>
-
-    <a href="{% url "main:main" %}">메인으로 돌아가기</a>
+<div class="main_button_container">
+    <a href="{% url "main:main" %}" class="btn btn-dark btn btn-primary btn-lg">메인으로 돌아가기</a>
+</div>
 {% endblock %}

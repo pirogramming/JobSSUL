@@ -1,9 +1,11 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+
+from jobssul.backends import EmailBackend
 from .models import *
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
@@ -38,10 +40,11 @@ def signup(request):
 def login(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
-        username = request.POST['username']
+        email = request.POST['email']
         password = request.POST['password']
-        user = authenticate(email=username, password=password)
-        print(user)
+        # print(email, password)
+        user = EmailBackend.authenticate(request, username=email, password=password)
+        # print(user)
 
         if user is not None:
             auth_login(request, user)
