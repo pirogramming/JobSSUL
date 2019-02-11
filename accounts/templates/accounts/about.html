@@ -1,0 +1,85 @@
+{% extends "header.html" %}
+{% block content %}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>프로필</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/about.css' %}">
+</head>
+<body>
+{% block body_block %}
+        {% if user.is_authenticated %}
+        <div>
+            <h3>프로필 페이지</h3>
+            <table class="type01">
+                <tr>
+                    <th>이름</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <th>닉네임</th>
+                    <td>{{ user.nickname }}</td>
+                </tr>
+                <tr>
+                    <th>주소</th>
+                    <td>{{ user.reside }}</td>
+                </tr>
+                <tr>
+                    <th>이메일</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th>가입일시</th>
+                    <td>{{ user.date_joined }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+            <h3>내가쓴글</h3>
+            <table class="type01">
+                <tr>
+                    <th>글제목</th>
+                    <th>작성시간</th>
+                    <th>수정시간</th>
+                </tr>
+                {% for post in my_posts %}
+                <tr>
+                    <td><a href="{% url 'main:detail' post.id %}">{{ post.title }}</a></td>
+                    <td><small>{{ post.created_at }}</small></td>
+                    <td><small>{{ post.updated_at }}</small></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div>
+            <h3>내가쓴댓글</h3>
+            <table class="type01">
+                <thead>
+                    <tr>
+                        <th>글제목</th>
+                        <th>작성시간</th>
+                        <th>수정시간</th>
+                    </tr>
+                </thead>
+                {% for comment in my_comments %}
+                <tbody>
+                    <tr>
+                        <td><a href="{% url 'main:detail' comment.post.id %}">{{ comment.post.title }}</a></td>
+                        <td><small>{{ comment.created_at }}</small></td>
+                        <td><small>{{ comment.updated_at }}</small></td>
+                    </tr>
+                </tbody>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+{% endblock %}
+{% endblock %}
+</body>
