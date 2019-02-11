@@ -22,6 +22,11 @@ def main_page(request):
 
 def main_post(request):
     post = Post.objects.all()
+    #posts = Post.published.all()
+    # query = request.GET.get('q')
+    # if query:
+    #     posts = Post.published.filter(title__icontains=query)
+
     data = {
         'posts': post
     }

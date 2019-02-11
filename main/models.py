@@ -1,3 +1,5 @@
+from datetime import timezone
+
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.urls import reverse
@@ -24,6 +26,14 @@ class Post(models.Model):
         ('단기', '단기'),
         ('장기', '장기'),
     )
+
+    STATUS_CHOICES = {
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+    }
+    objects = PublishedManager()
+    publish = models.DateTimeField(default=timezone.now)
+
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     #verbose_name = 작성자
     title = models.CharField(max_length=20, verbose_name= '제목')
@@ -76,3 +86,10 @@ class Comment(models.Model):
 
     def get_absolute_url(self):
         return reverse('main:detail', args=[self.pk])
+
+
+class PublishedManager(models.Manager):
+    user_for_related_fields = True
+
+    def published(self, **kwargs):
+        return self.filter(status='published', **kwargs)
