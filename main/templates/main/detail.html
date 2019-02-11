@@ -128,6 +128,7 @@
     {% endfor %}
 </div>
 <div class="main_button_container">
-    <a href="{% url "main:main" %}" class="btn btn-dark btn btn-primary btn-lg">메인으로 돌아가기</a>
+    <a href="{%  url 'main:post' %}" class="btn btn-dark btn-lg">더 많은 잡썰보기</a>
+    <a href="{% url "main:main" %}" class="btn btn-dark btn-lg">메인으로 돌아가기</a>
 </div>
 {% endblock %}
