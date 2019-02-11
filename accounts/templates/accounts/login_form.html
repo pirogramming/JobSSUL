@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 <link rel="stylesheet" href="{% static "accounts/login_form_styles.css" %}"/>
 </head>
+
 {% if messages %}
   <div class="container">
       {% for message in messages %}
@@ -38,6 +39,3 @@
 </form>
 
 </html>
-
-{# 이거 나중에 profile에 추가 #}
-{#<img src="{{ user.socialaccount_set.all.first.get_avatar_url }}"/>#}
