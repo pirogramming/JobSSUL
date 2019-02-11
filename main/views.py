@@ -78,7 +78,7 @@ def main_create(request):
         form = PostForm(request.POST, request.FILES)
 
         if form.is_valid():
-            post = form.save()
+            form.save()
             messages.info(request, '새 글이 등록되었습니다.')
             return redirect('main:post')
     else:
@@ -96,6 +96,7 @@ def main_edit(request, post_pk):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save()
+
             return redirect(f'/main/post/{post.pk}')
     else:
         form = PostForm(instance=post)
