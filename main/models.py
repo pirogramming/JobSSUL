@@ -35,11 +35,10 @@ class Post(models.Model):
     work_type = models.CharField(max_length=10, choices=WORK_TYPE, verbose_name='직종')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now = True)
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
 
+    class Meta:
+        ordering = ['-id']
 
     def __str__(self):
         return self.title, self.author
@@ -63,10 +62,6 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     reply = models.ForeignKey('Comment', null=True, related_name='replies', on_delete=models.CASCADE)
-
-
-    class Meta:
-        ordering = ['-id']
 
     def get_edit_url(self):
         return reverse('main:comment_edit', args=[self.pk])

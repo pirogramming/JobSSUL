@@ -32,20 +32,16 @@
     <table class="table table-bordered table-hover">
       <thead class = "thread-dark">
         <tr>
-
           <th>제목</th>
-            <th>작성자</th>
+          <th>작성자</th>
           <th>별점</th>
         </tr>
       </thead>
       <tbody>
       {% for post in posts %}
         <tr>
-
-
-          <td>
-               <a href="{{ post.id }}" class="category">{{ post.title }}</a></td>
-            <td>{{ post.author }}</td>
+          <td><a href="{{ post.id }}" class="category">{{ post.title }}</a></td>
+          <td>{{ post.author }}</td>
           <td>{{ post.recommend }}</td>
         </tr>
       {% endfor %}
