@@ -1,6 +1,5 @@
 from django import forms
 from django.core.validators import MinLengthValidator
-
 from .models import Post, Comment
 
 
