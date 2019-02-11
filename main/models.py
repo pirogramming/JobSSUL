@@ -25,7 +25,6 @@ class Post(models.Model):
         ('장기', '장기'),
     )
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    #verbose_name = 작성자
     title = models.CharField(max_length=20, verbose_name= '제목')
     content = models.TextField(verbose_name='내용', validators=[MinLengthValidator(10, message=None)],
                                help_text='내용을 최소 10자 이상으로 작성해주세요')

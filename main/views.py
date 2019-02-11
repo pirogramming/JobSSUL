@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.template import RequestContext
 from django.views.decorators.http import require_POST
 
 from .Forms import CommentForm
@@ -129,14 +130,14 @@ def comment_new(request, post_pk):
             comment.post = post
             comment.author = request.user
             comment.save()
-            messages.info(request, '댓글이 작성되었습니다.')
+            messages.success(request, '댓글이 작성되었습니다.')
             return redirect('main:detail', post.pk)
     else:
         form = CommentForm()
 
     return render(request, 'main/comment_form.html', {
         'form': form,
-    })
+    }, context_instance=RequestContext)
 
 
 @login_required
