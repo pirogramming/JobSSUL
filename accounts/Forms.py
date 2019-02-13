@@ -3,6 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import ugettext_lazy as _
 from .models import User, UserManager
+from jobssul.widgets.daum_address_widget import DaumAddressWidget
 
 
 #회원가입폼
@@ -41,14 +42,9 @@ class UserCreationForm(forms.ModelForm):
         )
     )
     reside = forms.CharField(
-        label=_('Reside'),
+        label=_('거주지'),
         required=False,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': _('거주지'),
-            }
-        )
+        widget=DaumAddressWidget()
     )
     password1 = forms.CharField(
         label=_('Password'),
@@ -107,7 +103,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'username', 'nickname', 'is_superuser')
+        fields = ('username', 'nickname', 'email', 'password', 'is_superuser')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
