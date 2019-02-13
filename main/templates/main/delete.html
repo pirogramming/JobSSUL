@@ -1,10 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <style>
+
+        #delete_for_sure{
+            margin-top: 100px;
+            text-align: center;
+            color: black;
+            font-weight: 700;
+        }
+
+        .delete_button_container{
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+    </style>
     <form method="POST">
-{% csrf_token %}
-    <h1>정말 삭제하시겠습니까?</h1>
-    <input type="submit" value="삭제하겠습니다."/>
+    {% csrf_token %}
+    <h1 id="delete_for_sure">정말 삭제하시겠습니까?</h1>
+        <div class="delete_button_container">
+        <button class= "btn btn-danger btn-lg" type="submit">삭제하겠습니다</button>
+        </div>
     </form>
 {% endblock %}
 

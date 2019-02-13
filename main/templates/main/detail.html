@@ -1,9 +1,42 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+    <script>
+        var starRating = function(){
+  var $star = $(".star-input"),
+      $result = $star.find("output>b");
+  $(document)
+    .on("focusin", ".star-input>.input", function(){
+    $(this).addClass("focus");
+  })
+    .on("focusout", ".star-input>.input", function(){
+    var $this = $(this);
+    setTimeout(function(){
+      if($this.find(":focus").length === 0){
+        $this.removeClass("focus");
+      }
+    }, 100);
+  })
+    .on("change", ".star-input :radio", function(){
+    $result.text($(this).next().text());
+  })
+    .on("mouseover", ".star-input label", function(){
+    $result.text($(this).text());
+  })
+    .on("mouseleave", ".star-input>.input", function(){
+    var $checked = $star.find(":checked");
+    if($checked.length === 0){
+      $result.text("0");
+    } else {
+      $result.text($checked.next().text());
+    }
+  });
+};
+starRating();</script>
     <script type="text/javascript">
         $(document).ready(function(event){
             $('.reply-btn').click(function() {
@@ -17,8 +50,6 @@
         font-family: 'Jeju Gothic', sans-serif;
         font-size: 20px;
         margin-left: 50px;
-
-
 
     }
 
@@ -38,15 +69,20 @@
         text-align: center;
         margin-bottom: 50px;
     }
+    #recommend_star{
+        height: 16px;
+    }
+
     </style>
     <div class="content_container">
         <p class="post_category">작성자: {{ post.author.nickname }}</p>
         <p class="post_category">제목: <span>{{ post.title }}</span></p>
         <p class="post_category">내용: </p>
-        <textarea rows="15" cols="150" class="post_category">{{ post.content }}</textarea>
+        <textarea readonly rows="15" cols="110" class="post_category">{{ post.content }}</textarea>
         <p class="post_category">시급: {{ post.payment }}</p>
         <p class="post_category">지점: {{ post.workplace }}</p>
-        <p class="post_category">별점: {{ post.recommend }}</p>
+
+        <p class="post_category">별점: <img id=recommend_star src="{% static 'main/star.jpg' %}">{{ post.recommend }}</p>
         <p class="post_category">직종: {{ post.work_type }}</p>
 </div>
     <div class="button_container">
