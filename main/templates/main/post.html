@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% load static %}
     <style>
     .entire {
         background-color: #daf1de;
@@ -20,6 +21,9 @@
 
     }
 
+    #recommend_star{
+        height: 16px;
+    }
     .create_post_button_container{
             text-align: right;
             margin-bottom: 50px;
@@ -51,7 +55,7 @@
               <td>
                    <a href="{{ post.id }}" class="category">{{ post.title }}</a></td>
                 <td>{{ post.author }}</td>
-              <td>{{ post.recommend }}</td>
+              <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
             </tr>
           {% endfor %}
           </tbody>

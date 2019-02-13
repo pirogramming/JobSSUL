@@ -1,5 +1,7 @@
 from django import forms
 from django.core.validators import MinLengthValidator
+
+from main.widgets import RateitjsWidget
 from .models import Post, Comment
 
 
@@ -8,6 +10,9 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = '__all__'
         exclude = ['likes']
+        widgets = {
+            'recommend': RateitjsWidget,
+        }
 
 
 class CommentForm(forms.ModelForm):

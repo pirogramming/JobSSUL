@@ -30,6 +30,8 @@ def main_post(request):
 
 def main_detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
+    form =PostForm()
+
     comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
     is_liked = False
     if post.likes.filter(id=request.user.id).exists():
@@ -57,6 +59,7 @@ def main_detail(request, post_pk):
         'total_likes': post.total_likes(),
         'comments': comments,
         'comment_form': comment_form,
+        'form': form,
     }
     return render(request, 'main/detail.html', data)
 
@@ -97,12 +100,13 @@ def main_edit(request, post_pk):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save()
-
             return redirect(f'/main/post/{post.pk}')
     else:
         form = PostForm(instance=post)
+
     return render(request, 'main/edit.html', {
-        'form': form
+        'form': form,
+
     })
 
 
