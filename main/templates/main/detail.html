@@ -2,16 +2,7 @@
 
 {% block content %}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function(event){
-            $('.reply-btn').click(function() {
-                $(this).parent().next('.replied-comments').fadeToggle()
-            });
-        });
-    </script>
-    <style>
+<style>
     .post_category{
         @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
         font-family: 'Jeju Gothic', sans-serif;
@@ -35,25 +26,27 @@
         text-align: center;
         margin-bottom: 50px;
     }
-    </style>
-    <div class="content_container">
-        <p class="post_category">작성자: {{ post.author.nickname }}</p>
-        <p class="post_category">제목: <span>{{ post.title }}</span></p>
-        <p class="post_category">내용: </p>
-        <textarea rows="15" cols="150" class="post_category">{{ post.content }}</textarea>
-        <p class="post_category">시급: {{ post.payment }}</p>
-        <p class="post_category">지점: {{ post.workplace }}</p>
-        <p class="post_category">별점: {{ post.recommend }}</p>
-        <p class="post_category">직종: {{ post.work_type }}</p>
+</style>
+
+<div class="content_container">
+    <p class="post_category">작성자: {{ post.author.nickname }}</p>
+    <p class="post_category">제목: <span>{{ post.title }}</span></p>
+    <p class="post_category">내용: </p>
+    <textarea rows="15" cols="150" class="post_category">{{ post.content }}</textarea>
+    <p class="post_category">시급: {{ post.payment }}</p>
+    <p class="post_category">지점: {{ post.workplace }}</p>
+    <p class="post_category">별점: {{ post.recommend }}</p>
+    <p class="post_category">직종: {{ post.work_type }}</p>
 </div>
+
 <div class="button_container">
 <a href="{% url 'main:edit' post.pk %}" class="btn btn-warning btn btn-primary btn-lg">게시글 수정</a>
 <a href="{% url 'main:delete' post.pk %}" class="btn btn-danger btn btn-primary btn-lg">게시글 삭제</a>
 </div>
 
-    <div id="like-section">
-        {% include 'main/like_section.html' %}
-    </div>
+<div id="like-section">
+    {% include 'main/like_section.html' %}
+</div>
 
 <div class="main-comment-section" style="margin-left: 5%;">
     <div class="container-fluid mt-2">
