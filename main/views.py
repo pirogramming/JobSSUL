@@ -7,8 +7,8 @@ from .Forms import CommentForm
 from .models import Post, Comment
 from .Forms import PostForm
 from django.db.models import Q
-
-
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 def main_page(request):
     post = Post.objects.all()
@@ -68,14 +68,23 @@ def main_detail(request, post_pk):
 
 
 def like_post(request):
-    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    # post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post = get_object_or_404(Post, id=request.POST.get('id'))
+    is_liked = False
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
         is_liked = False
     else:
         post.likes.add(request.user)
         is_liked = True
-    return HttpResponseRedirect(post.get_absolute_url())
+    data = {
+        'post': post,
+        'is_liked': is_liked,
+        'total_likes': post.total_likes(),
+    }
+    if request.is_ajax():
+        html = render_to_string('main/like_section.html', data, request=request)
+        return JsonResponse({'form': html})
 
 
 

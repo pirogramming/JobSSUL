@@ -1,0 +1,34 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(event){
+        $(document).on('click', '#like', function(event){
+            event.preventDefault();
+            var pk = $(this).attr('value');
+            $.ajax({
+                type: 'POST',
+                url: '{% url "main:like_post" %}',
+                data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                dataType: 'json',
+                success: function(response){
+                    $('#like-section').html(response['form'])
+                    console.log($('#like-section').html(response['form']));
+                },
+                error: function(rs, e){
+                    console.log(rs.responseText);
+                },
+            });
+        });
+    });
+</script>
+
+<p style="text-align: center; margin-top: 10%; font-weight: bold;">{{ total_likes }}명이 이 글을 추천했어요</p>
+    {% if request.user.is_authenticated %}
+     <form action="{% url 'main:like_post' %}" method="post">
+         {% csrf_token %}
+         {% if is_liked %}
+         <button type="submit" id='like' name="post_id" value="{{ post.id }}" class="btn btn-primary" style="margin-left:auto;margin-right:auto;display:block;margin-bottom:5%">추천을 취소할래요!</button>
+         {% else %}
+         <button type="submit" id="like" name="post_id" value="{{ post.id }}" class="btn btn-primary" style="margin-left:auto;margin-right:auto;display:block;margin-bottom:5%">이 게시글을 추천할래요!</button>
+         {% endif %}
+     </form>
+    {% endif %}
