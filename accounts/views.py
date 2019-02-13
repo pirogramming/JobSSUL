@@ -23,13 +23,14 @@ def signup(request):
             user = form.save()
             return redirect(settings.LOGIN_URL)
         else:
+            messages.error(request, '정보를 정확히 입력해주세요.')
             return render(request, 'accounts/signup_form.html', {
-                'form': form,
+                'form': form
             })
     else:
         form = UserCreationForm()
         return render(request, 'accounts/signup_form.html', {
-        'form': form,
+                'form': form,
     })
 
 

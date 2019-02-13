@@ -44,7 +44,8 @@ class UserCreationForm(forms.ModelForm):
     reside = forms.CharField(
         label=_('거주지'),
         required=False,
-        widget=DaumAddressWidget()
+        widget=DaumAddressWidget(
+        )
     )
     password1 = forms.CharField(
         label=_('Password'),
@@ -52,7 +53,7 @@ class UserCreationForm(forms.ModelForm):
             attrs={
                 'class': 'form-control',
                 'placeholder': _('Password'),
-                'required': 'True',
+                'required': 'True'
             }
         )
     )
