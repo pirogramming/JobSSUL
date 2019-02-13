@@ -2,12 +2,23 @@ from datetime import timezone
 
 from django.core.validators import MinLengthValidator
 from django.db import models
+import django
 from django.urls import reverse
 from jobssul import settings
 from accounts.models import User
 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super(PublishedManager, self).get_queryset().filter(status='published')
+#     user_for_related_fields = True
+#
+#     def published(self, **kwargs):
+#         return self.filter(status='published', **kwargs)
+
 
 class Post(models.Model):
+    objects = models.Manager()
+    published = PublishedManager()
     PAYMENT_LEVEL = (
         ('평범', '7500원 ~ 9000원'),
         ('굳', '9000원 ~ 10500원'),
@@ -31,8 +42,6 @@ class Post(models.Model):
         ('draft', 'Draft'),
         ('published', 'Published'),
     }
-    objects = PublishedManager()
-    publish = models.DateTimeField(default=timezone.now)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     #verbose_name = 작성자
@@ -45,10 +54,15 @@ class Post(models.Model):
     work_type = models.CharField(max_length=10, choices=WORK_TYPE, verbose_name='직종')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
 
     # created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now = True)
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
+
+    # def published(self):
+    #     now = timezone.now()
+    #     return now
 
 
     def __str__(self):
@@ -87,9 +101,3 @@ class Comment(models.Model):
     def get_absolute_url(self):
         return reverse('main:detail', args=[self.pk])
 
-
-class PublishedManager(models.Manager):
-    user_for_related_fields = True
-
-    def published(self, **kwargs):
-        return self.filter(status='published', **kwargs)

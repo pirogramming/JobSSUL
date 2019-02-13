@@ -3,11 +3,10 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.http import require_POST
-
 from .Forms import CommentForm
-
 from .models import Post, Comment
 from .Forms import PostForm
+from django.db.models import Q
 
 
 
@@ -20,14 +19,17 @@ def main_page(request):
 
 
 def main_post(request):
-    post = Post.objects.all()
-    #posts = Post.published.all()
-    # query = request.GET.get('q')
-    # if query:
-    #     posts = Post.published.filter(title__icontains=query)
-
+    # post = Post.objects.all()
+    posts = Post.published.all()
+    query = request.GET.get('q')
+    if query:
+        posts = Post.published.filter(
+            Q(title__icontains=query) |
+            Q(author__username=query) |
+            Q(content__icontains=query)
+            )
     data = {
-        'posts': post
+        'posts': posts,
     }
     return render(request, 'main/post.html', data)
 
