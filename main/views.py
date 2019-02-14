@@ -53,7 +53,7 @@ def main_detail(request, post_pk):
 
             comment = Comment.objects.create(post=post, author=request.user, message=message, reply=comment_qs)
             comment.save()
-            return HttpResponseRedirect(post.get_absolute_url())
+            # return HttpResponseRedirect(post.get_absolute_url())
         else:
             comment_form = CommentForm()
 
@@ -64,6 +64,11 @@ def main_detail(request, post_pk):
         'comments': comments,
         'comment_form': comment_form,
     }
+
+    if request.is_ajax():
+        html = render_to_string('main/comments.html', data, request=request)
+        return JsonResponse({'form': html})
+
     return render(request, 'main/detail.html', data)
 
 
