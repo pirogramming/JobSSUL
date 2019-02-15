@@ -24,6 +24,7 @@
             <a href="{{ comment.get_delete_url }}" class="text-danger">
                 삭제
             </a>
+
 {#            <button type="button" name="button" class="reply-btn btn btn-outline-dark btn-sm ml-2">대댓글</button>#}
 
             <form action="{% url 'main:like_comment' %}" method="post">
@@ -36,6 +37,9 @@
             </form>
         {% endif %}
         <button type="button" name="button" class="reply-btn btn btn-outline-dark btn-sm ml-2">대댓글</button>
+
+        {% endif %}
+    <button type="button" name="button" class="reply-btn btn btn-outline-dark btn-sm ml-2">대댓글</button>
     </blockquote>
 
     <div class="replied-comments container mt-2" style="display:none;">
