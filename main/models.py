@@ -31,10 +31,7 @@ class Post(models.Model):
         ('장기', '장기'),
     )
 
-    STATUS_CHOICES = {
-        ('draft', 'Draft'),
-        ('published', 'Published'),
-    }
+
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=20, verbose_name= '제목')
@@ -47,7 +44,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=10, default='published')
     class Meta:
         ordering = ['-id']
 
