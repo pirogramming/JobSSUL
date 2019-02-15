@@ -1,4 +1,3 @@
-
 from django.core.validators import MinLengthValidator, MaxValueValidator, MinValueValidator
 from datetime import timezone
 from django.db import models
@@ -6,6 +5,7 @@ import django
 from django.urls import reverse
 from jobssul import settings
 from accounts.models import User
+
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -42,8 +42,6 @@ class Post(models.Model):
         ('병원/간호/연구', '병원/간호/연구'),
     )
 
-
-
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=20, verbose_name= '제목')
     content = models.TextField(verbose_name='내용', validators=[MinLengthValidator(10, message=None)],
@@ -56,6 +54,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
     status = models.CharField(max_length=10, default='published')
+
     class Meta:
         ordering = ['-id']
 
@@ -85,6 +84,7 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('main:detail', args=[self.pk])
 
+
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -92,6 +92,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     reply = models.ForeignKey('Comment', null=True, related_name='replies', on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, related_name='comment_likes', blank=True)
 
     def get_edit_url(self):
         return reverse('main:comment_edit', args=[self.pk])
