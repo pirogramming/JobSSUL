@@ -1,9 +1,83 @@
+
 {% extends "header.html" %}
 {% load static %}
 
 {% block below_nav %}
 
-<style>
+
+    <script type="text/javascript">
+    $(document).ready(function(event){
+        $(document).ready(function(event){
+            $('.reply-btn').click(function() {
+                $(this).parent().next('.replied-comments').fadeToggle()
+            });
+        });
+
+        $(document).on('click', '#like', function(event){
+            event.preventDefault();
+            var pk = $(this).attr('value');
+            $.ajax({
+                type: 'POST',
+                url: '{% url "main:like_post" %}',
+                data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                dataType: 'json',
+                success: function(response){
+                    $('#like-section').html(response['form'])
+                    console.log($('#like-section').html(response['form']));
+                },
+                error: function(rs, e){
+                    console.log(rs.responseText);
+                },
+            });
+        });
+    });
+
+   $(document).on('submit', '.comment-form', function(event){
+        event.preventDefault();
+        console.log($(this).serialize());
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(response) {
+                $('.main-comment-section').html(response['form']);
+                $('textarea').val('');
+                $('.reply-btn').click(function() {
+                    $(this).parent().next('.replied-comments').fadeToggle()
+                    $('textarea').val('');
+                });
+            },
+            error: function (rs, e) {
+                console.log(rs.responseText);
+            },
+        })
+    });
+
+   $(document).on('submit', '.reply-form', function(event){
+        event.preventDefault();
+        console.log($(this).serialize());
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(response) {
+                $('.main-comment-section').html(response['form']);
+                $('textarea').val('');
+                $('.reply-btn').click(function() {
+                    $(this).parent().next('.replied-comments').fadeToggle()
+                    $('textarea').val('');
+                });
+            },
+            error: function (rs, e) {
+                console.log(rs.responseText);
+            },
+        })
+    });
+</script>
+
+  <style>
       @import url('https://fonts.googleapis.com/css?family=Stylish');
       .main_header{
           font-family: 'Stylish', sans-serif;
@@ -28,8 +102,7 @@
     </div>
       <h3 class="main_header">모든 알바 후기가 모이는 곳</h3>
 
-
-  {% if messages %}
+    {% if messages %}
       <div class="container">
           {% for message in messages %}
               <div class="alert alert-{{ message.tags }}">
@@ -37,6 +110,7 @@
               </div>
           {% endfor %}
       </div>
+
   {% endif %}
 
   {% block content %}

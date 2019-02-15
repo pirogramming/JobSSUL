@@ -1,0 +1,12 @@
+<p style="text-align: center; margin-top: 10%; font-weight: bold;">{{ total_likes }}명이 이 글을 추천했어요</p>
+    {% if request.user.is_authenticated %}
+     <form action="{% url 'main:like_post' %}" method="post">
+         {% csrf_token %}
+         {% if is_liked %}
+         <button type="submit" id='like' name="post_id" value="{{ post.id }}" class="btn btn-primary" style="margin-left:auto;margin-right:auto;display:block;margin-bottom:5%">추천을 취소할래요!</button>
+         {% else %}
+         <button type="submit" id="like" name="post_id" value="{{ post.id }}" class="btn btn-primary" style="margin-left:auto;margin-right:auto;display:block;margin-bottom:5%">이 게시글을 추천할래요!</button>
+         {% endif %}
+     </form>
+    {% endif %}
+</body>

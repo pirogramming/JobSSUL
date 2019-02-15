@@ -14,7 +14,6 @@ body {
     background-color: #EEEFF1;
     text-align: center;
     width: 300px;
-    height: 100%;
     margin: auto;
     padding: 20px;
 
@@ -39,6 +38,7 @@ body {
     width: 260px;
     color: white;
     padding: 10px;
+
 }
 
 
@@ -48,6 +48,7 @@ body {
     text-align: center;
 
 }
+
 
 .links a {
     font-size: 12px;
