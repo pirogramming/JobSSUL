@@ -81,6 +81,7 @@ def main_detail(request, post_pk):
         'comment_is_liked': comment_is_liked,
         'comment': comment,
         'form': form,
+        'comment_total_likes': comment.comment_total_likes(),
     }
 
     if request.is_ajax():

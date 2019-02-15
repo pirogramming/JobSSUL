@@ -103,3 +103,7 @@ class Comment(models.Model):
     def get_absolute_url(self):
         return reverse('main:detail', args=[self.pk])
 
+    def comment_total_likes(self):
+        return self.likes.count()
+
+
