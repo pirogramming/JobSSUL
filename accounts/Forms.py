@@ -3,6 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.utils.translation import ugettext_lazy as _
 from .models import User, UserManager
+from jobssul.widgets.daum_address_widget import DaumAddressWidget
 
 
 #회원가입폼
@@ -10,6 +11,7 @@ class UserCreationForm(forms.ModelForm):
     email = forms.EmailField(
         label=_('Email'),
         required=True,
+        help_text="이메일은 인증 및 로그인 시 아이디로 쓰입니다.",
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
@@ -41,14 +43,9 @@ class UserCreationForm(forms.ModelForm):
         )
     )
     reside = forms.CharField(
-        label=_('Reside'),
+        label=_('거주지'),
         required=False,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': _('거주지'),
-            }
-        )
+        widget=DaumAddressWidget()
     )
     password1 = forms.CharField(
         label=_('Password'),
@@ -56,7 +53,7 @@ class UserCreationForm(forms.ModelForm):
             attrs={
                 'class': 'form-control',
                 'placeholder': _('Password'),
-                'required': 'True',
+                'required': 'True'
             }
         )
     )
@@ -73,13 +70,11 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        # fields = ('email', 'nickname')
-        fields = ('email', 'nickname', 'password1', 'password2', 'reside', 'username')
+        fields = ('username', 'nickname', 'email', 'password1', 'password2', 'reside')
 
-        def __init__(self):
+        def __init__(self, *args, **kargs):
             self.cleaned_data = None
             super(UserCreationForm, self).__init__(*args, **kargs)
-            # self.fields['reside'].required=False
 
         def clean_password2(self):
             # 두 비밀번호 입력 일치 확인
@@ -107,7 +102,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'username', 'nickname', 'is_superuser')
+        fields = ('username', 'nickname', 'email', 'password', 'is_superuser')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -120,4 +115,15 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'password']
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        for key, field in self.fields.items():
+            if isinstance(field.widget, forms.TextInput) or \
+                    isinstance(field.widget, forms.Textarea) or \
+                    isinstance(field.widget, forms.DateInput) or \
+                    isinstance(field.widget, forms.EmailInput) or \
+                    isinstance(field.widget, forms.DateTimeInput) or \
+                    isinstance(field.widget, forms.TimeInput):
+                field.widget.attrs.update({'placeholder': field.label})
 

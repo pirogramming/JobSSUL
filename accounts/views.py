@@ -15,24 +15,22 @@ from main.models import Post, Comment
 from django.contrib.auth import login as auth_login
 
 
-
-
-
 def signup(request):
-
     if request.method == 'POST':
+        print(request.POST)
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             return redirect(settings.LOGIN_URL)
         else:
+            messages.error(request, '정보를 정확히 입력해주세요.')
             return render(request, 'accounts/signup_form.html', {
-                'form': form,
+                'form': form
             })
     else:
         form = UserCreationForm()
         return render(request, 'accounts/signup_form.html', {
-        'form': form,
+                'form': form,
     })
 
 
@@ -71,5 +69,5 @@ def mypage(request):
             'my_posts': user_posts,
             'my_comments': user_comments,
         }
-        return render(request, 'about.html', data)
+        return render(request, 'accounts/about.html', data)
 

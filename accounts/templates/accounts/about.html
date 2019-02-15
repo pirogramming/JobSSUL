@@ -1,0 +1,88 @@
+{% extends "header.html" %}
+{% load static %}
+
+{% block below_nav %}
+        <title>프로필</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'accounts/about.css' %}">
+
+    <style>
+        #profile {
+            background-color: #daf1de;
+            padding: 10px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+    </style>
+    <body>
+        {% if user.is_authenticated %}
+        <div id="profile">
+            <div>
+                <h3>프로필 페이지</h3>
+                <table class="type01">
+                    <tr>
+                        <th>이름</th>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>닉네임</th>
+                        <td>{{ user.nickname }}</td>
+                    </tr>
+                    <tr>
+                        <th>주소</th>
+                        <td>{{ user.reside }}</td>
+                    </tr>
+                    <tr>
+                        <th>이메일</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>가입일시</th>
+                        <td>{{ user.date_joined }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+                <h3>내가쓴글</h3>
+                <table class="type01">
+                    <tr>
+                        <th>글제목</th>
+                        <th>작성시간</th>
+                        <th>수정시간</th>
+                    </tr>
+                    {% for post in my_posts %}
+                    <tr>
+                        <td><a href="{% url 'main:detail' post.id %}">{{ post.title }}</a></td>
+                        <td><small>{{ post.created_at }}</small></td>
+                        <td><small>{{ post.updated_at }}</small></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div>
+                <h3>내가쓴댓글</h3>
+                <table class="type01">
+                    <thead>
+                        <tr>
+                            <th>글제목</th>
+                            <th>작성시간</th>
+                            <th>수정시간</th>
+                        </tr>
+                    </thead>
+                    {% for comment in my_comments %}
+                    <tbody>
+                        <tr>
+                            <td><a href="{% url 'main:detail' comment.post.id %}">{{ comment.post.title }}</a></td>
+                            <td><small>{{ comment.created_at }}</small></td>
+                            <td><small>{{ comment.updated_at }}</small></td>
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    {% endblock %}
+</body>

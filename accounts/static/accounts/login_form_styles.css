@@ -6,17 +6,16 @@
 
 body {
     margin: 100px;
-    background-color: #1BBC9B;
+    background-color: #d6e9aa;
 }
 
 .login-form {
+
     background-color: #EEEFF1;
     text-align: center;
     width: 300px;
     margin: auto;
     padding: 20px;
-
-
 
 }
 
@@ -38,15 +37,16 @@ body {
     color: white;
     padding: 10px;
 
-
-
 }
+
+
 
 .links {
     margin-top: 30px;
-
+    text-align: center;
 
 }
+
 
 .links a {
     font-size: 12px;

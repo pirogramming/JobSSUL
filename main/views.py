@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.template import RequestContext
 from django.views.decorators.http import require_POST
 from .Forms import CommentForm
 from .models import Post, Comment
@@ -36,6 +37,8 @@ def main_post(request):
 
 def main_detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
+    form =PostForm()
+
     comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
     is_liked = False
     if post.likes.filter(id=request.user.id).exists():
@@ -76,7 +79,8 @@ def main_detail(request, post_pk):
         'comments': comments,
         'comment_form': comment_form,
         'comment_is_liked': comment_is_liked,
-        'comment': comment
+        'comment': comment,
+        'form': form,
     }
 
     if request.is_ajax():
@@ -159,12 +163,13 @@ def main_edit(request, post_pk):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save()
-
             return redirect(f'/main/post/{post.pk}')
     else:
         form = PostForm(instance=post)
+
     return render(request, 'main/edit.html', {
-        'form': form
+        'form': form,
+
     })
 
 
@@ -192,14 +197,14 @@ def comment_new(request, post_pk):
             comment.post = post
             comment.author = request.user
             comment.save()
-            messages.info(request, '댓글이 작성되었습니다.')
+            messages.success(request, '댓글이 작성되었습니다.')
             return redirect('main:detail', post.pk)
     else:
         form = CommentForm()
 
     return render(request, 'main/comment_form.html', {
         'form': form,
-    })
+    }, context_instance=RequestContext)
 
 
 @login_required

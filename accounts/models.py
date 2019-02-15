@@ -44,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=30, verbose_name='이름')
     nickname = models.CharField(max_length=10, unique=True, verbose_name='닉네임')
     email = models.EmailField(max_length=255, unique=True, verbose_name='이메일')
-    reside = models.CharField(max_length=50, verbose_name='거주지', blank=True, null=True)    # 나중에 위젯이랑 연결
+    reside = models.TextField(max_length=50, verbose_name='거주지', blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     is_admin = models.BooleanField(default=False)

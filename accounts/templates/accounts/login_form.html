@@ -1,3 +1,11 @@
+
+{% load myfilters %}
+{% load static %}
+
+<head>
+    <title>Login</title>
+    <meta charset="utf-8">
+
 {#<form action="" method="post">#}
 {#    {% csrf_token %}#}
 {#    <table>#}
@@ -10,8 +18,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static "accounts/login_form_styles.css" %}"/>
+    <title>JOBSSUL</title>
+</head>
 
+
+<body>
+
+<div class="container">
 {% if messages %}
   <div class="container">
       {% for message in messages %}
@@ -22,39 +37,18 @@
   </div>
 {% endif %}
 
+
 <form action="" method="post">
     {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <input type="submit" />
-</form>
-
-
-{# 이거 나중에 profile에 추가 #}
-{#<img src="{{ user.socialaccount_set.all.first.get_avatar_url }}"/>#}
-
-{% load static %}
-
-<!DOCTYPE html>
-<html>
-<head>
-  <title>로그인</title>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="{% static "accounts/login_form_styles.css" %}"/>
-  <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
-</head>
-<body>
-  <div class="login-form">
-    <form>
-      <input type="text" name="email" class="text-field" placeholder="아이디"><br>
-      <input type="password" name="password" class="text-field" placeholder="비밀번호"><br>
-      <input type="submit" value="로그인" class="submit-btn">
-    </form>
-
-    <div class="links">
+    <div class="login-form">
+        {{ form.email|addcss:'text-field'}}
+        {{ form.password |addcss:'text-field'}}
+        <button class="btn btn-primary submit-btn">로그인</button>
+        <div class="links">
       <a href="#">비밀번호를 잊어버리셨나요?</a>
     </div>
-  </div>
+    </div>
+
+</form>
+</div>
 </body>
-</html>

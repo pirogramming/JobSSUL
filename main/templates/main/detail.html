@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
 
-<style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <style>
+
     .post_category{
         @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
         font-family: 'Jeju Gothic', sans-serif;
         font-size: 20px;
         margin-left: 50px;
+
     }
 
         .button_container{
@@ -26,17 +31,22 @@
         text-align: center;
         margin-bottom: 50px;
     }
-</style>
+    #recommend_star{
+        height: 16px;
+    }
 
-<div class="content_container">
-    <p class="post_category">작성자: {{ post.author.nickname }}</p>
-    <p class="post_category">제목: <span>{{ post.title }}</span></p>
-    <p class="post_category">내용: </p>
-    <textarea rows="15" cols="150" class="post_category">{{ post.content }}</textarea>
-    <p class="post_category">시급: {{ post.payment }}</p>
-    <p class="post_category">지점: {{ post.workplace }}</p>
-    <p class="post_category">별점: {{ post.recommend }}</p>
-    <p class="post_category">직종: {{ post.work_type }}</p>
+    </style>
+    <div class="content_container">
+        <p class="post_category">작성자: {{ post.author.nickname }}</p>
+        <p class="post_category">제목: <span>{{ post.title }}</span></p>
+        <p class="post_category">내용: </p>
+        <textarea readonly rows="15" cols="110" class="post_category">{{ post.content }}</textarea>
+        <p class="post_category">시급: {{ post.payment }}</p>
+        <p class="post_category">지점: {{ post.workplace }}</p>
+
+        <p class="post_category">직종: {{ post.work_type }}</p>
+        <p class="post_category">별점: <img id=recommend_star src="{% static 'main/star.jpg' %}">{{ post.recommend }}</p>
+
 </div>
 
 <div class="button_container">
@@ -46,6 +56,7 @@
 
 <div id="like-section">
     {% include 'main/like_section.html' %}
+
 </div>
 
 
@@ -54,6 +65,7 @@
 
 </div>
 <div class="main_button_container">
-    <a href="{% url "main:main" %}" class="btn btn-dark btn btn-primary btn-lg">메인으로 돌아가기</a>
+    <a href="{%  url 'main:post' %}" class="btn btn-dark btn-lg">더 많은 잡썰보기</a>
+    <a href="{% url "main:main" %}" class="btn btn-dark btn-lg">메인으로 돌아가기</a>
 </div>
 {% endblock %}

@@ -1,10 +1,55 @@
 {% extends 'base.html' %}
-
+{% load myfilters %}
 {% block content %}
-    <form method="POST">
+    <style>
+     .content_container{
+            background-color: beige;
+            margin-left: 50px;
+            margin-right: 50px;
+            padding-top: 3px;
+            padding-bottom: 15px;
+        }
+
+    .post_category{
+        @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+        font-family: 'Jeju Gothic', sans-serif;
+        font-size: 20px;
+        margin-left: 50px;
+
+    }
+
+     .button_container{
+            text-align: right;
+            padding-right: 50px;
+            margin-top: 15px;
+        }
+    </style>
+    <form action="" method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">수정</button>
+    {% for field in form %}
+    <div class="content_container">
+        {{ field.errors }}
+        {{ field.label_tag }}<br> {{ field |addcss:'post_category'}}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+    </div>
+{% endfor %}
+
+
+
+        {#        <p class="post_category">작성자: {{ form.author.nickname }}</p>#}
+{#        <p class="post_category">제목: {{ form.title }}</p>#}
+{#        <p class="post_category">내용: </p>#}
+{#        <textarea rows="15" cols="150" class="post_category">{{ form.content }}</textarea>#}
+{#        <p class="post_category">시급: {{ form.payment }}</p>#}
+{#        <p class="post_category">지점: {{ form.workplace }}</p>#}
+{#        <p class="post_category">별점: {{ form.recommend }}</p>#}
+{#        <p class="post_category">직종: {{ form.work_type }}</p>#}
+
+<div class="button_container">
+    <button type="submit" class="btn btn-primary btn-lg">수정</button>
+    </div>
     </form>
 {% endblock %}
 

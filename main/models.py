@@ -1,6 +1,6 @@
-from datetime import timezone
 
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, MaxValueValidator, MinValueValidator
+from datetime import timezone
 from django.db import models
 import django
 from django.urls import reverse
@@ -25,40 +25,44 @@ class Post(models.Model):
         ('쏘 굳', '10500원 이상'),
     )
 
-    RECOMMEND_LEVEL = (
-        ('*', '*'),
-        ('**', '**'),
-        ('***', '***'),
-        ('****', '****'),
-        ('*****', '*****'),
-    )
 
     WORK_TYPE = (
-        ('단기', '단기'),
-        ('장기', '장기'),
+        ('외식/음료', '외식/음료'),
+        ('유통/판매', '유통/판매'),
+        ('문화/여가/생활', '문화/여가/생활'),
+        ('서비스', '서비스'),
+        ('사무직', '사무직'),
+        ('고객상담/리서치/영업','고객상담/리서치/영업'),
+        ('생산/건설/노무', '생산/건설/노무'),
+        ('IT/컴퓨터', 'IT/컴퓨터'),
+        ('교육/강사', '교육/강사'),
+        ('디자인', '디자인'),
+        ('미디어', '미디어'),
+        ('운전/배달', '운전/배달'),
+        ('병원/간호/연구', '병원/간호/연구'),
     )
 
-    STATUS_CHOICES = {
-        ('draft', 'Draft'),
-        ('published', 'Published'),
-    }
+
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    #verbose_name = 작성자
     title = models.CharField(max_length=20, verbose_name= '제목')
     content = models.TextField(verbose_name='내용', validators=[MinLengthValidator(10, message=None)],
                                help_text='내용을 최소 10자 이상으로 작성해주세요')
     payment = models.CharField(max_length=10, choices=PAYMENT_LEVEL, verbose_name='시급')
     workplace = models.CharField(max_length=50, verbose_name='지점')
-    recommend = models.CharField(max_length=5, choices=RECOMMEND_LEVEL, verbose_name = '별점')
-    work_type = models.CharField(max_length=10, choices=WORK_TYPE, verbose_name='직종')
+    recommend = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name = '별점')
+    work_type = models.CharField(max_length=10, choices=WORK_TYPE, verbose_name='직종', help_text='알바 직종을 선택해 주세요.')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    likes = models.ManyToManyField(User, related_name='likes', blank=True)
+    status = models.CharField(max_length=10, default='published')
+    class Meta:
+        ordering = ['-id']
+
+
 
     # created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now = True)
-    likes = models.ManyToManyField(User, related_name='likes', blank=True)
 
     # def published(self):
     #     now = timezone.now()
@@ -66,7 +70,8 @@ class Post(models.Model):
 
 
     def __str__(self):
-        return self.title, self.author
+        template = '{0.title} {0.author}'
+        return template.format(self)
 
     def edit_post_url(self):
         return reverse('main:edit', args=[self.pk])
@@ -88,10 +93,6 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     reply = models.ForeignKey('Comment', null=True, related_name='replies', on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, related_name='comment_likes', blank=True)
-
-
-    class Meta:
-        ordering = ['-id']
 
     def get_edit_url(self):
         return reverse('main:comment_edit', args=[self.pk])

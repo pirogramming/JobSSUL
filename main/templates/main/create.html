@@ -1,13 +1,45 @@
 {% extends 'base.html' %}
-
+{% load myfilters %}
 {% block content %}
+    <style>
+    .post_category{
+        @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+        font-family: 'Jeju Gothic', sans-serif;
+        font-size: 20px;
+        margin-left: 50px;
 
+    }
+
+        .button_container{
+            text-align: right;
+            padding-right: 50px;
+            margin-top: 15px;
+        }
+
+        .content_container{
+            background-color: beige;
+            margin-left: 50px;
+            margin-right: 50px;
+            padding-top: 3px;
+            padding-bottom: 15px;
+        }
+
+
+    </style>
+{{ form.media }}
 <form method="POST">
     {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit" class="btn btn-primary">생성</button>
+{% for field in form %}
+    <div class="content_container">
+        {{ field.errors }}
+        {{ field.label_tag }}<br> {{ field |addcss:'post_category'}}
+        {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+    </div>
+{% endfor %}
+<div class="button_container">
+    <button type="submit" class="btn btn-primary btn-lg">생성</button>
 
 </form>
 
