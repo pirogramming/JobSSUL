@@ -23,6 +23,10 @@
     <title>JOBSSUL</title>
 </head>
 
+
+<body>
+
+<div class="container">
 {% if messages %}
   <div class="container">
       {% for message in messages %}
@@ -37,7 +41,6 @@
 <form action="" method="post">
     {% csrf_token %}
     <div class="login-form">
-
         {{ form.email|addcss:'text-field'}}
         {{ form.password |addcss:'text-field'}}
         <button class="btn btn-primary submit-btn">로그인</button>
@@ -47,4 +50,5 @@
     </div>
 
 </form>
-
+</div>
+</body>

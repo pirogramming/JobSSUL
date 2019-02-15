@@ -15,7 +15,6 @@ class PostForm(forms.ModelForm):
         widgets = {
             'recommend': RateitjsWidget,
             'status': TextInput(attrs={'readonly': True}),
-
         }
 
 

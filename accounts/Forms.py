@@ -11,6 +11,7 @@ class UserCreationForm(forms.ModelForm):
     email = forms.EmailField(
         label=_('Email'),
         required=True,
+        help_text="이메일은 인증 및 로그인 시 아이디로 쓰입니다.",
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
@@ -69,7 +70,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'nickname', 'password1', 'password2', 'reside', 'username')
+        fields = ('username', 'nickname', 'email', 'password1', 'password2', 'reside')
 
         def __init__(self, *args, **kargs):
             self.cleaned_data = None
