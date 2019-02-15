@@ -27,8 +27,19 @@ class Post(models.Model):
 
 
     WORK_TYPE = (
-        ('단기', '단기'),
-        ('장기', '장기'),
+        ('외식/음료', '외식/음료'),
+        ('유통/판매', '유통/판매'),
+        ('문화/여가/생활', '문화/여가/생활'),
+        ('서비스', '서비스'),
+        ('사무직', '사무직'),
+        ('고객상담/리서치/영업','고객상담/리서치/영업'),
+        ('생산/건설/노무', '생산/건설/노무'),
+        ('IT/컴퓨터', 'IT/컴퓨터'),
+        ('교육/강사', '교육/강사'),
+        ('디자인', '디자인'),
+        ('미디어', '미디어'),
+        ('운전/배달', '운전/배달'),
+        ('병원/간호/연구', '병원/간호/연구'),
     )
 
 
@@ -40,7 +51,7 @@ class Post(models.Model):
     payment = models.CharField(max_length=10, choices=PAYMENT_LEVEL, verbose_name='시급')
     workplace = models.CharField(max_length=50, verbose_name='지점')
     recommend = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name = '별점')
-    work_type = models.CharField(max_length=10, choices=WORK_TYPE, verbose_name='직종')
+    work_type = models.CharField(max_length=10, choices=WORK_TYPE, verbose_name='직종', help_text='알바 직종을 선택해 주세요.')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(User, related_name='likes', blank=True)

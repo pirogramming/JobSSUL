@@ -50,11 +50,9 @@
           <tbody>
           {% for post in posts %}
             <tr>
-
-
               <td>
                    <a href="{{ post.id }}" class="category">{{ post.title }}</a></td>
-                <td>{{ post.author }}</td>
+                <td>{{ post.author.nickname }}</td>
               <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
             </tr>
             {% empty %}
@@ -62,7 +60,11 @@
                     <div class="alert alert-warning">
                         "{{ request.GET.q }}"이 포함된 검색 결과가 없습니다. 다른 키워드로 다시 검색해 보세요!
                     </div>
+                </div>
           {% endfor %}
+
+
+
           </tbody>
         </table>
         </div>

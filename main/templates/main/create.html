@@ -31,7 +31,11 @@
     {% csrf_token %}
 {% for field in form %}
     <div class="content_container">
+        {{ field.errors }}
         {{ field.label_tag }}<br> {{ field |addcss:'post_category'}}
+        {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
     </div>
 {% endfor %}
 <div class="button_container">

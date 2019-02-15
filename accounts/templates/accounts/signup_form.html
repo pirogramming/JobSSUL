@@ -14,6 +14,9 @@
   <style>
       body {
           background-color: #daf1de;
+      }
+
+      .layout {
           display: flex;
           justify-content: center;
       }
@@ -21,6 +24,7 @@
 
 
   <body>
+  <div class="container">
     {% if messages %}
           <div class="container">
               {% for message in messages %}
@@ -41,5 +45,6 @@
                 <input type="submit"/>
         </form>
     </div>
+  </div>
   </body>
 </html>
