@@ -92,6 +92,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     reply = models.ForeignKey('Comment', null=True, related_name='replies', on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, related_name='comment_likes', blank=True)
 
     def get_edit_url(self):
         return reverse('main:comment_edit', args=[self.pk])
