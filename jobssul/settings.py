@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'accounts',
     'main',
+    'notice',
     'jobssul',
 ]
 
