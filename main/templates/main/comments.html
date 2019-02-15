@@ -1,0 +1,60 @@
+<div class="container-fluid mt-2">
+        <div class="form-group row">
+            <form method="post" class="comment-form" action=".">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                {% if request.user.is_authenticated %}
+                    <input type="submit" value="댓글 쓰기" class="btn btn-outline-success">
+                {% else %}
+                    <input type="submit" value="댓글 쓰기" class="btn btn-outline-success" disabled>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    <div style="font-size: 25px; font-weight: bold; margin-bottom: 10px;">{{ comments.count }}개의 댓글</div>
+    {% for comment in comments %}
+    <blockquote class="blockquote">
+        <div><small>{{ comment.updated_at}}</small></div>
+        <div><strong>{{ comment.author.nickname}}</strong></div>
+        <p>{{ comment.message }}</p>
+        {% if comment.author == request.user %}
+            <a href="{{ comment.get_edit_url }}">
+                수정
+            </a>
+            <a href="{{ comment.get_delete_url }}" class="text-danger">
+                삭제
+            </a>
+            <button type="button" name="button" class="reply-btn btn btn-outline-dark btn-sm ml-2">대댓글</button>
+        {% endif %}
+    </blockquote>
+
+    <div class="replied-comments container mt-2" style="display:none;">
+        {% for reply in comment.replies.all %}
+        <blockquote class="blockquote">
+            <div>{{ reply.updated_at}}</div>
+            <div><strong>{{ reply.author.nickname}}</strong></div>
+            <p>{{ reply.message }}</p>
+            {% if reply.author == request.user %}
+                <a href="{{ reply.get_edit_url }}">
+                    수정
+                </a>
+                <a href="{{ reply.get_delete_url }}" class="text-danger">
+                    삭제
+                </a>
+            {% endif %}
+        </blockquote>
+        {% endfor %}
+        <div class="form-group row">
+             <form method="post" class="reply-form" action=".">
+                 {% csrf_token %}
+                <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                 {{ comment_form.as_p }}
+                 {% if request.user.is_authenticated %}
+                     <input type="submit" value="Submit" class="btn btn-outline-success">
+                 {% else %}
+                    <input type="submit" value="Submit" class="btn btn-outline-success" disabled>
+                 {% endif %}
+             </form>
+        </div>
+    </div>
+    {% endfor %}

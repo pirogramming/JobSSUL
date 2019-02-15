@@ -4,13 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
-
 from .Forms import CommentForm
-
 from .models import Post, Comment
 from .Forms import PostForm
-
-
+from django.db.models import Q
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 def main_page(request):
     post = Post.objects.all()
@@ -21,9 +20,17 @@ def main_page(request):
 
 
 def main_post(request):
-    post = Post.objects.all()
+    # post = Post.objects.all()
+    posts = Post.published.all()
+    query = request.GET.get('q')
+    if query:
+        posts = Post.published.filter(
+            Q(title__icontains=query) |
+            Q(author__username=query) |
+            Q(content__icontains=query)
+            )
     data = {
-        'posts': post
+        'posts': posts,
     }
     return render(request, 'main/post.html', data)
 
@@ -49,7 +56,7 @@ def main_detail(request, post_pk):
 
             comment = Comment.objects.create(post=post, author=request.user, message=message, reply=comment_qs)
             comment.save()
-            return HttpResponseRedirect(post.get_absolute_url())
+            # return HttpResponseRedirect(post.get_absolute_url())
         else:
             comment_form = CommentForm()
 
@@ -61,18 +68,32 @@ def main_detail(request, post_pk):
         'comment_form': comment_form,
         'form': form,
     }
+
+    if request.is_ajax():
+        html = render_to_string('main/comments.html', data, request=request)
+        return JsonResponse({'form': html})
+
     return render(request, 'main/detail.html', data)
 
 
 def like_post(request):
-    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    # post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post = get_object_or_404(Post, id=request.POST.get('id'))
+    is_liked = False
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
         is_liked = False
     else:
         post.likes.add(request.user)
         is_liked = True
-    return HttpResponseRedirect(post.get_absolute_url())
+    data = {
+        'post': post,
+        'is_liked': is_liked,
+        'total_likes': post.total_likes(),
+    }
+    if request.is_ajax():
+        html = render_to_string('main/like_section.html', data, request=request)
+        return JsonResponse({'form': html})
 
 
 
