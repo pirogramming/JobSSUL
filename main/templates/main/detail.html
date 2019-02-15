@@ -47,10 +47,16 @@
         <p class="post_category">별점: <img id=recommend_star src="{% static 'main/star.jpg' %}">{{ post.recommend }}</p>
         <p class="post_category">직종: {{ post.work_type }}</p>
 </div>
-
+{% if request.user == post.author %}
 <div class="button_container">
-<a href="{% url 'main:edit' post.pk %}" class="btn btn-warning btn btn-primary btn-lg">게시글 수정</a>
-<a href="{% url 'main:delete' post.pk %}" class="btn btn-danger btn btn-primary btn-lg">게시글 삭제</a>
+
+    <a href="{% url 'main:edit' post.pk %}" class="btn btn-warning btn btn-primary btn-lg">게시글 수정</a>
+    <a href="{% url 'main:delete' post.pk %}" class="btn btn-danger btn btn-primary btn-lg">게시글 삭제</a>
+    {% else %}
+
+{% endif %}
+
+
 </div>
 
 <div id="like-section">
