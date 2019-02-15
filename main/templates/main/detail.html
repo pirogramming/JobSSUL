@@ -1,24 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <script type="text/javascript">
-        $(document).ready(function(event){
-            $('.reply-btn').click(function() {
-                $(this).parent().next('.replied-comments').fadeToggle()
-            });
-        });
-    </script>
     <style>
+
     .post_category{
         @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
         font-family: 'Jeju Gothic', sans-serif;
         font-size: 20px;
         margin-left: 50px;
-
-
 
     }
 
@@ -38,94 +31,36 @@
         text-align: center;
         margin-bottom: 50px;
     }
+    #recommend_star{
+        height: 16px;
+    }
+
     </style>
     <div class="content_container">
         <p class="post_category">작성자: {{ post.author.nickname }}</p>
         <p class="post_category">제목: <span>{{ post.title }}</span></p>
         <p class="post_category">내용: </p>
-        <textarea rows="15" cols="150" class="post_category">{{ post.content }}</textarea>
+        <textarea readonly rows="15" cols="110" class="post_category">{{ post.content }}</textarea>
         <p class="post_category">시급: {{ post.payment }}</p>
         <p class="post_category">지점: {{ post.workplace }}</p>
-        <p class="post_category">별점: {{ post.recommend }}</p>
+
+        <p class="post_category">별점: <img id=recommend_star src="{% static 'main/star.jpg' %}">{{ post.recommend }}</p>
         <p class="post_category">직종: {{ post.work_type }}</p>
 </div>
-    <div class="button_container">
-    <a href="{% url 'main:edit' post.pk %}" class="btn btn-warning btn btn-primary btn-lg">게시글 수정</a>
-    <a href="{% url 'main:delete' post.pk %}" class="btn btn-danger btn btn-primary btn-lg">게시글 삭제</a>
-    </div>
-<p style="text-align: center; margin-top: 10%; font-weight: bold;">{{ total_likes }}명이 이 글을 추천했어요</p>
-    {% if request.user.is_authenticated %}
-     <form action="{% url 'main:like_post' %}" method="post">
-         {% csrf_token %}
-         {% if is_liked %}
-         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary" style="margin-left:auto;margin-right:auto;display:block;margin-bottom:5%">추천을 취소할래요!</button>
-         {% else %}
-         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary" style="margin-left:auto;margin-right:auto;display:block;margin-bottom:5%">이 게시글을 추천할래요!</button>
-         {% endif %}
-     </form>
-    {% endif %}
+
+<div class="button_container">
+<a href="{% url 'main:edit' post.pk %}" class="btn btn-warning btn btn-primary btn-lg">게시글 수정</a>
+<a href="{% url 'main:delete' post.pk %}" class="btn btn-danger btn btn-primary btn-lg">게시글 삭제</a>
+</div>
+
+<div id="like-section">
+    {% include 'main/like_section.html' %}
+
+</div>
 
 <div class="main-comment-section" style="margin-left: 5%;">
-    <div class="container-fluid mt-2">
-        <div class="form-group row">
-            <form method="post">
-                {% csrf_token %}
-                {{ comment_form.as_p }}
-                {% if request.user.is_authenticated %}
-                    <input type="submit" value="댓글 쓰기" class="btn btn-outline-success">
-                {% else %}
-                    <input type="submit" value="댓글 쓰기" class="btn btn-outline-success" disabled>
-                {% endif %}
-            </form>
-        </div>
-    </div>
-    <div style="font-size: 25px; font-weight: bold; margin-bottom: 10px;">{{ comments.count }}개의 댓글</div>
-    {% for comment in comments %}
-    <blockquote class="blockquote">
-        <div><small>{{ comment.updated_at}}</small></div>
-        <div><strong>{{ comment.author.nickname}}</strong></div>
-        <p>{{ comment.message }}</p>
-        {% if comment.author == request.user %}
-            <a href="{{ comment.get_edit_url }}">
-                수정
-            </a>
-            <a href="{{ comment.get_delete_url }}" class="text-danger">
-                삭제
-            </a>
-            <button type="button" name="button" class="reply-btn btn btn-outline-dark btn-sm ml-2">대댓글</button>
-        {% endif %}
-    </blockquote>
+    {% include 'main/comments.html' %}
 
-    <div class="replied-comments container mt-2" style="display:none;">
-        {% for reply in comment.replies.all %}
-        <blockquote class="blockquote">
-            <div>{{ reply.updated_at}}</div>
-            <div><strong>{{ reply.author.nickname}}</strong></div>
-            <p>{{ reply.message }}</p>
-            {% if reply.author == request.user %}
-                <a href="{{ reply.get_edit_url }}">
-                    수정
-                </a>
-                <a href="{{ reply.get_delete_url }}" class="text-danger">
-                    삭제
-                </a>
-            {% endif %}
-        </blockquote>
-        {% endfor %}
-        <div class="form-group row">
-             <form method="post">
-                 {% csrf_token %}
-                <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                 {{ comment_form.as_p }}
-                 {% if request.user.is_authenticated %}
-                     <input type="submit" value="Submit" class="btn btn-outline-success">
-                 {% else %}
-                    <input type="submit" value="Submit" class="btn btn-outline-success" disabled>
-                 {% endif %}
-             </form>
-        </div>
-    </div>
-    {% endfor %}
 </div>
 <div class="main_button_container">
     <a href="{%  url 'main:post' %}" class="btn btn-dark btn-lg">더 많은 잡썰보기</a>

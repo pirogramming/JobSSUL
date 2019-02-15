@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% load static %}
     <style>
     .entire {
         background-color: #daf1de;
@@ -20,6 +21,9 @@
 
     }
 
+    #recommend_star{
+        height: 16px;
+    }
     .create_post_button_container{
             text-align: right;
             margin-bottom: 50px;
@@ -51,14 +55,20 @@
               <td>
                    <a href="{{ post.id }}" class="category">{{ post.title }}</a></td>
                 <td>{{ post.author }}</td>
-              <td>{{ post.recommend }}</td>
+              <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
             </tr>
+            {% empty %}
+                <div class="container-fluid">
+                    <h3>"{{ request.GET.q }}"이 포함된 검색 결과가 없습니다. 다른 키워드로 다시 검색해 보세요!</h3>
+                </div>
+
           {% endfor %}
           </tbody>
-    </table>
+        </table>
         </div>
         <div class="create_post_button_container">
             <a href="{% url 'main:create' %}" class="btn btn-dark btn btn-primary btn-lg create_post_button">게시글 생성</a>
         </div>
     </div>
+
 {% endblock %}

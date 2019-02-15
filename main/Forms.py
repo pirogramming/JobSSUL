@@ -1,6 +1,10 @@
 from django import forms
 from django.core.validators import MinLengthValidator
+from django.forms import TextInput, HiddenInput, Textarea
+
+from main.widgets import RateitjsWidget
 from .models import Post, Comment
+
 
 
 class PostForm(forms.ModelForm):
@@ -8,10 +12,16 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = '__all__'
         exclude = ['likes']
+        widgets = {
+            'recommend': RateitjsWidget,
+            'status': TextInput(attrs={'readonly': True}),
+
+        }
 
 
 class CommentForm(forms.ModelForm):
     message = forms.CharField(label="", widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': '내용을 입력하세요!', 'rows': '4', 'cols': '50'}))
+
     class Meta:
         model = Comment
         fields = ['message']
