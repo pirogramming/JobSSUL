@@ -59,9 +59,9 @@
             </tr>
             {% empty %}
                 <div class="container-fluid">
-                    <h3>"{{ request.GET.q }}"이 포함된 검색 결과가 없습니다. 다른 키워드로 다시 검색해 보세요!</h3>
-                </div>
-
+                    <div class="alert alert-warning">
+                        "{{ request.GET.q }}"이 포함된 검색 결과가 없습니다. 다른 키워드로 다시 검색해 보세요!
+                    </div>
           {% endfor %}
           </tbody>
         </table>

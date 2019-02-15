@@ -1,5 +1,6 @@
 from django import forms
 
+
 class RateitjsWidget(forms.TextInput):
     input_type= 'recommend'
     template_name = 'widgets/rateitjs_number.html'
