@@ -37,7 +37,7 @@ def main_post(request):
 
 def main_detail(request, post_pk):
     post = Post.objects.get(pk=post_pk)
-    form =PostForm()
+    form = PostForm()
 
     comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
     is_liked = False
@@ -62,15 +62,15 @@ def main_detail(request, post_pk):
         else:
             comment_form = CommentForm()
 
-    # for comment in comments:
-    #     comment_is_liked = False
-    #     if post.likes.filter(id=request.user.id).exists():
-    #         is_liked = True
+    for comment in comments:
+        comment_is_liked = False
+        if comment.likes.filter(id=request.user.id).exists():
+            comment_is_liked = True
 
-    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
-    comment_is_liked = False
-    if comment.likes.filter(id=request.user.id).exists():
-        comment_is_liked = True
+    # comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    # comment_is_liked = False
+    # if comment.likes.filter(id=request.user.id).exists():
+    #     comment_is_liked = True
 
     data = {
         'post': post,
