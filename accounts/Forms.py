@@ -44,8 +44,7 @@ class UserCreationForm(forms.ModelForm):
     reside = forms.CharField(
         label=_('거주지'),
         required=False,
-        widget=DaumAddressWidget(
-        )
+        widget=DaumAddressWidget()
     )
     password1 = forms.CharField(
         label=_('Password'),
@@ -70,13 +69,11 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        # fields = ('email', 'nickname')
         fields = ('email', 'nickname', 'password1', 'password2', 'reside', 'username')
 
-        def __init__(self):
+        def __init__(self, *args, **kargs):
             self.cleaned_data = None
             super(UserCreationForm, self).__init__(*args, **kargs)
-            # self.fields['reside'].required=False
 
         def clean_password2(self):
             # 두 비밀번호 입력 일치 확인

@@ -17,11 +17,8 @@
           display: flex;
           justify-content: center;
       }
-      {#.layout {#}
-      {#    display: flex;#}
-      {#    justify-content: center;#}
-      {#}#}
   </style>
+
 
   <body>
     {% if messages %}
@@ -32,17 +29,17 @@
                   </div>
               {% endfor %}
           </div>
-      {% endif %}
-        <div class ='layout'>
-            <form action="" method="post">
-                {% csrf_token %}
+    {% endif %}
 
-                    <table>
-                        {{ form.as_table }}
-                    </table>
-                    <input type="submit"/>
 
-            </form>
-        </div>
+    <div class ='layout'>
+        <form action="" method="post">
+            {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <input type="submit"/>
+        </form>
+    </div>
   </body>
 </html>
