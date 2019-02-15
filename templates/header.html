@@ -145,10 +145,12 @@
             <li class="nav-item"><a class="nav-link" href="{% url "accounts:logout" %}?next={{ request.path }}">로그아웃</a></li>
         {% endif %}
   </ul>
+      <form class="form-inline my-2 mr-2 ml-2 my-lg-0" action="{% url 'main:post' %}">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+
   </div>
 
-    <form class="form-inline my-2 mr-2 ml-2 my-lg-0" action="{% url 'main:post' %}">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+
 </nav>

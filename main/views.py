@@ -41,6 +41,7 @@ def main_detail(request, post_pk):
     if post.likes.filter(id=request.user.id).exists():
         is_liked = True
     comment_form = CommentForm()
+
     if request.method == 'POST':
         comment_form = CommentForm(request.POST or None)
         if comment_form.is_valid():
@@ -53,9 +54,20 @@ def main_detail(request, post_pk):
 
             comment = Comment.objects.create(post=post, author=request.user, message=message, reply=comment_qs)
             comment.save()
+
             # return HttpResponseRedirect(post.get_absolute_url())
         else:
             comment_form = CommentForm()
+
+    # for comment in comments:
+    #     comment_is_liked = False
+    #     if post.likes.filter(id=request.user.id).exists():
+    #         is_liked = True
+
+    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    comment_is_liked = False
+    if comment.likes.filter(id=request.user.id).exists():
+        comment_is_liked = True
 
     data = {
         'post': post,
@@ -63,12 +75,13 @@ def main_detail(request, post_pk):
         'total_likes': post.total_likes(),
         'comments': comments,
         'comment_form': comment_form,
+        'comment_is_liked': comment_is_liked,
+        'comment': comment
     }
 
     if request.is_ajax():
         html = render_to_string('main/comments.html', data, request=request)
         return JsonResponse({'form': html})
-
     return render(request, 'main/detail.html', data)
 
 
@@ -92,6 +105,35 @@ def like_post(request):
         return JsonResponse({'form': html})
 
 
+# def comment_detail(request, pk):
+#     comment = get_object_or_404(Comment, pk=pk)
+#     comment_is_liked = False
+#     if comment.likes.filter(id=request.user.id).exists():
+#         comment_is_liked = True
+#     data = {
+#         'comment': comment,
+#         'comment_is_liked': comment_is_liked,
+#     }
+#     return render(request, 'main/detail.html', data)
+
+
+
+def like_comment(request):
+    # post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    # post = get_object_or_404(Post, pk=post_pk)
+    # comment = get_object_or_404(Comment, pk=pk)
+    is_liked = False
+    if comment.likes.filter(id=request.user.id).exists():
+        comment.likes.remove(request.user)
+        comment_is_liked = False
+        # return redirect(f'/main/post/{comment.post.pk}')
+    else:
+        comment.likes.add(request.user)
+        comment_is_liked = True
+        # return redirect(f'/main/post/{comment.post.pk}')
+    return redirect(f'/main/post/{comment.post.pk}')
+    # return HttpResponseRedirect(comment.get_absolute_url())
 
 @login_required
 def main_create(request):
