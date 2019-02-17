@@ -14,7 +14,8 @@
     <div style="font-size: 25px; font-weight: bold; margin-bottom: 10px;">{{ comments.count }}개의 댓글</div>
     {% for comment in comments %}
     <blockquote class="blockquote">
-        <span><small>{{ comment.updated_at}}</small></span><span style="margin-left: 10px; color: red;"><small>추천: {{ comment_total_likes }}</small></span>
+{#        <span><small>{{ comment.updated_at}}</small></span><span style="margin-left: 10px; color: red;"><small>추천: {{ comment.likes.count }}</small></span>#}
+        <span><small>{{ comment.updated_at}}</small></span><span style="margin-left: 10px; color: red;"><small>추천: {{ comment.comment_total_likes }}</small></span>
         <div><strong>{{ comment.author.nickname}}</strong></div>
         <p>{{ comment.message }}</p>
         {% if comment.author == request.user %}
@@ -24,28 +25,21 @@
             <a href="{{ comment.get_delete_url }}" class="text-danger">
                 삭제
             </a>
-
-{#            <button type="button" name="button" class="reply-btn btn btn-outline-dark btn-sm ml-2">대댓글</button>#}
-
-{#            <form action="{% url 'main:like_comment' %}" method="post">#}
-{#                {% csrf_token %}#}
-{#                {% if comment_is_liked %}#}
-{#                    <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">추천 취소</button>#}
-{#                {% else %}#}
-{#                    <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">추천</button>#}
-{#                {% endif %}#}
-{#            </form>#}
         {% endif %}
         <button type="button" name="button" class="reply-btn btn btn-outline-dark btn-sm ml-2">대댓글</button>
 
-        <form action="{% url 'main:like_comment' %}" method="post">
-            {% csrf_token %}
-            {% if comment_is_liked %}
-                <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">추천 취소</button>
-            {% else %}
-                <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">추천</button>
-            {% endif %}
-        </form>
+        {% if request.user.is_authenticated %}
+            <form action="{% url 'main:like_comment' %}" method="post">
+                {% csrf_token %}
+                {% if comment in user.comment_likes.all %}
+{#                {% if user in user.comment.likes.all %}#}
+{#                {% if request.user.id == comment.likes.user.id %}#}
+                    <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">추천 취소</button>
+                {% else %}
+                    <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">추천</button>
+                {% endif %}
+            </form>
+        {% endif %}
 
     </blockquote>
 
