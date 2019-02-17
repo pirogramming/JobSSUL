@@ -14,7 +14,7 @@
     <div style="font-size: 25px; font-weight: bold; margin-bottom: 10px;">{{ comments.count }}개의 댓글</div>
     {% for comment in comments %}
     <blockquote class="blockquote">
-        <span><small>{{ comment.updated_at}}</small></span><span style="margin-left: 10px; color: red;"><small>추천: {{ comment_total_likes }}</small></span>
+        <span><small>{{ comment.updated_at}}</small></span><span style="margin-left: 10px; color: red;"><small>추천: {{ comment.comment_total_likes }}</small></span>
         <div><strong>{{ comment.author.nickname}}</strong></div>
         <p>{{ comment.message }}</p>
         {% if comment.author == request.user %}
@@ -40,7 +40,7 @@
 
         <form action="{% url 'main:like_comment' %}" method="post">
             {% csrf_token %}
-            {% if comment_is_liked %}
+            {% if comment in user.comment_is_liked %}
                 <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">추천 취소</button>
             {% else %}
                 <button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary">추천</button>
