@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.forms import PasswordInput
 from django.utils.translation import ugettext_lazy as _
 from .models import User, UserManager
 from jobssul.widgets.daum_address_widget import DaumAddressWidget
@@ -72,11 +73,11 @@ class UserCreationForm(forms.ModelForm):
         model = User
         fields = ('username', 'nickname', 'email', 'password1', 'password2', 'reside')
 
-        def __init__(self, *args, **kargs):
+    def __init__(self, *args, **kargs):
             self.cleaned_data = None
             super(UserCreationForm, self).__init__(*args, **kargs)
 
-        def clean_password2(self):
+    def clean_password2(self):
             # 두 비밀번호 입력 일치 확인
             password1 = self.cleaned_data.get("password1")
             password2 = self.cleaned_data.get("password2")
@@ -84,7 +85,7 @@ class UserCreationForm(forms.ModelForm):
                 raise forms.ValidationError("Passwords don't match")
             return password2
 
-        def save(self, commit=True):
+    def save(self, commit=True):
             # Save the provided password in hashed format
             user = super(UserCreationForm, self).save(commit=False)
             user.email = UserManager.normalize_email(self.cleaned_data['email'])
@@ -115,6 +116,13 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'password']
+        widgets = {
+            'password': PasswordInput(
+                attrs={
+                    'placeholder': _('비밀번호')
+                            }
+                        ),
+                   }
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
