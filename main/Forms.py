@@ -8,14 +8,22 @@ from .models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(PostForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ['likes']
+        exclude = ['likes', 'author']
         widgets = {
             'recommend': RateitjsWidget,
             'status': TextInput(attrs={'readonly': True}),
         }
+
+    def save(self, commit=True):
+        self.instance.author = self.request.user
+        return super().save(commit=commit)
 
 
 class CommentForm(forms.ModelForm):

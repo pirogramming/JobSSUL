@@ -22,7 +22,8 @@ def main_page(request):
 def main_post(request):
     # post = Post.objects.all()
     posts = Post.published.all()
-    query = request.GET.get('q')
+    query = request.GET.get('q', None)
+    print(query)
     if query:
         posts = Post.published.filter(
             Q(title__icontains=query) |
@@ -146,13 +147,18 @@ def like_comment(request):
         comment.likes.add(request.user)
         comment_is_liked = True
         # return redirect(f'/main/post/{comment.post.pk}')
-    return redirect(f'/main/post/{comment.post.pk}')
+    #return redirect(f'/main/post/{comment.post.pk}')
+    data = {
+		'comment': comment
+	}
+    html = render_to_string('main/like_comment.html', data, request=request)
+    return JsonResponse({'form': html})
     # return HttpResponseRedirect(comment.get_absolute_url())
 
 @login_required
 def main_create(request):
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
+        form = PostForm(request.POST, request=request)
 
         if form.is_valid():
             form.save()
@@ -251,8 +257,3 @@ def comment_delete(request, pk):
     return render(request, 'main/comment_confirm_delete.html', {
         'comment': comment,
     })
-
-
-
-
-
