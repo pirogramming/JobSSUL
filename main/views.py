@@ -30,6 +30,7 @@ def main_post(request):
             Q(content__icontains=query)
             )
     data = {
+        # 'post': post,
         'posts': posts,
     }
     return render(request, 'main/post.html', data)
@@ -61,16 +62,25 @@ def main_detail(request, post_pk):
         else:
             comment_form = CommentForm()
 
-    comment_is_liked = False
-    for comment in comments:
-        if comment.likes.filter(id=request.user.id).exists():
-            comment_is_liked = True
+    # comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    # comment_is_liked = False
+    # for comment in comments:
+    #     comment = comments.get()
+    #     if comment.likes.filter(id=request.user.id).exists():
+    #         comment_is_liked = True
 
     # comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
     # comment_is_liked = False
     # if comment.likes.filter(id=request.user.id).exists():
     #     comment_is_liked = True
 
+    # comment = Comment.objects.filter
+
+    comment_is_liked = False
+    for comment in comments:
+        # comment_is_liked = False
+        if comment.likes.filter(id=request.user.id).exists():
+            comment_is_liked = True
     data = {
         'post': post,
         'is_liked': is_liked,
@@ -80,6 +90,7 @@ def main_detail(request, post_pk):
         'comment_is_liked': comment_is_liked,
         'form': form,
 
+        # 'comment': comment,
     }
 
     if request.is_ajax():
@@ -126,7 +137,7 @@ def like_comment(request):
     comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
     # post = get_object_or_404(Post, pk=post_pk)
     # comment = get_object_or_404(Comment, pk=pk)
-    is_liked = False
+    comment_is_liked = False
     if comment.likes.filter(id=request.user.id).exists():
         comment.likes.remove(request.user)
         comment_is_liked = False
@@ -204,6 +215,8 @@ def comment_new(request, post_pk):
     return render(request, 'main/comment_form.html', {
         'form': form,
     })
+
+                  # , context_instance=RequestContext)
 
 
 @login_required
