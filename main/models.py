@@ -67,7 +67,6 @@ class Post(models.Model):
     #     now = timezone.now()
     #     return now
 
-
     def __str__(self):
         template = '{0.title} {0.author}'
         return template.format(self)
@@ -102,4 +101,8 @@ class Comment(models.Model):
 
     def get_absolute_url(self):
         return reverse('main:detail', args=[self.pk])
+
+    def comment_total_likes(self):
+        return self.likes.count()
+
 

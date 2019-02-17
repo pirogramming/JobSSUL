@@ -36,11 +36,11 @@ def main_post(request):
 
 
 def main_detail(request, post_pk):
-    global comment_is_liked
     post = Post.objects.get(pk=post_pk)
     form = PostForm()
 
     comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
+
     is_liked = False
     if post.likes.filter(id=request.user.id).exists():
         is_liked = True
@@ -63,15 +63,17 @@ def main_detail(request, post_pk):
         else:
             comment_form = CommentForm()
 
-    for comment in comments:
-        comment_is_liked = False
-        if comment.likes.filter(id=request.user.id).exists():
-            comment_is_liked = True
 
-    # comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
     # comment_is_liked = False
-    # if comment.likes.filter(id=request.user.id).exists():
-    #     comment_is_liked = True
+    #
+    # for comment in comments:
+    #     if comment.likes.filter(id=request.user.id).exists():
+    #         comment_is_liked = True
+
+    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    comment_is_liked = False
+    if comment.likes.filter(id=request.user.id).exists():
+        comment_is_liked = True
 
     data = {
         'post': post,
@@ -80,8 +82,8 @@ def main_detail(request, post_pk):
         'comments': comments,
         'comment_form': comment_form,
         'comment_is_liked': comment_is_liked,
-        'comment': comment,
         'form': form,
+        'comment_total_likes': comment.comment_total_likes(),
     }
 
     if request.is_ajax():
@@ -122,13 +124,12 @@ def like_post(request):
 #     return render(request, 'main/detail.html', data)
 
 
-
 def like_comment(request):
     # post = get_object_or_404(Post, id=request.POST.get('post_id'))
     comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
     # post = get_object_or_404(Post, pk=post_pk)
     # comment = get_object_or_404(Comment, pk=pk)
-    is_liked = False
+    comment_is_liked = False
     if comment.likes.filter(id=request.user.id).exists():
         comment.likes.remove(request.user)
         comment_is_liked = False
