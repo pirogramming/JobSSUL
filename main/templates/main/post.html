@@ -2,7 +2,12 @@
 
 {% block content %}
     {% load static %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
     <style>
+
     .entire {
         background-color: #daf1de;
     }
@@ -34,7 +39,53 @@
         font-weight: 700;
         color: black;
     }
+
+    .d6 {
+        text-align: right;
+        margin-right: 50px;
+    }
+
+    .d6 form {
+      height: 42px;
+    }
+    .d6 input {
+      height: 100%;
+      width: 0;
+      padding: 0 42px 0 15px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      outline: none;
+      background: transparent;
+      transition: .4s cubic-bezier(0, 0.8, 0, 1);
+    }
+    .d6 input:focus {
+      width: 300px;
+      z-index: 1;
+      border-bottom: 2px solid white;
+    }
+    .d6 button {
+      background: #B6DCB6;
+      border: none;
+      height: 42px;
+      width: 42px;
+      cursor: pointer;
+    }
+    .d6 button:before {
+      content: "\f002";
+      font-family: FontAwesome;
+      font-size: 16px;
+      color: white;
+    }
     </style>
+
+
+    <div class="d6">
+        <form>
+          <input type="text" placeholder="검색어 입력" name="q">
+          <button type="submit"></button>
+        </form>
+    </div>
+
 
     <div class="entire">
         <div class="post_list_container">
