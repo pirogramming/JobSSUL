@@ -1,4 +1,5 @@
 {% load static %}
+{% load socialaccount %}
 
 <!doctype html>
 <html lang="en">
@@ -153,6 +154,7 @@
                     {% if not user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:signup" %}">회원가입</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:login" %}?next={{ request.path }}">로그인</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% provider_login_url 'google' %}?next={{ request.path }}">GMAIL 계정으로 로그인</a></li>
                     {% else %}
                 {#            <li class="nav-item"><a class="nav-link" href="{% url "profile" %}">프로필</a></li>#}
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:user_profile" %}">마이페이지</a></li>
