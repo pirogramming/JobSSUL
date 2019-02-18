@@ -45,8 +45,9 @@
         {{ form.password |addcss:'text-field'}}
         <button class="btn btn-primary submit-btn">로그인</button>
         <div class="links">
-      <a href="#">비밀번호를 잊어버리셨나요?</a>
-    </div>
+            <a href="{% url 'accounts:signup' %}">아직 회원가입을 안하셨나요?</a><br>
+            <a href="#">비밀번호를 잊어버리셨나요?</a>
+        </div>
     </div>
 
 </form>

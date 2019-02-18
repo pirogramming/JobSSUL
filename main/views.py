@@ -30,6 +30,7 @@ def main_post(request):
             Q(content__icontains=query)
             )
     data = {
+        # 'post': post,
         'posts': posts,
     }
     return render(request, 'main/post.html', data)
@@ -58,11 +59,9 @@ def main_detail(request, post_pk):
 
             comment = Comment.objects.create(post=post, author=request.user, message=message, reply=comment_qs)
             comment.save()
-
             # return HttpResponseRedirect(post.get_absolute_url())
         else:
             comment_form = CommentForm()
-
 
     # comment_is_liked = False
     #
@@ -75,6 +74,13 @@ def main_detail(request, post_pk):
     if comment.likes.filter(id=request.user.id).exists():
         comment_is_liked = True
 
+    # comment = Comment.objects.filter
+
+    comment_is_liked = False
+    for comment in comments:
+        # comment_is_liked = False
+        if comment.likes.filter(id=request.user.id).exists():
+            comment_is_liked = True
     data = {
         'post': post,
         'is_liked': is_liked,
@@ -83,7 +89,8 @@ def main_detail(request, post_pk):
         'comment_form': comment_form,
         'comment_is_liked': comment_is_liked,
         'form': form,
-        'comment_total_likes': comment.comment_total_likes(),
+
+        # 'comment': comment,
     }
 
     if request.is_ajax():
@@ -206,7 +213,9 @@ def comment_new(request, post_pk):
 
     return render(request, 'main/comment_form.html', {
         'form': form,
-    }, context_instance=RequestContext)
+    })
+
+                  # , context_instance=RequestContext)
 
 
 @login_required

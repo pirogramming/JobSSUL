@@ -6,16 +6,33 @@
 .button_container{
     text-align : center;
     margin-top: 100px;
-
-}
-
-.main_button{
-    text-decoration: none;
     background-color: #daf1de;
+    padding-top: 100px;
+    padding-bottom: 100px;
 }
+
+#box{
+    margin-left: 50px;
+    width:400px;
+    height: 600px;
+    background-color: white;
+}
+
+.link{
+    background-color: #f2f2f2;
+    border-bottom: 3px solid #aee6cb;
+}
+
+.link:active{
+    border-bottom: 3px solid #aee6cb;
+}
+
 </style>
+
 {% load static %}
     <div class="button_container">
-<a href="{% url 'main:post' %}" class="btn btn-outline-info btn-lg main_button">잡썰 보러가기</a>
-</div>
+        <div id="box">
+            <a href="{% url 'main:post' %}" class="link">잡썰 보러가기</a>
+        </div>
+    </div>
 {% endblock %}
