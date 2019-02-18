@@ -89,7 +89,7 @@
             <div id="box">
                 <a href="{% url 'main:best_post' %}" class="link">인기 잡썰</a>
                 {% for post in posts %}
-                    {% if post.total_likes > 1 %}
+                    {% if post.total_likes >= 1 %}
                         <table class="table table-bordered table-hover">
                               <tbody>
                                 <tr>
