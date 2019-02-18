@@ -126,8 +126,8 @@ def like_comment(request):
         # return redirect(f'/main/post/{comment.post.pk}')
     # return redirect(f'/main/post/{comment.post.pk}')
     data = {
-		'comment': comment
-	}
+        'comment': comment
+    }
     html = render_to_string('main/like_comment.html', data, request=request)
     return JsonResponse({'form': html})
     # return HttpResponseRedirect(comment.get_absolute_url())
@@ -233,4 +233,10 @@ def comment_delete(request, pk):
 
     return render(request, 'main/comment_confirm_delete.html', {
         'comment': comment,
+    })
+
+def best_post(request):
+    posts = Post.objects.all()
+    return render(request, 'main/best_post.html', {
+        'posts': posts
     })
