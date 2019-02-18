@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+     <style>
+    .entire {
+        background-color: #daf1de;
+    }
+    .post_list_container{
+        margin-top: 30px;
+        margin-left: 50px;
+        margin-right: 50px;
+        background-color: white;
+    }
+    #recommend_star{
+        height: 16px;
+    }
+    .category{
+        text-decoration: none;
+        font-weight: 700;
+        color: black;
+    }
+
+    #like{
+        height: 16px;
+    }
+     .th{
+         width: 150px;
+     }
+    </style>
+    {% for post in posts %}
+        {% if post.total_likes > 1 %}
+            <div class="entire">
+                <div class="post_list_container">
+                <table class="table table-bordered table-hover">
+                  <thead class = "thread-dark">
+                    <tr>
+
+                      <th class="th">제목</th>
+                        <th class="th">좋아요</th>
+                        <th class="th">작성자</th>
+                      <th class="th">별점</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="td">
+                         <a href="{% url 'main:detail' post.id  %}" class="category">{{ post.title }}</a></td>
+                        <td class="td"><img id="like" src="{% static 'main/like.png' %}"> {{ post.total_likes }}</td>
+                        <td class="td"> {{ post.author.nickname }}</td>
+                      <td class="td"><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
+                    </tr>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
