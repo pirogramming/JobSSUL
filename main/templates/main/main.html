@@ -2,37 +2,111 @@
 
 {% block content %}
 <style>
+@font-face{
+        src: url("../../static/font/BinggraeTaom-Bold.otf");
+        font-family: "Taom";
+    }
+
 
 .button_container{
-    text-align : center;
+    text-align : left;
     margin-top: 100px;
     background-color: #daf1de;
     padding-top: 100px;
     padding-bottom: 100px;
 }
 
+.boxes {
+    display: inline-block;
+}
+
 #box{
-    margin-left: 50px;
+    display: inline-block;
+    margin: 10px 40px;
     width:400px;
     height: 600px;
-    background-color: white;
+    background-color: #fadee1;
+    {#box-shadow: #9b9b9b;#}
 }
 
 .link{
-    background-color: #f2f2f2;
-    border-bottom: 3px solid #aee6cb;
+    color: black;
+    font-family: 'Taom', sans-serif;
+    display: block;
+    background-color: white;
+    border-bottom: 5px solid pink;
+    font-size: 25px;
 }
 
-.link:active{
-    border-bottom: 3px solid #aee6cb;
+.link:hover{
+    font-weight: 400;
+    border-bottom: 5px solid pink;
+    text-decoration: none;
+}
+
+#recommend_star{
+        height: 16px;
+}
+
+#like {
+    height: 16px;
+}
+
+.body {
+    background-color: white;
 }
 
 </style>
 
 {% load static %}
     <div class="button_container">
-        <div id="box">
-            <a href="{% url 'main:post' %}" class="link">잡썰 보러가기</a>
+        <div class="boxes">
+            <div id="box">
+                <a href="{% url 'main:post' %}" class="link">최신 잡썰</a>
+
+                <div class="post_list_container">
+                    <table class="table table-bordered table-hover">
+    {#                <thead class = "thread-dark head">#}
+    {#                    <tr>#}
+    {#                        <th scope="col">제목</th>#}
+    {#                        <th scope="col">별점</th>#}
+    {#                    </tr>#}
+    {#                </thead>#}
+
+                    <tbody class="body">
+                        {% for post in posts %}
+                            <tr>
+                              <td><a href="{% url "main:detail" post.id %}" class="category">{{ post.title }}</a></td>
+                              <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
+                                <td>{{ post.updated_at|date:"y-m-d"}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="box">
+                <a href="{% url 'main:best_post' %}" class="link">인기 잡썰</a>
+                {% for post in posts %}
+                    {% if post.total_likes > 1 %}
+                        <table class="table table-bordered table-hover">
+                              <tbody>
+                                <tr>
+                                  <td class="td">
+                                     <a href="{% url 'main:detail' post.id  %}" class="category">{{ post.title }}</a></td>
+                                    <td class="td"><img id="like" src="{% static 'main/like.png' %}"> {{ post.total_likes }}</td>
+                                  <td class="td"><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
+                                </tr>
+                              </tbody>
+                        </table>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div id="box">
+                <a href="#" class="link">추천 잡썰</a>
+            </div>
         </div>
     </div>
 {% endblock %}

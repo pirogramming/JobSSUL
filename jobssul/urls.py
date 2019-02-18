@@ -26,4 +26,5 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('mypage/', include('accounts.urls', namespace='mypage')),
     path('notice/', include('notice.urls', namespace='notice')),
+    path('claim/', include('claim.urls', namespace='claim')),
 ]

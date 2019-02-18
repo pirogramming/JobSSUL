@@ -13,21 +13,17 @@
         background-color: white;
     }
 
-    .create_post_button{
-        text-decoration: none;
-        color: white;
-        margin-right: 50px;
-
-
-    }
-
-    #recommend_star{
-        height: 16px;
-    }
-    .create_post_button_container{
-            text-align: right;
-            margin-bottom: 50px;
-        }
+    {#.create_post_button{#}
+    {#    text-decoration: none;#}
+    {#    color: white;#}
+    {#    margin-right: 50px;#}
+    {##}
+    {##}
+    {#}
+    {#.create_post_button_container{#}
+    {#        text-align: right;#}
+    {#        margin-bottom: 50px;#}
+    {#    }#}
 
     .category{
         text-decoration: none;
@@ -41,37 +37,36 @@
         <table class="table table-bordered table-hover">
           <thead class = "thread-dark">
             <tr>
-              <th scope="col">제목</th>
-              <th scope="col">작성자</th>
-              <th scope="col">별점</th>
+
+              <th>제목</th>
+                <th>작성자</th>
             </tr>
           </thead>
-
           <tbody>
-
           {% for post in posts %}
             <tr>
               <td>
                    <a href="{{ post.id }}" class="category">{{ post.title }}</a></td>
                 <td>{{ post.author.nickname }}</td>
-              <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
             </tr>
             {% empty %}
-			{% if request.GET.q != None %}
                 <div class="container-fluid">
                     <div class="alert alert-warning">
                         "{{ request.GET.q }}"이 포함된 검색 결과가 없습니다. 다른 키워드로 다시 검색해 보세요!
                     </div>
                 </div>
-			{% endif %}
           {% endfor %}
+
+
 
           </tbody>
         </table>
         </div>
-        <div class="create_post_button_container">
-            <a href="{% url 'main:create' %}" class="btn btn-dark btn btn-primary btn-lg create_post_button">게시글 생성</a>
-        </div>
+{#        <div class="create_post_button_container">#}
+{#            <a href="{% url 'main:create' %}" class="btn btn-dark btn btn-primary btn-lg create_post_button">게시글 생성</a>#}
+{#        </div>#}
     </div>
+
+
 
 {% endblock %}

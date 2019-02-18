@@ -157,7 +157,7 @@
                 <a class="nav-link" href="{% url 'notice:main' %}">공지썰 <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">건의썰</a>
+                <a class="nav-link" href="{% url 'claim:main' %}">건의썰</a>
               </li>
             </ul>
 
@@ -166,7 +166,6 @@
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:signup" %}">회원가입</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:login" %}?next={{ request.path }}">로그인</a></li>
                     {% else %}
-                {#            <li class="nav-item"><a class="nav-link" href="{% url "profile" %}">프로필</a></li>#}
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:user_profile" %}">마이페이지</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:logout" %}?next={{ request.path }}">로그아웃</a></li>
                     {% endif %}

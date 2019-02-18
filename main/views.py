@@ -11,10 +11,12 @@ from django.db.models import Q
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
+
 def main_page(request):
-    post = Post.objects.all()
+    posts = Post.objects.all()
     data = {
-        'post': post
+        'posts': posts
+
     }
     return render(request, 'main/main.html', data)
 
@@ -22,7 +24,8 @@ def main_page(request):
 def main_post(request):
     # post = Post.objects.all()
     posts = Post.published.all()
-    query = request.GET.get('q')
+    query = request.GET.get('q', None)
+    print(query)
     if query:
         posts = Post.published.filter(
             Q(title__icontains=query) |
@@ -41,7 +44,6 @@ def main_detail(request, post_pk):
     form = PostForm()
 
     comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
-
     is_liked = False
     if post.likes.filter(id=request.user.id).exists():
         is_liked = True
@@ -63,16 +65,17 @@ def main_detail(request, post_pk):
         else:
             comment_form = CommentForm()
 
+    # comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
     # comment_is_liked = False
-    #
     # for comment in comments:
+    #     comment = comments.get()
     #     if comment.likes.filter(id=request.user.id).exists():
     #         comment_is_liked = True
 
-    comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
-    comment_is_liked = False
-    if comment.likes.filter(id=request.user.id).exists():
-        comment_is_liked = True
+    # comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    # comment_is_liked = False
+    # if comment.likes.filter(id=request.user.id).exists():
+    #     comment_is_liked = True
 
     # comment = Comment.objects.filter
 
@@ -97,7 +100,6 @@ def main_detail(request, post_pk):
         html = render_to_string('main/comments.html', data, request=request)
         return JsonResponse({'form': html})
     return render(request, 'main/detail.html', data)
-
 
 def like_post(request):
     # post = get_object_or_404(Post, id=request.POST.get('post_id'))
@@ -145,13 +147,18 @@ def like_comment(request):
         comment.likes.add(request.user)
         comment_is_liked = True
         # return redirect(f'/main/post/{comment.post.pk}')
-    return redirect(f'/main/post/{comment.post.pk}')
+    #return redirect(f'/main/post/{comment.post.pk}')
+    data = {
+        'comment': comment
+    }
+    html = render_to_string('main/like_comment.html', data, request=request)
+    return JsonResponse({'form': html})
     # return HttpResponseRedirect(comment.get_absolute_url())
 
 @login_required
 def main_create(request):
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
+        form = PostForm(request.POST, request=request)
 
         if form.is_valid():
             form.save()
@@ -251,7 +258,8 @@ def comment_delete(request, pk):
         'comment': comment,
     })
 
-
-
-
-
+def best_post(request):
+    posts = Post.objects.all()
+    return render(request, 'main/best_post.html', {
+        'posts': posts
+    })
