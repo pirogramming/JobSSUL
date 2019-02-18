@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'hoes=5dj!dmeg$ag%r^m%8n6wf&=l0+k2s$$hg3t19a@r6(n6y'
 
-SITE_ID = 1
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,12 +42,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'crispy_forms',
+
+    
     'accounts',
     'main',
     'jobssul',
 ]
 
-SITE_ID = 1
+
 
 
 MIDDLEWARE = [
@@ -133,6 +141,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -141,5 +150,14 @@ STATICFILES_DIRS = [
 
 AUTH_USER_MODEL = 'accounts.User'
 
+AUTHENTICATION_BACKENDS=(
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
 MESSAGE_TAGS = {constants.ERROR: 'danger'}
 
+SITE_ID = 1
+
+ACCOUNT_EMAIL_REQUIRED =True
+ACCOUNT_USERNAME_REQUIRED=False
