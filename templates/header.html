@@ -17,9 +17,13 @@
 
 <style>
     @import url('https://fonts.googleapis.com/css?family=Yeon+Sung');
+    @font-face{
+        src: url("../main/static/font/BinggraeTaom-Bold.otf");
+        font-family: "Taom";
+    }
     .navbar {
         padding: 10px 20px;
-        {#font-family: 'Yeon Sung', cursive;#}
+        font-family: 'Taom', sans-serif;
     }
 
     .navbar .nav-item{
@@ -45,37 +49,37 @@
 
     .navbar .nav-item:hover{
         background-color: #f2f2f2;
-        border-bottom: 3px solid #96dfd8;
+        border-bottom: 3px solid #aee6cb;
     }
 
     .navbar .nav-item:active{
-        border-bottom: 3px solid #96dfd8;
+        border-bottom: 3px solid #aee6cb;
     }
 
-
-    {#a:hover{#}
-    {#    background-color: #f2f2f2;#}
-    {#    color: #85d4be;#}
-    {#}
-
-    #btnGroupDrop1 {
-        background-color: #96dfd8;
-        border-color: white;
-        padding: 12px 20px;
+    #inputState{
+        border-color: #aee6cb;
     }
-
-    {#toggle때문에 ^^..#}
-    {##btnGroupDrop1:visited {#}
-    {#    background-color: #85d4be;#}
-    {#}
-    {##}
-    {#.show:active {#}
-    {#    background-color: #85d4be;#}
-    {#}
 
     #info{
         float: right;
     }
+
+    .button{
+        border-color: #aee6cb;
+        background-color: white;
+        color: #aee6cb;
+    }
+
+    .button:hover{
+        background-color: #aee6cb;
+        border-color: #aee6cb;
+    }
+
+    .collapse {
+        justify-content: flex-end;
+    }
+
+
 </style>
 
 <body>
@@ -84,87 +88,90 @@
         <img src={% static "main/logo.png"%} width="119" height="44" alt="" style="padding: 0;">
       </a>
 
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+{#    <form class="form-inline my-2 mr-2 ml-2 my-lg-0" action="{% url 'main:post' %}">#}
+{#          <input class="form-control mr-sm-2" type="search" placeholder="검색" aria-label="Search" name="q">#}
+{#          <button class="btn btn-outline-success my-2 my-sm-0 button" type="submit">Search</button>#}
+{#    </form>#}
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="nav nav-pills nav-justified">
-          <li class="nav-item">
-            <a class="nav-link" href="#">공지썰 <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">건의썰</a>
-          </li>
-        </ul>
-
-        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-          <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              지역별
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-              <a class="dropdown-item" href="#">강남/서초/양재</a>
-              <a class="dropdown-item" href="#">잠실/송파/강동</a>
-                <a class="dropdown-item" href="#">동작/관악/사당</a>
-                <a class="dropdown-item" href="#">마포/서대문/은평</a>
-                <a class="dropdown-item" href="#">종로/중구/용산</a>
-                <a class="dropdown-item" href="#">노원/도봉/강북/성북</a>
-                <a class="dropdown-item" href="#">광진/성동/중랑/동대문</a>
-                <a class="dropdown-item" href="#">영등포/구로/신도림</a>
-                <a class="dropdown-item" href="#">강서/금천/양천</a>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div>
+            <div class="row align-items-center justify-content-center" style="width: 800px;">
+                                <div class="col-md-2 pt-3">
+                                   <div class="form-group ">
+                                      <select id="inputState " class="form-control">
+                                        <option selected>지역</option>
+                                        <option>강남/서초/양재</option>
+                                        <option>잠실/송파/강동</option>
+                                        <option>동작/관악/사당</option>
+                                        <option>마포/서대문/은평</option>
+                                        <option>종로/중구/용산</option>
+                                        <option>노원/도봉/강북/성북</option>
+                                        <option>광진/성동/중랑/동대문</option>
+                                        <option>영등포/구로/신도림</option>
+                                        <option>강서/금천/양천</option>
+                                      </select>
+                                   </div>
+                                </div>
+                                <div class="col-md-2 pt-3">
+                                   <div class="form-group">
+                                      <select id="inputState" class="form-control">
+                                        <option selected>직종</option>
+                                        <option>전체</option>
+                                        <option>외식/음료</option>
+                                        <option>유통/판매</option>
+                                        <option>문화/여가/생활</option>
+                                        <option>서비스</option>
+                                        <option>사무직</option>
+                                        <option>고객상담/리서치/영업</option>
+                                        <option>생산/건설/노무</option>
+                                        <option>IT/컴퓨터</option>
+                                        <option>교육/강사</option>
+                                        <option>디자인</option>
+                                        <option>미디어</option>
+                                        <option>운전/배달</option>
+                                        <option>병원/간호/연구</option>
+                                      </select>
+                                   </div>
+                                </div>
+                                <div class="col-md-2 pt-3">
+                                    <div class="form-group">
+                                      <select id="inputState" class="form-control">
+                                        <option selected>시급</option>
+                                        <option>전체</option>
+                                        <option>7500~9000</option>
+                                        <option>9000~10500</option>
+                                        <option>10500원 이상</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                   <button type="button" class="btn btn-primary btn-block button">검색</button>
+                                </div>
+                            </div>
             </div>
-          </div>
 
-        <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              직종별
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item" href="#">전체</a>
-                <a class="dropdown-item" href="#">외식/음료</a>
-                <a class="dropdown-item" href="#">유통/판매</a>
-                <a class="dropdown-item" href="#">문화/여가/생활</a>
-                <a class="dropdown-item" href="#">서비스</a>
-                <a class="dropdown-item" href="#">사무직</a>
-                <a class="dropdown-item" href="#">고객상담/리서치/영업</a>
-                <a class="dropdown-item" href="#">생산/건설/노무</a>
-                <a class="dropdown-item" href="#">IT/컴퓨터</a>
-                <a class="dropdown-item" href="#">교육/강사</a>
-                <a class="dropdown-item" href="#">디자인</a>
-                <a class="dropdown-item" href="#">미디어</a>
-                <a class="dropdown-item" href="#">운전/배달</a>
-                <a class="dropdown-item" href="#">병원/간호/연구</a>
-            </div>
-          </div>
+            <ul class="nav nav-pills nav-justified">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'notice:main' %}">공지썰 <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'claim:main' %}">건의썰</a>
+              </li>
+            </ul>
 
-          <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              시급별
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item" href="#">전체</a>
-                <a class="dropdown-item" href="#">7500~9000원</a>
-                <a class="dropdown-item" href="#">9000~10500원</a>
-                <a class="dropdown-item" href="#">10500원 이상</a>
-            </div>
-          </div>
-        </div>
             <ul id="info" class="nav nav-pills">
                     {% if not user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:signup" %}">회원가입</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:login" %}?next={{ request.path }}">로그인</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% provider_login_url 'google' %}?next={{ request.path }}">GMAIL 계정으로 로그인</a></li>
                     {% else %}
-                {#            <li class="nav-item"><a class="nav-link" href="{% url "profile" %}">프로필</a></li>#}
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:user_profile" %}">마이페이지</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:logout" %}?next={{ request.path }}">로그아웃</a></li>
                     {% endif %}
             </ul>
-        <form class="form-inline my-2 mr-2 ml-2 my-lg-0" action="{% url 'main:post' %}">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
       </div>
     </nav>
 

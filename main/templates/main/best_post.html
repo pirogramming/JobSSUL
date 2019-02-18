@@ -49,6 +49,8 @@
                         <td class="td"> {{ post.author.nickname }}</td>
                       <td class="td"><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
                     </tr>
+                  </tbody>
+                </table>
         {% endif %}
     {% endfor %}
 {% endblock %}

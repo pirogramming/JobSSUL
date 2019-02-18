@@ -11,10 +11,12 @@ from django.db.models import Q
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
+
 def main_page(request):
-    post = Post.objects.all()
+    posts = Post.objects.all()
     data = {
-        'post': post
+        'posts': posts
+
     }
     return render(request, 'main/main.html', data)
 
@@ -99,7 +101,6 @@ def main_detail(request, post_pk):
         return JsonResponse({'form': html})
     return render(request, 'main/detail.html', data)
 
-
 def like_post(request):
     # post = get_object_or_404(Post, id=request.POST.get('post_id'))
     post = get_object_or_404(Post, id=request.POST.get('id'))
@@ -130,7 +131,6 @@ def like_post(request):
 #         'comment_is_liked': comment_is_liked,
 #     }
 #     return render(request, 'main/detail.html', data)
-
 
 
 def like_comment(request):
