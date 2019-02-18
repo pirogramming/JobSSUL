@@ -110,9 +110,19 @@ def scrap_post(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
     if post.scrap.filter(pk=request.user.id).exists():
         post.scrap.remove(request.user)
+        is_scrap = False
     else:
         post.scrap.add(request.user)
-    return HttpResponseRedirect(post.get_absolute_url())
+        is_scrap = True
+
+    data = {
+        'is_scrap': is_scrap,
+        'post': post,
+    }
+
+    if request.is_ajax():
+        html = render_to_string('main/scrap.html', data, request=request)
+        return JsonResponse({'form': html})
 
 
 def like_post(request):
@@ -133,6 +143,7 @@ def like_post(request):
     if request.is_ajax():
         html = render_to_string('main/like_section.html', data, request=request)
         return JsonResponse({'form': html})
+
 
 
 def like_comment(request):
