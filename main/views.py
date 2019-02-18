@@ -255,4 +255,9 @@ def comment_delete(request, pk):
 
 
 
+def best_post(request):
+    posts = Post.objects.all()
+    return render(request, 'main/best_post.html', {
+        'posts': posts
+    })
 
