@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 from .Forms import CommentForm
 from .models import Post, Comment
 from .Forms import PostForm
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
@@ -17,7 +17,9 @@ def main_page(request):
     # posts = Post.objects.all().order_by('-updated_at')
 
     data = {
-        'posts': posts
+        'posts': posts,
+        'latest': posts.order_by('-updated_at'),
+        'liked': posts.annotate(liked=Count('likes')).order_by('-liked')
     }
     return render(request, 'main/main.html', data)
 
@@ -28,7 +30,7 @@ def main_post(request):
     query = request.GET.get('q', None)
     print(query)
     if query:
-        posts = Post.published.filter(
+        posts = Post.objects.filter(
             Q(title__icontains=query) |
             Q(author__username=query) |
             Q(content__icontains=query)

@@ -54,6 +54,8 @@
 
 
     </style>
+
+
     <div class="content_container">
         <p class="post_category">작성자: {{ post.author.nickname }}</p>
         <p class="post_category">제목: <span>{{ post.title }}</span></p>
@@ -65,7 +67,7 @@
         <p class="post_category">직종: {{ post.work_type }}</p>
         <p class="post_category">별점: <img id=recommend_star src="{% static 'main/star.jpg' %}">{{ post.recommend }}</p>
 
-</div>
+    </div>
 {% if request.user == post.author %}
 <div class="button_container">
 
