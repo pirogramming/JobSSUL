@@ -14,6 +14,8 @@ from django.http import JsonResponse
 
 def main_page(request):
     posts = Post.objects.all()
+    # posts = Post.objects.all().order_by('-updated_at')
+
     data = {
         'posts': posts,
         'latest': posts.order_by('-updated_at'),
@@ -257,6 +259,8 @@ def comment_delete(request, pk):
 
 def best_post(request):
     posts = Post.objects.all()
+    # posts = Post.objects.filter.order_by('-likes', '-updated_at')
+
     return render(request, 'main/best_post.html', {
         'posts': posts
     })
