@@ -10,7 +10,7 @@ urlpatterns = [
     path('post/', views.main_post, name='post'),
     path('post/<int:post_pk>/', views.main_detail, name='detail'),
     path('create/', main_create, name='create'),
-    path('post/<int:post_pk>/edit/', views.main_edit , name='edit'),
+    path('post/<int:post_pk>/edit/', views.main_edit, name='edit'),
     path('post/<int:post_pk>/delete/', views.main_delete , name='delete'),
     path('post/<int:post_pk>/comment/new/', views.comment_new, name='comment_new'),
     path('post/<int:pk>/comment/edit/', views.comment_edit, name='comment_edit'),
@@ -19,4 +19,5 @@ urlpatterns = [
     path('best/', views.best_post, name='best_post'),
     # path('post/<int:pk>/comment/like_comment/', views.like_comment, name='like_comment'),
     path('like_comment/', views.like_comment, name='like_comment'),
+    path('post/<int:post_pk>/scrap_post/', views.scrap_post, name='scrap_post'),
 ]

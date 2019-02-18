@@ -54,11 +54,10 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
     status = models.CharField(max_length=10, default='published')
+    scrap = models.ManyToManyField(User, related_name='scrap', blank=True)
 
     class Meta:
         ordering = ['-id']
-
-
 
     # created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now = True)

@@ -44,9 +44,15 @@ def main_detail(request, post_pk):
     form = PostForm()
 
     comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
+
     is_liked = False
     if post.likes.filter(id=request.user.id).exists():
         is_liked = True
+
+    is_scrap = False
+    if post.scrap.filter(id=request.user.id).exists():
+        is_scrap = True
+
     comment_form = CommentForm()
 
     if request.method == 'POST':
@@ -71,13 +77,7 @@ def main_detail(request, post_pk):
     #     comment = comments.get()
     #     if comment.likes.filter(id=request.user.id).exists():
     #         comment_is_liked = True
-
     # comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
-    # comment_is_liked = False
-    # if comment.likes.filter(id=request.user.id).exists():
-    #     comment_is_liked = True
-
-    # comment = Comment.objects.filter
 
     comment_is_liked = False
     for comment in comments:
@@ -92,6 +92,7 @@ def main_detail(request, post_pk):
         'comment_form': comment_form,
         'comment_is_liked': comment_is_liked,
         'form': form,
+        'is_scrap': is_scrap,
 
         # 'comment': comment,
     }
@@ -100,6 +101,16 @@ def main_detail(request, post_pk):
         html = render_to_string('main/comments.html', data, request=request)
         return JsonResponse({'form': html})
     return render(request, 'main/detail.html', data)
+
+
+def scrap_post(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    if post.scrap.filter(pk=request.user.id).exists():
+        post.scrap.remove(request.user)
+    else:
+        post.scrap.add(request.user)
+    return HttpResponseRedirect(post.get_absolute_url())
+
 
 def like_post(request):
     # post = get_object_or_404(Post, id=request.POST.get('post_id'))
@@ -121,33 +132,18 @@ def like_post(request):
         return JsonResponse({'form': html})
 
 
-# def comment_detail(request, pk):
-#     comment = get_object_or_404(Comment, pk=pk)
-#     comment_is_liked = False
-#     if comment.likes.filter(id=request.user.id).exists():
-#         comment_is_liked = True
-#     data = {
-#         'comment': comment,
-#         'comment_is_liked': comment_is_liked,
-#     }
-#     return render(request, 'main/detail.html', data)
-
-
 def like_comment(request):
-    # post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    # comment = get_object_or_404(Comment, id=request.POST.get('id'))
     comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
-    # post = get_object_or_404(Post, pk=post_pk)
-    # comment = get_object_or_404(Comment, pk=pk)
     comment_is_liked = False
     if comment.likes.filter(id=request.user.id).exists():
         comment.likes.remove(request.user)
         comment_is_liked = False
-        # return redirect(f'/main/post/{comment.post.pk}')
     else:
         comment.likes.add(request.user)
         comment_is_liked = True
         # return redirect(f'/main/post/{comment.post.pk}')
-    #return redirect(f'/main/post/{comment.post.pk}')
+    # return redirect(f'/main/post/{comment.post.pk}')
     data = {
         'comment': comment
     }

@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from .Forms import UserCreationForm, LoginForm
 from main.models import Post, Comment
+from main.views import scrap_post
 from django.contrib.auth import login as auth_login
 
 
@@ -56,16 +57,16 @@ def main_login(request):
 
       
 @login_required
-
 def mypage(request):
     if request.method =='GET':
         user = request.user
         user_posts = Post.objects.filter(author=user)
+        scrap_posts=user.scrap.all()
         user_comments = Comment.objects.filter(author=user)
         data = {
             'profile_user': user,
             'my_posts': user_posts,
             'my_comments': user_comments,
+            'scrap_posts':scrap_posts,
         }
         return render(request, 'accounts/about.html', data)
-

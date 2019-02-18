@@ -15,7 +15,7 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ['likes', 'author']
+        exclude = ['likes', 'author', 'scrap']
         widgets = {
             'recommend': RateitjsWidget,
             'status': TextInput(attrs={'readonly': True}),
