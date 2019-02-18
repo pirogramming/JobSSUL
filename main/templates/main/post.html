@@ -56,11 +56,13 @@
               <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
             </tr>
             {% empty %}
+			{% if request.GET.q != None %}
                 <div class="container-fluid">
                     <div class="alert alert-warning">
                         "{{ request.GET.q }}"이 포함된 검색 결과가 없습니다. 다른 키워드로 다시 검색해 보세요!
                     </div>
                 </div>
+			{% endif %}
           {% endfor %}
 
 

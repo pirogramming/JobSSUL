@@ -22,7 +22,8 @@ def main_page(request):
 def main_post(request):
     # post = Post.objects.all()
     posts = Post.published.all()
-    query = request.GET.get('q')
+    query = request.GET.get('q', None)
+    print(query)
     if query:
         posts = Post.published.filter(
             Q(title__icontains=query) |
@@ -58,12 +59,18 @@ def main_detail(request, post_pk):
 
             comment = Comment.objects.create(post=post, author=request.user, message=message, reply=comment_qs)
             comment.save()
-
             # return HttpResponseRedirect(post.get_absolute_url())
         else:
             comment_form = CommentForm()
 
     # comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+    # comment_is_liked = False
+    # for comment in comments:
+    #     comment = comments.get()
+    #     if comment.likes.filter(id=request.user.id).exists():
+    #         comment_is_liked = True
+    # comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
+
     comment_is_liked = False
     for comment in comments:
         # comment_is_liked = False
@@ -76,9 +83,9 @@ def main_detail(request, post_pk):
         'comments': comments,
         'comment_form': comment_form,
         'comment_is_liked': comment_is_liked,
-        # 'comment': comment,
         'form': form,
-        'comment_total_likes': comment.comment_total_likes(),
+
+        # 'comment': comment,
     }
 
     if request.is_ajax():
@@ -116,14 +123,19 @@ def like_comment(request):
     else:
         comment.likes.add(request.user)
         comment_is_liked = True
-
-    return redirect(f'/main/post/{comment.post.pk}')
+        # return redirect(f'/main/post/{comment.post.pk}')
+    # return redirect(f'/main/post/{comment.post.pk}')
+    data = {
+		'comment': comment
+	}
+    html = render_to_string('main/like_comment.html', data, request=request)
+    return JsonResponse({'form': html})
     # return HttpResponseRedirect(comment.get_absolute_url())
 
 @login_required
 def main_create(request):
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
+        form = PostForm(request.POST, request=request)
 
         if form.is_valid():
             form.save()
@@ -186,6 +198,7 @@ def comment_new(request, post_pk):
     return render(request, 'main/comment_form.html', {
         'form': form,
     })
+
                   # , context_instance=RequestContext)
 
 
@@ -221,8 +234,3 @@ def comment_delete(request, pk):
     return render(request, 'main/comment_confirm_delete.html', {
         'comment': comment,
     })
-
-
-
-
-
