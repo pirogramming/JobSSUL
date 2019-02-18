@@ -100,13 +100,6 @@ def main_detail(request, post_pk):
         return JsonResponse({'form': html})
     return render(request, 'main/detail.html', data)
 
-def post_scrap_list(request):
-    user = request.user
-    scrap_posts = user.scrap.all()
-    data = {
-        'scrap_posts': scrap_posts,
-    }
-    return render(request, 'main/post_scrap_list.html', data)
 
 def scrap_post(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)

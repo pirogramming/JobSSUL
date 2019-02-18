@@ -20,5 +20,4 @@ urlpatterns = [
     # path('post/<int:pk>/comment/like_comment/', views.like_comment, name='like_comment'),
     path('like_comment/', views.like_comment, name='like_comment'),
     path('post/<int:post_pk>/scrap_post/', views.scrap_post, name='scrap_post'),
-    path('scraps/', views.post_scrap_list, name='post_scrap_list'),
 ]
