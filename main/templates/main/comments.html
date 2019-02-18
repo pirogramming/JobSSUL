@@ -12,6 +12,7 @@
         </div>
     </div>
     <div style="font-size: 25px; font-weight: bold; margin-bottom: 10px;">{{ comments.count }}개의 댓글</div>
+
     {% for comment in comments %}
     <blockquote class="blockquote">
 {#        <span><small>{{ comment.updated_at}}</small></span><span style="margin-left: 10px; color: red;"><small>추천: {{ comment.likes.count }}</small></span>#}
@@ -45,8 +46,6 @@
             </form>
         {% endif %}
 
-
-
     </blockquote>
 
     <div class="replied-comments container mt-2" style="display:none;">
@@ -79,3 +78,5 @@
         </div>
     </div>
     {% endfor %}
+
+

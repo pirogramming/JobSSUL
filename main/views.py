@@ -11,10 +11,12 @@ from django.db.models import Q
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
+
 def main_page(request):
-    post = Post.objects.all()
+    posts = Post.objects.all()
     data = {
-        'post': post
+        'posts': posts
+
     }
     return render(request, 'main/main.html', data)
 
@@ -109,6 +111,7 @@ def scrap_post(request, post_pk):
         post.scrap.add(request.user)
     return HttpResponseRedirect(post.get_absolute_url())
 
+
 def like_post(request):
     # post = get_object_or_404(Post, id=request.POST.get('post_id'))
     post = get_object_or_404(Post, id=request.POST.get('id'))
@@ -127,6 +130,7 @@ def like_post(request):
     if request.is_ajax():
         html = render_to_string('main/like_section.html', data, request=request)
         return JsonResponse({'form': html})
+
 
 def like_comment(request):
     # comment = get_object_or_404(Comment, id=request.POST.get('id'))
