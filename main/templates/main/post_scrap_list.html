@@ -1,0 +1,55 @@
+
+{% block content %}
+    {% load static %}
+{#<div class="row">#}
+{#    {% for p in scrap_posts %}#}
+{#        <div class="col-md-6">#}
+{#            <div class="img=thumbnail"#}
+{#                 <a href="{{ p.get_absolute_url }}">{{ p.title }}</a><small style="float:right">{{ p.created_at }}</small>#}
+{#                Author: {{ p.author }}#}
+{#        </div>#}
+{#</div>#}
+
+<style>
+
+#recommend_star{
+    height: 16px;
+}
+
+</style>
+
+
+    <div class="entire">
+        <div class="post_list_container">
+        <table class="table table-bordered table-hover">
+          <thead class = "thread-dark">
+            <tr>
+
+              <th>제목</th>
+                <th>작성자</th>
+              <th>별점</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for post in scrap_posts %}
+            <tr>
+              <td>
+                   <a href="{{ post.id }}" class="category">{{ post.title }}</a></td>
+                <td>{{ post.author.nickname }}</td>
+              <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
+            </tr>
+            {% empty %}
+{#			{% if request.GET.q != None %}#}
+{#                <div class="container-fluid">#}
+{#                    <div class="alert alert-warning">#}
+{#                        "{{ request.GET.q }}"이 포함된 검색 결과가 없습니다. 다른 키워드로 다시 검색해 보세요!#}
+{#                    </div>#}
+{#                </div>#}
+{#			{% endif %}#}
+          {% endfor %}
+          </tbody>
+        </table>
+        </div>
+    </div>
+
+{% endblock %}

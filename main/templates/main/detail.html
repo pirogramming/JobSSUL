@@ -65,6 +65,18 @@
 
 </div>
 
+<div id="scrap-section">
+{% if is_scrap %}
+    <a href="{% url 'main:scrap_post' post.id %}">
+    <i class="fas fa-star"></i>
+    </a>
+{% else %}
+    <a href="{% url 'main:scrap_post' post.id %}">
+    <i class="far fa-star"></i>
+    </a>
+{% endif %}
+</div>
+
 <div class="main-comment-section" style="margin-left: 5%;">
     {% include 'main/comments.html' %}
 

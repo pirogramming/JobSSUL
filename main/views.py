@@ -42,9 +42,15 @@ def main_detail(request, post_pk):
     form = PostForm()
 
     comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
+
     is_liked = False
     if post.likes.filter(id=request.user.id).exists():
         is_liked = True
+
+    is_scrap = False
+    if post.scrap.filter(id=request.user.id).exists():
+        is_scrap = True
+
     comment_form = CommentForm()
 
     if request.method == 'POST':
@@ -84,6 +90,7 @@ def main_detail(request, post_pk):
         'comment_form': comment_form,
         'comment_is_liked': comment_is_liked,
         'form': form,
+        'is_scrap': is_scrap,
 
         # 'comment': comment,
     }
@@ -93,6 +100,21 @@ def main_detail(request, post_pk):
         return JsonResponse({'form': html})
     return render(request, 'main/detail.html', data)
 
+def post_scrap_list(request):
+    user = request.user
+    scrap_posts = user.scrap.all()
+    data = {
+        'scrap_posts': scrap_posts,
+    }
+    return render(request, 'main/post_scrap_list.html', data)
+
+def scrap_post(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    if post.scrap.filter(pk=request.user.id).exists():
+        post.scrap.remove(request.user)
+    else:
+        post.scrap.add(request.user)
+    return HttpResponseRedirect(post.get_absolute_url())
 
 def like_post(request):
     # post = get_object_or_404(Post, id=request.POST.get('post_id'))
