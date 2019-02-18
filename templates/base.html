@@ -32,6 +32,24 @@
         });
     });
 
+
+        $(document).on('click', '.comment_like', function(event){
+            event.preventDefault();
+            var pk = $(this).attr('value');
+            $.ajax({
+                type: 'POST',
+                url: '{% url "main:like_comment" %}',
+                data: {'comment_id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                dataType: 'json',
+                success: function(response){
+                    $('#comment_like_section'+pk).html(response['form'])
+                },
+                error: function(rs, e){
+                    console.log(rs.responseText);
+                },
+            });
+        });
+
    $(document).on('submit', '.comment-form', function(event){
         event.preventDefault();
         console.log($(this).serialize());
