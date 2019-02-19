@@ -25,7 +25,7 @@
     }
     .navbar {
         padding: 10px 20px;
-        font-family: 'Taom', sans-serif;
+        {#font-family: 'Taom', sans-serif;#}
     }
 
     .navbar .nav-item{
@@ -81,6 +81,11 @@
         justify-content: flex-end;
     }
 
+    form {
+        display: flex;
+        justify-content: center;
+    }
+
 
 </style>
 
@@ -100,61 +105,64 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div>
             <div class="row align-items-center justify-content-center" style="width: 800px;">
+
+                            <form method="POST" action="{% url "main:category" %}">
+                                {% csrf_token %}
                                 <div class="col-md-2 pt-3">
                                    <div class="form-group ">
-                                      <select id="inputState " class="form-control">
-                                        <option selected>지역</option>
-                                        <option>강남/서초/양재</option>
-                                        <option>잠실/송파/강동</option>
-                                        <option>동작/관악/사당</option>
-                                        <option>마포/서대문/은평</option>
-                                        <option>종로/중구/용산</option>
-                                        <option>노원/도봉/강북/성북</option>
-                                        <option>광진/성동/중랑/동대문</option>
-                                        <option>영등포/구로/신도림</option>
-                                        <option>강서/금천/양천</option>
+                                      <select id="inputState " class="form-control" name="place">
+                                        <option selected value="0">지역</option>
+                                        <option value="강남/서초/양재">강남/서초/양재</option>
+                                        <option value="잠실/송파/강동">잠실/송파/강동</option>
+                                        <option value="동작/관악/사당">동작/관악/사당</option>
+                                        <option value="마포/서대문/은평">마포/서대문/은평</option>
+                                        <option value="종로/중구/용산">종로/중구/용산</option>
+                                        <option value="노원/도봉/강북/성북">노원/도봉/강북/성북</option>
+                                        <option value="광진/성동/중랑/동대문">광진/성동/중랑/동대문</option>
+                                        <option value="영등포/구로/신도림">영등포/구로/신도림</option>
+                                        <option value="강서/금천/양천">강서/금천/양천</option>
                                       </select>
                                    </div>
                                 </div>
                                 <div class="col-md-2 pt-3">
                                    <div class="form-group">
-                                      <select id="inputState" class="form-control">
-                                        <option selected>직종</option>
-                                        <option>전체</option>
-                                        <option>외식/음료</option>
-                                        <option>유통/판매</option>
-                                        <option>문화/여가/생활</option>
-                                        <option>서비스</option>
-                                        <option>사무직</option>
-                                        <option>고객상담/리서치/영업</option>
-                                        <option>생산/건설/노무</option>
-                                        <option>IT/컴퓨터</option>
-                                        <option>교육/강사</option>
-                                        <option>디자인</option>
-                                        <option>미디어</option>
-                                        <option>운전/배달</option>
-                                        <option>병원/간호/연구</option>
+                                      <select id="inputState" class="form-control" name="type">
+                                        <option selected value="0">직종</option>
+                                        <option value="전체">전체</option>
+                                        <option value="외식/음료">외식/음료</option>
+                                        <option value="유통/판매">유통/판매</option>
+                                        <option value="문화/여가/생활">문화/여가/생활</option>
+                                        <option value="서비스">서비스</option>
+                                        <option value="사무직">사무직</option>
+                                        <option value="고객상담/리서치/영업">고객상담/리서치/영업</option>
+                                        <option value="생산/건설/노무">생산/건설/노무</option>
+                                        <option value="IT/컴퓨터">IT/컴퓨터</option>
+                                        <option value="교육/강사">교육/강사</option>
+                                        <option value="디자인">디자인</option>
+                                        <option value="미디어">미디어</option>
+                                        <option value="운전/배달">운전/배달</option>
+                                        <option value="병원/간호/연구">병원/간호/연구</option>
                                       </select>
                                    </div>
                                 </div>
                                 <div class="col-md-2 pt-3">
                                     <div class="form-group">
-                                      <select id="inputState" class="form-control">
-                                        <option selected>시급</option>
-                                        <option>전체</option>
-                                        <option>7500~9000</option>
-                                        <option>9000~10500</option>
-                                        <option>10500원 이상</option>
+                                      <select id="inputState" class="form-control" name="pay">
+                                        <option selected value="0">시급</option>
+                                        <option value="전체">전체</option>
+                                        <option value="7500원~9000원">7500원~9000원</option>
+                                        <option value="9000원~10500원">9000원~10500원</option>
+                                        <option value="10500원 이상">10500원 이상</option>
                                       </select>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                   <button type="button" class="btn btn-primary btn-block button">검색</button>
+                                <div class="col-md-2 pt-3">
+                                   <button type="submit" class="btn btn-primary btn-block button">검색</button>
                                 </div>
-                            </div>
+                            </form>
             </div>
+
 
             <ul class="nav nav-pills nav-justified">
               <li class="nav-item">
@@ -182,6 +190,3 @@
     {% endblock %}
 
 </body>
-
-</html>
-

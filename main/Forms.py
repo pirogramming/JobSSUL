@@ -6,7 +6,6 @@ from main.widgets import RateitjsWidget
 from .models import Post, Comment
 
 
-
 class PostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
@@ -32,4 +31,5 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['message']
+
 

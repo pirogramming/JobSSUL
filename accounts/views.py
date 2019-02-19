@@ -18,7 +18,6 @@ from django.contrib.auth import login as auth_login
 
 def signup(request):
     if request.method == 'POST':
-        print(request.POST)
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
