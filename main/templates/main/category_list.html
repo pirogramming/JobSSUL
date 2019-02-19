@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        {% load static %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+    <style>
+
+    .entire {
+        background-color: #daf1de;
+    }
+    .post_list_container{
+        margin-top: 30px;
+        margin-left: 50px;
+        margin-right: 50px;
+        background-color: white;
+    }
+
+    .create_post_button{
+        text-decoration: none;
+        color: white;
+        margin-right: 50px;
+
+
+    }
+
+    #recommend_star{
+        height: 16px;
+    }
+    .create_post_button_container{
+            text-align: right;
+            margin-bottom: 50px;
+        }
+
+    .category{
+        text-decoration: none;
+        font-weight: 700;
+        color: black;
+    }
+
+    .d6 {
+        text-align: right;
+        margin-right: 50px;
+    }
+
+    .d6 form {
+      height: 42px;
+    }
+    .d6 input {
+      height: 100%;
+      width: 0;
+      padding: 0 42px 0 15px;
+      border: none;
+      border-bottom: 2px solid transparent;
+      outline: none;
+      background: transparent;
+      transition: .4s cubic-bezier(0, 0.8, 0, 1);
+    }
+    .d6 input:focus {
+      width: 300px;
+      z-index: 1;
+      border-bottom: 2px solid white;
+    }
+    .d6 button {
+      background: #B6DCB6;
+      border: none;
+      height: 42px;
+      width: 42px;
+      cursor: pointer;
+    }
+    .d6 button:before {
+      content: "\f002";
+      font-family: FontAwesome;
+      font-size: 16px;
+      color: white;
+    }
+    </style>
+
+    {% if not posts %}
+        <div class="container-fluid">
+            <div class="alert alert-warning">
+                해당하는 포스팅이 없습니다.
+            </div>
+        </div>
+    {% endif %}
+
+     {% if posts %}
+        <div class="container-fluid">
+            <div class="alert alert-success">
+                설정한 조건의 포스팅이 검색되었습니다.
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="d6">
+        <form>
+          <input type="text" placeholder="검색어 입력" name="q">
+          <button type="submit"></button>
+        </form>
+    </div>
+
+
+
+    <div class="entire">
+        <div class="post_list_container">
+        <table class="table table-bordered table-hover">
+          <thead class = "thread-dark">
+            <tr>
+              <th scope="col">제목</th>
+              <th scope="col">작성자</th>
+              <th scope="col">별점</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+          {% for post in posts %}
+            <tr>
+              <td><a href="{% url 'main:detail' post.id %}" class="category">{{ post.title }}</a></td>
+                <td>{{ post.author.nickname }}</td>
+              <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
+            </tr>
+            {% empty %}
+          {% endfor %}
+
+          </tbody>
+        </table>
+        </div>
+        <div class="create_post_button_container">
+            <a href="{% url 'main:create' %}" class="btn btn-dark btn btn-primary btn-lg create_post_button">게시글 생성</a>
+        </div>
+    </div>
+
+{% endblock %}

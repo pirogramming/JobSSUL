@@ -20,19 +20,21 @@ class Post(models.Model):
     objects = models.Manager()
     published = PublishedManager()
     PAYMENT_LEVEL = (
-        ('평범', '7500원 ~ 9000원'),
-        ('굳', '9000원 ~ 10500원'),
-        ('쏘 굳', '10500원 이상'),
+        ('전체', '전체'),
+        ('7500원~9000원', '7500원~9000원'),
+        ('9000원~10500원', '9000원~10500원'),
+        ('10500원 이상', '10500원 이상'),
     )
 
 
     WORK_TYPE = (
+        ('전체', '전체'),
         ('외식/음료', '외식/음료'),
         ('유통/판매', '유통/판매'),
         ('문화/여가/생활', '문화/여가/생활'),
         ('서비스', '서비스'),
         ('사무직', '사무직'),
-        ('고객상담/리서치/영업','고객상담/리서치/영업'),
+        ('고객상담/리서치/영업', '고객상담/리서치/영업'),
         ('생산/건설/노무', '생산/건설/노무'),
         ('IT/컴퓨터', 'IT/컴퓨터'),
         ('교육/강사', '교육/강사'),
@@ -46,7 +48,7 @@ class Post(models.Model):
     title = models.CharField(max_length=20, verbose_name= '제목')
     content = models.TextField(verbose_name='내용', validators=[MinLengthValidator(10, message=None)],
                                help_text='내용을 최소 10자 이상으로 작성해주세요')
-    payment = models.CharField(max_length=10, choices=PAYMENT_LEVEL, verbose_name='시급')
+    payment = models.CharField(max_length=20, choices=PAYMENT_LEVEL, verbose_name='시급')
     workplace = models.CharField(max_length=50, verbose_name='지점')
     recommend = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name = '별점')
     work_type = models.CharField(max_length=10, choices=WORK_TYPE, verbose_name='직종', help_text='알바 직종을 선택해 주세요.')

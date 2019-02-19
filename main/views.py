@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.template import RequestContext
+from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
 from .Forms import CommentForm
 from .models import Post, Comment
@@ -10,6 +11,8 @@ from .Forms import PostForm
 from django.db.models import Q
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+
+
 
 
 def main_page(request):
@@ -25,7 +28,6 @@ def main_post(request):
     # post = Post.objects.all()
     posts = Post.published.all()
     query = request.GET.get('q', None)
-    print(query)
     if query:
         posts = Post.published.filter(
             Q(title__icontains=query) |
@@ -155,7 +157,6 @@ def like_comment(request):
 def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request=request)
-
         if form.is_valid():
             form.save()
             messages.info(request, '새 글이 등록되었습니다.')
@@ -254,8 +255,42 @@ def comment_delete(request, pk):
         'comment': comment,
     })
 
+
 def best_post(request):
     posts = Post.objects.all()
     return render(request, 'main/best_post.html', {
         'posts': posts
     })
+
+
+def category(request):
+        posts = Post.objects.all()
+        place = request.POST.get('place', '0')
+        type = request.POST.get('type', '0')
+        pay = request.POST.get('pay', '0')
+
+        if place == '0' or type == '0' or pay == '0':
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        #조건들 선택안하고 그냥 누르면 request한 그 해당 페이지 리턴
+
+        #강남/서초/양재에서 강남만 입력해도 검색되게 해야함!(<--지점 추가후 생각할까..)
+        if place:
+            posts = Post.objects.filter(
+                Q(workplace__icontains=place)
+            )
+
+        if type != '전체':
+            posts = Post.objects.filter(
+                Q(work_type__icontains=type)
+            )
+
+        if pay != '전체':
+            posts = Post.objects.filter(
+                Q(payment__icontains=pay)
+            )
+
+        data = {
+            'posts': posts,
+        }
+        return render(request, 'main/category_list.html', data)
+

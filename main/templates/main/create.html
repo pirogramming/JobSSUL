@@ -26,6 +26,7 @@
 
 
     </style>
+
 {{ form.media }}
 <form method="POST">
     {% csrf_token %}
@@ -40,7 +41,6 @@
 {% endfor %}
 <div class="button_container">
     <button type="submit" class="btn btn-primary btn-lg">생성</button>
-
 </form>
 
 
