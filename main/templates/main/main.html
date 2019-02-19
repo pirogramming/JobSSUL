@@ -74,7 +74,7 @@
     {#                </thead>#}
 
                     <tbody class="body">
-                        {% for post in posts %}
+                        {% for post in latest %}
                             <tr>
                               <td><a href="{% url "main:detail" post.id %}" class="category">{{ post.title }}</a></td>
                               <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
@@ -88,7 +88,7 @@
 
             <div id="box">
                 <a href="{% url 'main:best_post' %}" class="link">인기 잡썰</a>
-                {% for post in posts %}
+                {% for post in liked %}
                     {% if post.total_likes >= 1 %}
                         <table class="table table-bordered table-hover">
                               <tbody>

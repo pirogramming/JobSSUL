@@ -1,0 +1,10 @@
+    <p><b>스크랩</b></p>
+{% if is_scrap %}
+    <a id="scrap" value="{{ post.id }}" href="{% url 'main:scrap_post' post.id %}">
+    <i class="fas fa-star"></i>
+    </a>
+{% else %}
+    <a id="scrap" value="{{ post.id }}" href="{% url 'main:scrap_post' post.id %}">
+    <i class="far fa-star"></i>
+    </a>
+{% endif %}

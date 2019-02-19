@@ -35,6 +35,24 @@
         height: 16px;
     }
 
+    i {
+        font-size: 60px;
+    }
+
+    #scrap-section {
+        text-align: center;
+    }
+
+    .fas fa-star {
+        height: 100px;
+    }
+
+    .far fa-star {
+        height: 100px;
+    }
+
+
+
     </style>
 
 
@@ -64,19 +82,35 @@
 
 <div id="like-section">
     {% include 'main/like_section.html' %}
-
 </div>
 
 <div id="scrap-section">
-{% if is_scrap %}
-    <a href="{% url 'main:scrap_post' post.id %}">
-    <i class="fas fa-star"></i>
-    </a>
-{% else %}
-    <a href="{% url 'main:scrap_post' post.id %}">
-    <i class="far fa-star"></i>
-    </a>
-{% endif %}
+    {% include 'main/scrap.html' %}
+    <script>
+        $(document).on('click', '#scrap', function(event){
+                event.preventDefault();
+                $.ajax({
+                type: 'GET',
+                url: "{% url 'main:scrap_post' post.id %}",
+                success: function(response){
+                    $('#scrap-section').html(response['form'])
+                },
+                error: function(rs, e){
+                    console.log(rs.responseText);
+                },
+            });
+        });
+    </script>
+{#    <p><b>스크랩<b></b></p>#}
+{#{% if is_scrap %}#}
+{#    <a href="{% url 'main:scrap_post' post.id %}">#}
+{#    <i class="fas fa-star"></i>#}
+{#    </a>#}
+{#{% else %}#}
+{#    <a href="{% url 'main:scrap_post' post.id %}">#}
+{#    <i class="far fa-star"></i>#}
+{#    </a>#}
+{#{% endif %}#}
 </div>
 
 <div class="main-comment-section" style="margin-left: 5%;">
