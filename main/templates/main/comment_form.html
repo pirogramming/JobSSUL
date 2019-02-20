@@ -1,7 +1,15 @@
+{#<style>#}
+{#body {#}
+{#    font-size: 50px;#}
+{#}#}
+{#</style>#}
+
+<body>
 {% block message %}
-<form action="" method="post">
+<form id="comment-edit" action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit"/>
 </form>
 {% endblock %}
+</body>
