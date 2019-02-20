@@ -1,32 +1,5 @@
 {% extends 'base.html' %}
-<script>
-    var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
 
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : sParameterName[1];
-        }
-    }
-};
-// 정렬방식 셀렉트 박스 유지
-$(document).ready(function(){
-  var sort = getUrlParameter('sort');
-  if(sort == 'likes'){
-    $('.sort-likes').prop('selected', 'selected')
-  }else if(sort == 'mypost'){
-    $('.sort-mypost').prop('selected', 'selected')
-  }else{
-    $('.sort-date').prop('selected', 'selected')
-  }
-});
-
-</script>
 {% block content %}
 <style>
 {#@font-face{#}
@@ -38,7 +11,7 @@ $(document).ready(function(){
 
 
 .button_container{
-    text-align : left;
+    text-align : center;
     margin-top: 100px;
     background-color: #daf1de;
     padding-top: 100px;
@@ -86,18 +59,15 @@ $(document).ready(function(){
     background-color: white;
 }
 
+.to_main_button_container{
+    text-align :center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
 </style>
 
 {% load static %}
 
-
-<select id="sort-select" onchange="location = this.value;">
-  <option class="sort-date" value="/">최신순</option>
-  <option class="sort-likes" value="?sort=likes">좋아요순</option>
-  {% if user.is_authenticated %}
-  <option class="sort-mypost" value="?sort=mypost">내가쓴글</option>
-  {% endif %}
-</select>
 
     <div class="button_container">
         <div class="boxes">
@@ -148,5 +118,12 @@ $(document).ready(function(){
                 <a href="#" class="link">추천 잡썰</a>
             </div>
         </div>
+        <div class="to_main_button_container">
+        <a href="{% url 'main:post' %}" class="btn btn-dark btn-lg">더 많은 잡썰 보러가기</a>
+
     </div>
+    </div>
+
+
+
 {% endblock %}
