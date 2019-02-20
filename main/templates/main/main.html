@@ -8,8 +8,10 @@
 {#    }#}
 
 
+
+
 .button_container{
-    text-align : left;
+    text-align : center;
     margin-top: 100px;
     background-color: #daf1de;
     padding-top: 100px;
@@ -44,6 +46,7 @@
     text-decoration: none;
 }
 
+
 #recommend_star{
         height: 16px;
 }
@@ -56,9 +59,16 @@
     background-color: white;
 }
 
+.to_main_button_container{
+    text-align :center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
 </style>
 
 {% load static %}
+
+
     <div class="button_container">
         <div class="boxes">
             <div id="box">
@@ -108,5 +118,12 @@
                 <a href="#" class="link">추천 잡썰</a>
             </div>
         </div>
+        <div class="to_main_button_container">
+        <a href="{% url 'main:post' %}" class="btn btn-dark btn-lg">더 많은 잡썰 보러가기</a>
+
     </div>
+    </div>
+
+
+
 {% endblock %}
