@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load myfilters %}
 {% block content %}
+
     <style>
     .post_category{
         @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
@@ -28,7 +29,7 @@
     </style>
 
 {{ form.media }}
-<form method="POST">
+<form method="POST" action="" id="form">
     {% csrf_token %}
 {% for field in form %}
     <div class="content_container">
