@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
@@ -8,7 +10,7 @@ from django.views.decorators.http import require_POST
 from .Forms import CommentForm
 from .models import Post, Comment
 from .Forms import PostForm
-from django.db.models import Q, Count
+from django.db.models import Q, Count, QuerySet
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
@@ -173,7 +175,9 @@ def like_comment(request):
 def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request=request)
+        print('되나')
         if form.is_valid():
+            print('됐네')
             form.save()
             messages.info(request, '새 글이 등록되었습니다.')
             return redirect('main:post')
@@ -288,27 +292,36 @@ def category(request):
         pay = request.POST.get('pay', '0')
 
         if place == '0' or type == '0' or pay == '0':
+            messages.error(request, '세 카테고리를 모두 선택해주세요')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
         #조건들 선택안하고 그냥 누르면 request한 그 해당 페이지 리턴
 
-        #강남/서초/양재에서 강남만 입력해도 검색되게 해야함!(<--지점 추가후 생각할까..)
+        list1 = place.split('/')
+        result = set()
         if place:
-            posts = Post.objects.filter(
-                Q(workplace__icontains=place)
-            )
+            for point in list1:
+                posts = set(Post.objects.filter(
+                    Q(reside__icontains=point)
+                ))
+                result = result | posts
+            posts = result
 
         if type != '전체':
-            posts = Post.objects.filter(
-                Q(work_type__icontains=type)
-            )
+            result = set()
+            for post in posts:
+                if post.work_type == type:
+                    result.add(post)
+            posts = result
 
         if pay != '전체':
-            posts = Post.objects.filter(
-                Q(payment__icontains=pay)
-            )
+            result = set()
+            for post in posts:
+                if post.payment == pay:
+                    result.add(post)
 
         data = {
-            'posts': posts,
+            'posts': result,
         }
+
         return render(request, 'main/category_list.html', data)
 
