@@ -81,7 +81,7 @@
         justify-content: flex-end;
     }
 
-    form {
+    .search_nav {
         display: flex;
         justify-content: center;
     }
@@ -107,7 +107,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="row align-items-center justify-content-center" style="width: 800px;">
 
-                            <form method="POST" action="{% url "main:category" %}">
+                            <form method="POST" action="{% url "main:category" %}" class="search_nav">
                                 {% csrf_token %}
                                 <div class="col-md-2 pt-3">
                                    <div class="form-group ">
