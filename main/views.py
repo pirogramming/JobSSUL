@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
+
 from .Forms import CommentForm
 from .models import Post, Comment
 from .Forms import PostForm
@@ -20,11 +21,11 @@ from django.http import JsonResponse
 def main_page(request):
     posts = Post.objects.all()
     # posts = Post.objects.all().order_by('-updated_at')
-
     data = {
         'posts': posts,
         'latest': posts.order_by('-updated_at'),
-        'liked': posts.annotate(liked=Count('likes')).order_by('-liked')
+        'liked': posts.annotate(liked=Count('likes')).order_by('-liked'),
+
     }
     return render(request, 'main/main.html', data)
 
