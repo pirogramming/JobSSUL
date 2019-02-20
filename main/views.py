@@ -299,7 +299,7 @@ def category(request):
         if place:
             for point in list1:
                 posts = set(Post.objects.filter(
-                    Q(workplace__icontains=point)
+                    Q(reside__icontains=point)
                 ))
                 result = result | posts
             posts = result
