@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'accounts',
     'main',
+    'notice',
+    'claim',
     'jobssul',
 ]
 

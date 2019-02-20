@@ -1,4 +1,3 @@
-
 from django.core.validators import MinLengthValidator, MaxValueValidator, MinValueValidator
 from datetime import timezone
 from django.db import models
@@ -6,6 +5,7 @@ import django
 from django.urls import reverse
 from jobssul import settings
 from accounts.models import User
+
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -20,19 +20,21 @@ class Post(models.Model):
     objects = models.Manager()
     published = PublishedManager()
     PAYMENT_LEVEL = (
-        ('평범', '7500원 ~ 9000원'),
-        ('굳', '9000원 ~ 10500원'),
-        ('쏘 굳', '10500원 이상'),
+        ('전체', '전체'),
+        ('7500원~9000원', '7500원~9000원'),
+        ('9000원~10500원', '9000원~10500원'),
+        ('10500원 이상', '10500원 이상'),
     )
 
 
     WORK_TYPE = (
+        ('전체', '전체'),
         ('외식/음료', '외식/음료'),
         ('유통/판매', '유통/판매'),
         ('문화/여가/생활', '문화/여가/생활'),
         ('서비스', '서비스'),
         ('사무직', '사무직'),
-        ('고객상담/리서치/영업','고객상담/리서치/영업'),
+        ('고객상담/리서치/영업', '고객상담/리서치/영업'),
         ('생산/건설/노무', '생산/건설/노무'),
         ('IT/컴퓨터', 'IT/컴퓨터'),
         ('교육/강사', '교육/강사'),
@@ -42,13 +44,11 @@ class Post(models.Model):
         ('병원/간호/연구', '병원/간호/연구'),
     )
 
-
-
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=20, verbose_name= '제목')
     content = models.TextField(verbose_name='내용', validators=[MinLengthValidator(10, message=None)],
                                help_text='내용을 최소 10자 이상으로 작성해주세요')
-    payment = models.CharField(max_length=10, choices=PAYMENT_LEVEL, verbose_name='시급')
+    payment = models.CharField(max_length=20, choices=PAYMENT_LEVEL, verbose_name='시급')
     workplace = models.CharField(max_length=50, verbose_name='지점')
     recommend = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name = '별점')
     work_type = models.CharField(max_length=10, choices=WORK_TYPE, verbose_name='직종', help_text='알바 직종을 선택해 주세요.')
@@ -56,10 +56,10 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(User, related_name='likes', blank=True)
     status = models.CharField(max_length=10, default='published')
+    scrap = models.ManyToManyField(User, related_name='scrap', blank=True)
+
     class Meta:
         ordering = ['-id']
-
-
 
     # created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now = True)
@@ -67,7 +67,6 @@ class Post(models.Model):
     # def published(self):
     #     now = timezone.now()
     #     return now
-
 
     def __str__(self):
         template = '{0.title} {0.author}'
@@ -84,6 +83,7 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('main:detail', args=[self.pk])
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

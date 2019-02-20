@@ -11,15 +11,21 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <title>JOBSSUL</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+
+  <title>JOBSSUL</title>
   </head>
 
 
 <style>
     @import url('https://fonts.googleapis.com/css?family=Yeon+Sung');
+    @font-face{
+        src: url("../main/static/font/BinggraeTaom-Bold.otf");
+        font-family: "Taom";
+    }
     .navbar {
         padding: 10px 20px;
-        {#font-family: 'Yeon Sung', cursive;#}
+        {#font-family: 'Taom', sans-serif;#}
     }
 
     .navbar .nav-item{
@@ -45,37 +51,42 @@
 
     .navbar .nav-item:hover{
         background-color: #f2f2f2;
-        border-bottom: 3px solid #96dfd8;
+        border-bottom: 3px solid #aee6cb;
     }
 
     .navbar .nav-item:active{
-        border-bottom: 3px solid #96dfd8;
+        border-bottom: 3px solid #aee6cb;
     }
 
-
-    {#a:hover{#}
-    {#    background-color: #f2f2f2;#}
-    {#    color: #85d4be;#}
-    {#}
-
-    #btnGroupDrop1 {
-        background-color: #96dfd8;
-        border-color: white;
-        padding: 12px 20px;
+    #inputState{
+        border-color: #aee6cb;
     }
-
-    {#toggle때문에 ^^..#}
-    {##btnGroupDrop1:visited {#}
-    {#    background-color: #85d4be;#}
-    {#}
-    {##}
-    {#.show:active {#}
-    {#    background-color: #85d4be;#}
-    {#}
 
     #info{
         float: right;
     }
+
+    .button{
+        border-color: #aee6cb;
+        background-color: white;
+        color: #aee6cb;
+    }
+
+    .button:hover{
+        background-color: #aee6cb;
+        border-color: #aee6cb;
+    }
+
+    .collapse {
+        justify-content: flex-end;
+    }
+
+    form {
+        display: flex;
+        justify-content: center;
+    }
+
+
 </style>
 
 <body>
@@ -84,87 +95,94 @@
         <img src={% static "main/logo.png"%} width="119" height="44" alt="" style="padding: 0;">
       </a>
 
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+{#    <form class="form-inline my-2 mr-2 ml-2 my-lg-0" action="{% url 'main:post' %}">#}
+{#          <input class="form-control mr-sm-2" type="search" placeholder="검색" aria-label="Search" name="q">#}
+{#          <button class="btn btn-outline-success my-2 my-sm-0 button" type="submit">Search</button>#}
+{#    </form>#}
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button>
+    </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="nav nav-pills nav-justified">
-          <li class="nav-item">
-            <a class="nav-link" href="#">공지썰 <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">건의썰</a>
-          </li>
-        </ul>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="row align-items-center justify-content-center" style="width: 800px;">
 
-        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-          <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              지역별
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-              <a class="dropdown-item" href="#">강남/서초/양재</a>
-              <a class="dropdown-item" href="#">잠실/송파/강동</a>
-                <a class="dropdown-item" href="#">동작/관악/사당</a>
-                <a class="dropdown-item" href="#">마포/서대문/은평</a>
-                <a class="dropdown-item" href="#">종로/중구/용산</a>
-                <a class="dropdown-item" href="#">노원/도봉/강북/성북</a>
-                <a class="dropdown-item" href="#">광진/성동/중랑/동대문</a>
-                <a class="dropdown-item" href="#">영등포/구로/신도림</a>
-                <a class="dropdown-item" href="#">강서/금천/양천</a>
+                            <form method="POST" action="{% url "main:category" %}">
+                                {% csrf_token %}
+                                <div class="col-md-2 pt-3">
+                                   <div class="form-group ">
+                                      <select id="inputState " class="form-control" name="place">
+                                        <option selected value="0">지역</option>
+                                        <option value="강남/서초/양재">강남/서초/양재</option>
+                                        <option value="잠실/송파/강동">잠실/송파/강동</option>
+                                        <option value="동작/관악/사당">동작/관악/사당</option>
+                                        <option value="마포/서대문/은평">마포/서대문/은평</option>
+                                        <option value="종로/중구/용산">종로/중구/용산</option>
+                                        <option value="노원/도봉/강북/성북">노원/도봉/강북/성북</option>
+                                        <option value="광진/성동/중랑/동대문">광진/성동/중랑/동대문</option>
+                                        <option value="영등포/구로/신도림">영등포/구로/신도림</option>
+                                        <option value="강서/금천/양천">강서/금천/양천</option>
+                                      </select>
+                                   </div>
+                                </div>
+                                <div class="col-md-2 pt-3">
+                                   <div class="form-group">
+                                      <select id="inputState" class="form-control" name="type">
+                                        <option selected value="0">직종</option>
+                                        <option value="전체">전체</option>
+                                        <option value="외식/음료">외식/음료</option>
+                                        <option value="유통/판매">유통/판매</option>
+                                        <option value="문화/여가/생활">문화/여가/생활</option>
+                                        <option value="서비스">서비스</option>
+                                        <option value="사무직">사무직</option>
+                                        <option value="고객상담/리서치/영업">고객상담/리서치/영업</option>
+                                        <option value="생산/건설/노무">생산/건설/노무</option>
+                                        <option value="IT/컴퓨터">IT/컴퓨터</option>
+                                        <option value="교육/강사">교육/강사</option>
+                                        <option value="디자인">디자인</option>
+                                        <option value="미디어">미디어</option>
+                                        <option value="운전/배달">운전/배달</option>
+                                        <option value="병원/간호/연구">병원/간호/연구</option>
+                                      </select>
+                                   </div>
+                                </div>
+                                <div class="col-md-2 pt-3">
+                                    <div class="form-group">
+                                      <select id="inputState" class="form-control" name="pay">
+                                        <option selected value="0">시급</option>
+                                        <option value="전체">전체</option>
+                                        <option value="7500원~9000원">7500원~9000원</option>
+                                        <option value="9000원~10500원">9000원~10500원</option>
+                                        <option value="10500원 이상">10500원 이상</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 pt-3">
+                                   <button type="submit" class="btn btn-primary btn-block button">검색</button>
+                                </div>
+                            </form>
             </div>
-          </div>
 
-        <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              직종별
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item" href="#">전체</a>
-                <a class="dropdown-item" href="#">외식/음료</a>
-                <a class="dropdown-item" href="#">유통/판매</a>
-                <a class="dropdown-item" href="#">문화/여가/생활</a>
-                <a class="dropdown-item" href="#">서비스</a>
-                <a class="dropdown-item" href="#">사무직</a>
-                <a class="dropdown-item" href="#">고객상담/리서치/영업</a>
-                <a class="dropdown-item" href="#">생산/건설/노무</a>
-                <a class="dropdown-item" href="#">IT/컴퓨터</a>
-                <a class="dropdown-item" href="#">교육/강사</a>
-                <a class="dropdown-item" href="#">디자인</a>
-                <a class="dropdown-item" href="#">미디어</a>
-                <a class="dropdown-item" href="#">운전/배달</a>
-                <a class="dropdown-item" href="#">병원/간호/연구</a>
-            </div>
-          </div>
 
-          <div class="btn-group" role="group">
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              시급별
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                <a class="dropdown-item" href="#">전체</a>
-                <a class="dropdown-item" href="#">7500~9000원</a>
-                <a class="dropdown-item" href="#">9000~10500원</a>
-                <a class="dropdown-item" href="#">10500원 이상</a>
-            </div>
-          </div>
-        </div>
+            <ul class="nav nav-pills nav-justified">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'notice:main' %}">공지썰 <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'claim:main' %}">건의썰</a>
+              </li>
+            </ul>
+
             <ul id="info" class="nav nav-pills">
                     {% if not user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:signup" %}">회원가입</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:login" %}?next={{ request.path }}">로그인</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% provider_login_url 'google' %}?next={{ request.path }}">GMAIL 계정으로 로그인</a></li>
                     {% else %}
-                {#            <li class="nav-item"><a class="nav-link" href="{% url "profile" %}">프로필</a></li>#}
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:user_profile" %}">마이페이지</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url "accounts:logout" %}?next={{ request.path }}">로그아웃</a></li>
                     {% endif %}
             </ul>
-        <form class="form-inline my-2 mr-2 ml-2 my-lg-0" action="{% url 'main:post' %}">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
       </div>
     </nav>
 
@@ -172,6 +190,3 @@
     {% endblock %}
 
 </body>
-
-</html>
-

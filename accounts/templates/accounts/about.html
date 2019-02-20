@@ -82,6 +82,28 @@
                     {% endfor %}
                 </table>
             </div>
+
+            <div>
+                <h3>나의 스크랩 목록</h3>
+                <table class="type01">
+                    <thead>
+                        <tr>
+                            <th>글제목</th>
+                            <th>작성시간</th>
+                            <th>수정시간</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in scrap_posts %}
+                        <tr>
+                            <td><a href="{% url 'main:detail' post.id %}">{{ post.title }}</a></td>
+                            <td><small>{{ post.created_at }}</small></td>
+                            <td><small>{{ post.updated_at }}</small></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
         {% endif %}
     {% endblock %}

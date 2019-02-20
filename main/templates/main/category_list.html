@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% load static %}
+
+        {% load static %}
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
@@ -78,6 +79,21 @@
     }
     </style>
 
+    {% if not posts %}
+        <div class="container-fluid">
+            <div class="alert alert-warning">
+                해당하는 포스팅이 없습니다.
+            </div>
+        </div>
+    {% endif %}
+
+     {% if posts %}
+        <div class="container-fluid">
+            <div class="alert alert-success">
+                설정한 조건의 포스팅이 검색되었습니다.
+            </div>
+        </div>
+    {% endif %}
 
     <div class="d6">
         <form>
@@ -85,6 +101,7 @@
           <button type="submit"></button>
         </form>
     </div>
+
 
 
     <div class="entire">
@@ -102,19 +119,11 @@
 
           {% for post in posts %}
             <tr>
-              <td>
-                   <a href="{{ post.id }}" class="category">{{ post.title }}</a></td>
+              <td><a href="{% url 'main:detail' post.id %}" class="category">{{ post.title }}</a></td>
                 <td>{{ post.author.nickname }}</td>
               <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
             </tr>
             {% empty %}
-			{% if request.GET.q != None %}
-                <div class="container-fluid">
-                    <div class="alert alert-warning">
-                        "{{ request.GET.q }}"이 포함된 검색 결과가 없습니다. 다른 키워드로 다시 검색해 보세요!
-                    </div>
-                </div>
-			{% endif %}
           {% endfor %}
 
           </tbody>

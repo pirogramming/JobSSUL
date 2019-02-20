@@ -33,6 +33,8 @@
     });
 
 
+
+
         $(document).on('click', '.comment_like', function(event){
             event.preventDefault();
             var pk = $(this).attr('value');
@@ -99,27 +101,34 @@
       @import url('https://fonts.googleapis.com/css?family=Stylish');
       .main_header{
           font-family: 'Stylish', sans-serif;
-          display: flex;
-          justify-content: center;
-          margin-left: 350px;
-          margin-right: 350px;
+          height: 60px;
+          width: 100%;
+          padding-bottom: 30px;
+          margin: 0;
           text-align: center;
           font-size: 50px;
           font-weight: 400;
-          background-color: pink;
-          padding-top: 100px;
-          padding-bottom:100px;
+          background-color: white;
       }
-
+      .design {
+          background-color: #e0f0ed;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          margin-bottom: 30px;
+      }
+      .text-center{
+          margin-bottom: 30px;
+      }
  </style>
 
 <body>
 
     <div class="text-center">
-    <img src="{% static "main/banner.png" %}" class="rounded img-fluid" alt="Responsive image" />
+        <img src="{% static "main/banner.png" %}" class="rounded img-fluid" alt="Responsive image" />
     </div>
-      <h3 class="main_header">모든 알바 후기가 모이는 곳</h3>
-
+        <div class="design">
+            <h3 class="main_header">모든 알바 후기가 모이는 곳</h3>
+        </div>
     {% if messages %}
       <div class="container">
           {% for message in messages %}
@@ -129,6 +138,7 @@
           {% endfor %}
       </div>
     {% endif %}
+
 
   {% block content %}
   {% endblock %}

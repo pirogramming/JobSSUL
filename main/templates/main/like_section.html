@@ -1,4 +1,4 @@
-<p style="text-align: center; margin-top: 10%; font-weight: bold;">{{ total_likes }}명이 이 글을 추천했어요</p>
+<p style="text-align: center; margin-top: 10%; font-weight: bold;">{{ post.total_likes }}명이 이 글을 추천했어요</p>
     {% if request.user.is_authenticated %}
      <form action="{% url 'main:like_post' %}" method="post">
          {% csrf_token %}

@@ -3,18 +3,26 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.template import RequestContext
+from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
 from .Forms import CommentForm
 from .models import Post, Comment
 from .Forms import PostForm
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 
+
+
+
 def main_page(request):
-    post = Post.objects.all()
+    posts = Post.objects.all()
+    # posts = Post.objects.all().order_by('-updated_at')
+
     data = {
-        'post': post
+        'posts': posts,
+        'latest': posts.order_by('-updated_at'),
+        'liked': posts.annotate(liked=Count('likes')).order_by('-liked')
     }
     return render(request, 'main/main.html', data)
 
@@ -23,9 +31,8 @@ def main_post(request):
     # post = Post.objects.all()
     posts = Post.published.all()
     query = request.GET.get('q', None)
-    print(query)
     if query:
-        posts = Post.published.filter(
+        posts = Post.objects.filter(
             Q(title__icontains=query) |
             Q(author__username=query) |
             Q(content__icontains=query)
@@ -42,9 +49,15 @@ def main_detail(request, post_pk):
     form = PostForm()
 
     comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
+
     is_liked = False
     if post.likes.filter(id=request.user.id).exists():
         is_liked = True
+
+    is_scrap = False
+    if post.scrap.filter(id=request.user.id).exists():
+        is_scrap = True
+
     comment_form = CommentForm()
 
     if request.method == 'POST':
@@ -69,13 +82,7 @@ def main_detail(request, post_pk):
     #     comment = comments.get()
     #     if comment.likes.filter(id=request.user.id).exists():
     #         comment_is_liked = True
-
     # comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
-    # comment_is_liked = False
-    # if comment.likes.filter(id=request.user.id).exists():
-    #     comment_is_liked = True
-
-    # comment = Comment.objects.filter
 
     comment_is_liked = False
     for comment in comments:
@@ -90,6 +97,7 @@ def main_detail(request, post_pk):
         'comment_form': comment_form,
         'comment_is_liked': comment_is_liked,
         'form': form,
+        'is_scrap': is_scrap,
 
         # 'comment': comment,
     }
@@ -98,6 +106,25 @@ def main_detail(request, post_pk):
         html = render_to_string('main/comments.html', data, request=request)
         return JsonResponse({'form': html})
     return render(request, 'main/detail.html', data)
+
+
+def scrap_post(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    if post.scrap.filter(pk=request.user.id).exists():
+        post.scrap.remove(request.user)
+        is_scrap = False
+    else:
+        post.scrap.add(request.user)
+        is_scrap = True
+
+    data = {
+        'is_scrap': is_scrap,
+        'post': post,
+    }
+
+    if request.is_ajax():
+        html = render_to_string('main/scrap.html', data, request=request)
+        return JsonResponse({'form': html})
 
 
 def like_post(request):
@@ -120,34 +147,19 @@ def like_post(request):
         return JsonResponse({'form': html})
 
 
-# def comment_detail(request, pk):
-#     comment = get_object_or_404(Comment, pk=pk)
-#     comment_is_liked = False
-#     if comment.likes.filter(id=request.user.id).exists():
-#         comment_is_liked = True
-#     data = {
-#         'comment': comment,
-#         'comment_is_liked': comment_is_liked,
-#     }
-#     return render(request, 'main/detail.html', data)
-
-
 
 def like_comment(request):
-    # post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    # comment = get_object_or_404(Comment, id=request.POST.get('id'))
     comment = get_object_or_404(Comment, id=request.POST.get('comment_id'))
-    # post = get_object_or_404(Post, pk=post_pk)
-    # comment = get_object_or_404(Comment, pk=pk)
     comment_is_liked = False
     if comment.likes.filter(id=request.user.id).exists():
         comment.likes.remove(request.user)
         comment_is_liked = False
-        # return redirect(f'/main/post/{comment.post.pk}')
     else:
         comment.likes.add(request.user)
         comment_is_liked = True
         # return redirect(f'/main/post/{comment.post.pk}')
-    #return redirect(f'/main/post/{comment.post.pk}')
+    # return redirect(f'/main/post/{comment.post.pk}')
     data = {
         'comment': comment
     }
@@ -159,7 +171,6 @@ def like_comment(request):
 def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request=request)
-
         if form.is_valid():
             form.save()
             messages.info(request, '새 글이 등록되었습니다.')
@@ -258,8 +269,44 @@ def comment_delete(request, pk):
         'comment': comment,
     })
 
+
 def best_post(request):
     posts = Post.objects.all()
+    # posts = Post.objects.filter.order_by('-likes', '-updated_at')
+
     return render(request, 'main/best_post.html', {
         'posts': posts
     })
+
+
+def category(request):
+        posts = Post.objects.all()
+        place = request.POST.get('place', '0')
+        type = request.POST.get('type', '0')
+        pay = request.POST.get('pay', '0')
+
+        if place == '0' or type == '0' or pay == '0':
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        #조건들 선택안하고 그냥 누르면 request한 그 해당 페이지 리턴
+
+        #강남/서초/양재에서 강남만 입력해도 검색되게 해야함!(<--지점 추가후 생각할까..)
+        if place:
+            posts = Post.objects.filter(
+                Q(workplace__icontains=place)
+            )
+
+        if type != '전체':
+            posts = Post.objects.filter(
+                Q(work_type__icontains=type)
+            )
+
+        if pay != '전체':
+            posts = Post.objects.filter(
+                Q(payment__icontains=pay)
+            )
+
+        data = {
+            'posts': posts,
+        }
+        return render(request, 'main/category_list.html', data)
+
