@@ -97,22 +97,42 @@
             </div>
 
             <div id="box">
-                <a href="{% url 'main:best_post' %}" class="link">인기 잡썰</a>
-                {% for post in liked %}
-                    {% if post.total_likes >= 1 %}
-                        <table class="table table-bordered table-hover">
-                              <tbody>
+                <a href="{% url 'main:post' %}" class="link">인기 잡썰</a>
+
+                <div class="post_list_container">
+                    <table class="table table-bordered table-hover">
+                    <tbody class="body">
+                        {% for post in liked %}
+                            {% if post.total_likes >= 1 %}
                                 <tr>
-                                  <td class="td">
-                                     <a href="{% url 'main:detail' post.id  %}" class="category">{{ post.title }}</a></td>
+                                    <td><a href="{% url "main:detail" post.id %}" class="category">{{ post.title }}</a></td>
                                     <td class="td"><img id="like" src="{% static 'main/like.png' %}"> {{ post.total_likes }}</td>
-                                  <td class="td"><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
+                                    <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
                                 </tr>
-                              </tbody>
-                        </table>
-                    {% endif %}
-                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
             </div>
+
+{#            <div id="box">#}
+{#                <a href="{% url 'main:best_post' %}" class="link">인기 잡썰</a>#}
+{#                {% for post in liked %}#}
+{#                    {% if post.total_likes >= 1 %}#}
+{#                        <table class="table table-bordered table-hover">#}
+{#                              <tbody>#}
+{#                                <tr>#}
+{#                                  <td class="td">#}
+{#                                     <a href="{% url 'main:detail' post.id  %}" class="category">{{ post.title }}</a></td>#}
+{#                                    <td class="td"><img id="like" src="{% static 'main/like.png' %}"> {{ post.total_likes }}</td>#}
+{#                                  <td class="td"><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>#}
+{#                                </tr>#}
+{#                              </tbody>#}
+{#                        </table>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{#            </div>#}
 
             <div id="box">
                 <a href="#" class="link">추천 잡썰</a>

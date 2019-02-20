@@ -1,10 +1,19 @@
-<small>추천: {{ comment.comment_total_likes }}</small>
+<body>
+{#<small>추천: {{ comment.comment_total_likes }}</small>#}
+<span style="color: darkblue; margin-right: 10px;"><bold><i style="font-size:20px; margin-right: 5px;" class="far fa-thumbs-up"></i>추천 수: {{ comment.comment_total_likes }}</bold></span>
 {% if comment in user.comment_likes.all %}
 
 	<button type="submit"  name="comment_id" value="{{ comment.id }}" class="btn btn-warning comment_like">추천 취소</button>
 
+{#    <a name="comment_id" value="{{ comment.id }}" href="{% url 'main:like_comment' %}">#}
+{#    <i class="far fa-thumbs-up"></i>#}
+
 {% else %}
 
 	<button type="submit" name="comment_id" value="{{ comment.id }}" class="btn btn-primary comment_like">추천</button>
+{#    <a name="comment_id" value="{{ comment.id }}" href="{% url 'main:like_comment' %}">#}
+{#    <i class="fas fa-thumbs-up"></i>#}
 
 {% endif %}
+
+</body>

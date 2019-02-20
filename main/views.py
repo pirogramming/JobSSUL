@@ -31,6 +31,7 @@ def main_post(request):
     # post = Post.objects.all()
     posts = Post.published.all()
     query = request.GET.get('q', None)
+    # comments = Comment.objects.filter()
     if query:
         posts = Post.objects.filter(
             Q(title__icontains=query) |
@@ -40,6 +41,7 @@ def main_post(request):
     data = {
         # 'post': post,
         'posts': posts,
+        # 'comments': comments,
     }
     return render(request, 'main/post.html', data)
 
