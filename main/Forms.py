@@ -3,6 +3,8 @@ from django.core.validators import MinLengthValidator
 from django.forms import TextInput, HiddenInput, Textarea
 
 from main.widgets import RateitjsWidget
+
+from jobssul.widgets.daum_address_widget import DaumAddressWidget
 from .models import Post, Comment
 
 
@@ -18,6 +20,7 @@ class PostForm(forms.ModelForm):
         widgets = {
             'recommend': RateitjsWidget,
             'status': TextInput(attrs={'readonly': True}),
+            'reside': DaumAddressWidget()
         }
 
     def save(self, commit=True):
