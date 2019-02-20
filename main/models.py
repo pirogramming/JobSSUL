@@ -20,7 +20,6 @@ class Post(models.Model):
     objects = models.Manager()
     published = PublishedManager()
     PAYMENT_LEVEL = (
-        ('전체', '전체'),
         ('7500원~9000원', '7500원~9000원'),
         ('9000원~10500원', '9000원~10500원'),
         ('10500원 이상', '10500원 이상'),
@@ -28,7 +27,6 @@ class Post(models.Model):
 
 
     WORK_TYPE = (
-        ('전체', '전체'),
         ('외식/음료', '외식/음료'),
         ('유통/판매', '유통/판매'),
         ('문화/여가/생활', '문화/여가/생활'),
