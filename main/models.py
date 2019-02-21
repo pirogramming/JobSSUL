@@ -48,7 +48,8 @@ class Post(models.Model):
                                help_text='내용을 최소 10자 이상으로 작성해주세요')
     payment = models.CharField(max_length=20, choices=PAYMENT_LEVEL, verbose_name='시급')
     # zizum = models.TextField(max_length=50, verbose_name='지점', null=True, help_text='지점을 검색하여 지도에 나온 마커를 클릭해 지점을 선택해주세요.')
-    reside = models.TextField(max_length=50, verbose_name='위치', null=True)
+
+    reside = models.TextField(max_length=50, verbose_name='지점', null=True, help_text='지점을 검색하여 지도에 나온 마커를 클릭해 지점을 선택해주세요.')
     recommend = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name = '별점')
     work_type = models.CharField(max_length=20, choices=WORK_TYPE, verbose_name='직종', help_text='알바 직종을 선택해 주세요.')
     created_at = models.DateTimeField(auto_now_add=True)

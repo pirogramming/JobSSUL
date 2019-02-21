@@ -20,7 +20,8 @@ class PostForm(forms.ModelForm):
         widgets = {
             'recommend': RateitjsWidget,
             'status': TextInput(attrs={'readonly': True}),
-            'reside': DaumMapWidget()
+            'reside': DaumMapWidget(),
+
         }
 
     def save_create(self, commit=True):
