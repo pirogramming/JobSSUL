@@ -30,7 +30,7 @@ def main_page(request):
                 if user_reside_list:
                     recommend_posts = Post.objects.filter(
                         Q(reside__icontains=user_reside_list[0]) and
-                        Q(reside__icontains=user_reside_list[1]) or
+                        Q(reside__icontains=user_reside_list[1]) and
                         Q(reside__icontains=user_reside_list[2])
                 )
 
