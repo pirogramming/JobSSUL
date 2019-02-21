@@ -141,9 +141,9 @@
             <div id="box">
                 <a href="#" class="link">추천 잡썰</a>
                 <div class="post_list_container">
-                    {% for post in posts %}
-                        {% if request.user.reside == post.reside %}
+
                             <table class="table table-bordered table-hover limit_rows">
+                                {% for post in recommend_posts %}
                                 <tbody class="body">
                                         <tr>
                                             <td><a href="{% url "main:detail" post.id %}" class="category">{{ post.title }}</a></td>
@@ -151,9 +151,8 @@
                                             <td>{{ post.updated_at|date:"y-m-d"}}</td>
                                         </tr>
                                 </tbody>
+                                {% endfor %}
                             </table>
-                        {% endif %}
-                    {% endfor %}
                 </div>
             </div>
         </div>

@@ -23,7 +23,7 @@ class PostForm(forms.ModelForm):
             'reside': DaumAddressWidget()
         }
 
-    def save(self, commit=True):
+    def save_create(self, commit=True):
         self.instance.author = self.request.user
         return super().save(commit=commit)
 
