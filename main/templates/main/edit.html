@@ -24,6 +24,7 @@
             margin-top: 15px;
         }
     </style>
+    {{ form.media }}
     <form action="" method="POST">
     {% csrf_token %}
     {% for field in form %}
