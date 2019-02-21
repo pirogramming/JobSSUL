@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
+
 from .Forms import CommentForm
 from .models import Post, Comment
 from .Forms import PostForm
@@ -19,12 +20,23 @@ from django.http import JsonResponse
 
 def main_page(request):
     posts = Post.objects.all()
-    # posts = Post.objects.all().order_by('-updated_at')
+    recommend_posts = set()
+    user_reside_list = request.user.reside.split(' ')
+    print(user_reside_list[0])
+    if user_reside_list:
+        recommend_posts = Post.objects.filter(
+            Q(reside__icontains=user_reside_list[0]) and
+            Q(reside__icontains=user_reside_list[1]) or
+            Q(reside__icontains=user_reside_list[2])
+    )
 
+          # posts = Post.objects.all().order_by('-updated_at')
     data = {
         'posts': posts,
         'latest': posts.order_by('-updated_at'),
-        'liked': posts.annotate(liked=Count('likes')).order_by('-liked')
+        'liked': posts.annotate(liked=Count('likes')).order_by('-liked'),
+        'recommend_posts': recommend_posts,
+
     }
     return render(request, 'main/main.html', data)
 
@@ -33,6 +45,7 @@ def main_post(request):
     # post = Post.objects.all()
     posts = Post.published.all()
     query = request.GET.get('q', None)
+    # comments = Comment.objects.filter()
     if query:
         posts = Post.objects.filter(
             Q(title__icontains=query) |
@@ -42,6 +55,7 @@ def main_post(request):
     data = {
         # 'post': post,
         'posts': posts,
+        # 'comments': comments,
     }
     return render(request, 'main/post.html', data)
 
@@ -173,10 +187,8 @@ def like_comment(request):
 def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request=request)
-        print('되나')
         if form.is_valid():
-            print('됐네')
-            form.save()
+            form.save_create()
             messages.info(request, '새 글이 등록되었습니다.')
             return redirect('main:post')
     else:
@@ -188,12 +200,14 @@ def main_create(request):
 @login_required
 def main_edit(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
-    if post.author != request.user:
-        return redirect(f'/main/post/{post.pk}')
+    # if post.author != request.user:
+    #     return redirect(f'/main/post/{post.pk}')
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
+            print('ok')
             post = form.save()
+
             return redirect(f'/main/post/{post.pk}')
     else:
         form = PostForm(instance=post)

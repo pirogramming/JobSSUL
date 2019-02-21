@@ -42,7 +42,7 @@ class Post(models.Model):
         ('병원/간호/연구', '병원/간호/연구'),
     )
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=20, verbose_name= '제목')
     content = models.TextField(verbose_name='내용', validators=[MinLengthValidator(10, message=None)],
                                help_text='내용을 최소 10자 이상으로 작성해주세요')

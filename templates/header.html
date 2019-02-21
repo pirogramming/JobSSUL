@@ -110,7 +110,8 @@
                             <form method="POST" action="{% url "main:category" %}" class="search_nav">
                                 {% csrf_token %}
                                 <div class="col-md-2 pt-3">
-                                   <div class="form-group ">
+                                   <div class="form-group">
+{#                                   <div class="form-group search-box">#}
                                       <select id="inputState " class="form-control" name="place">
                                         <option selected value="0">지역</option>
                                         <option value="강남/서초/양재">강남/서초/양재</option>
