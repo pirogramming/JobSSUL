@@ -8,3 +8,9 @@ class DaumAddressWidget(forms.TextInput):
         }) #context
         return html
 
+
+class DaumMapWidget(forms.TextInput):
+    def render(self, name, value, attrs, renderer=None):
+        html = render_to_string('map_widget.html')
+        return html
+

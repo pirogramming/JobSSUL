@@ -35,6 +35,7 @@ def main_page(request):
                 )
 
               # posts = Post.objects.all().order_by('-updated_at')
+
     data = {
         'posts': posts,
         'latest': posts.order_by('-updated_at'),
