@@ -33,7 +33,14 @@ def main_post(request):
     # post = Post.objects.all()
     posts = Post.published.all()
     query = request.GET.get('q', None)
-    # comments = Comment.objects.filter()
+    # post = get_object_or_404(Post, id=request.POST.get('id'))
+    comments = Comment.objects.filter()
+    # post_comments_count = Comment.objects.filter(post=post).count()
+
+    # for post in posts:
+    #     post = get_object_or_404(Post, id=request.POST.get('id'))
+    # comments_count = Comment.objects.filter(post_id=post_id).count()
+
     if query:
         posts = Post.objects.filter(
             Q(title__icontains=query) |
@@ -43,7 +50,11 @@ def main_post(request):
     data = {
         # 'post': post,
         'posts': posts,
-        # 'comments': comments,
+        'comments': comments,
+        # 'post': post,
+        # 'post_comments_count': post.post_comments_count()
+        # 'comments_count': comments_count,
+        # 'post_id': post_id,
     }
     return render(request, 'main/post.html', data)
 
