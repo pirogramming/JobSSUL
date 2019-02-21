@@ -20,11 +20,22 @@ from django.http import JsonResponse
 
 def main_page(request):
     posts = Post.objects.all()
-    # posts = Post.objects.all().order_by('-updated_at')
+    recommend_posts = set()
+    user_reside_list = request.user.reside.split(' ')
+    print(user_reside_list[0])
+    if user_reside_list:
+        recommend_posts = Post.objects.filter(
+            Q(reside__icontains=user_reside_list[0]) and
+            Q(reside__icontains=user_reside_list[1]) or
+            Q(reside__icontains=user_reside_list[2])
+    )
+
+          # posts = Post.objects.all().order_by('-updated_at')
     data = {
         'posts': posts,
         'latest': posts.order_by('-updated_at'),
         'liked': posts.annotate(liked=Count('likes')).order_by('-liked'),
+        'recommend_posts': recommend_posts,
 
     }
     return render(request, 'main/main.html', data)
@@ -187,10 +198,8 @@ def like_comment(request):
 def main_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request=request)
-        print('되나')
         if form.is_valid():
-            print('됐네')
-            form.save()
+            form.save_create()
             messages.info(request, '새 글이 등록되었습니다.')
             return redirect('main:post')
     else:
@@ -202,12 +211,14 @@ def main_create(request):
 @login_required
 def main_edit(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
-    if post.author != request.user:
-        return redirect(f'/main/post/{post.pk}')
+    # if post.author != request.user:
+    #     return redirect(f'/main/post/{post.pk}')
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
+            print('ok')
             post = form.save()
+
             return redirect(f'/main/post/{post.pk}')
     else:
         form = PostForm(instance=post)
