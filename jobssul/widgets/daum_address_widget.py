@@ -15,7 +15,6 @@ class DaumAddressWidget(forms.TextInput):
         return html
 
 
-
 #
 # class DaumAddressWidget(forms.TextInput):
 #     def render(self, name, value, attrs=None, renderer=None):
@@ -37,3 +36,9 @@ class DaumAddressWidget(forms.TextInput):
 #             })
 #
 #
+
+class DaumMapWidget(forms.TextInput):
+    def render(self, name, value, attrs, renderer=None):
+        html = render_to_string('map_widget.html')
+        return html
+
