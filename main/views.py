@@ -35,7 +35,7 @@ def main_post(request):
     posts = Post.published.all()
     query = request.GET.get('q', None)
     # post = get_object_or_404(Post, id=request.POST.get('id'))
-    comments = Comment.objects.filter()
+    # comments = Comment.objects.filter()
     # post_comments_count = Comment.objects.filter(post=post).count()
 
     # for post in posts:
@@ -51,7 +51,7 @@ def main_post(request):
     data = {
         # 'post': post,
         'posts': posts,
-        'comments': comments,
+        # 'comments': comments,
         # 'post': post,
         # 'post_comments_count': post.post_comments_count()
         # 'comments_count': comments_count,

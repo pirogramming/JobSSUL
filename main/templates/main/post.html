@@ -103,8 +103,8 @@
           {% for post in posts %}
             <tr>
               <td>
-{#                   <a href="{{ post.id }}" class="category">{{ post.title }}</a></td>#}
-              <a href="{{ post.id }}" class="category">{{ post.title }}</a><span style="color: black;">[{{ comments.count }}]</span></td>
+                   <a href="{{ post.id }}" class="category">{{ post.title }}</a></td>
+{#              <a href="{{ post.id }}" class="category">{{ post.title }}</a><span style="color: black;">[{{ comments.count }}]</span></td>#}
                       <td>{{ post.author.nickname }}</td>
               <td><img id=recommend_star src="{% static 'main/star.jpg' %}"> {{ post.recommend }}</td>
             </tr>
