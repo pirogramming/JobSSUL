@@ -8,6 +8,7 @@ from django.template import RequestContext
 from django.urls import reverse_lazy
 from django.views.decorators.http import require_POST
 
+from accounts.models import User
 from .Forms import CommentForm
 from .models import Post, Comment
 from .Forms import PostForm
@@ -20,17 +21,20 @@ from django.http import JsonResponse
 
 def main_page(request):
     posts = Post.objects.all()
+    users = User.objects.all()
     recommend_posts = set()
-    user_reside_list = request.user.reside.split(' ')
-    print(user_reside_list[0])
-    if user_reside_list:
-        recommend_posts = Post.objects.filter(
-            Q(reside__icontains=user_reside_list[0]) and
-            Q(reside__icontains=user_reside_list[1]) or
-            Q(reside__icontains=user_reside_list[2])
-    )
+    if request.user.is_authenticated:
+        for user in users:
+            if user.reside:
+                user_reside_list = request.user.reside.split(' ')
+                if user_reside_list:
+                    recommend_posts = Post.objects.filter(
+                        Q(reside__icontains=user_reside_list[0]) and
+                        Q(reside__icontains=user_reside_list[1]) or
+                        Q(reside__icontains=user_reside_list[2])
+                )
 
-          # posts = Post.objects.all().order_by('-updated_at')
+              # posts = Post.objects.all().order_by('-updated_at')
     data = {
         'posts': posts,
         'latest': posts.order_by('-updated_at'),
@@ -205,9 +209,7 @@ def main_edit(request, post_pk):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
-            print('ok')
             post = form.save()
-
             return redirect(f'/main/post/{post.pk}')
     else:
         form = PostForm(instance=post)
