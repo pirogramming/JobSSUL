@@ -7,10 +7,32 @@
 
 
     <style>
+   @font-face{
+    src: url("../../static/font/BinggraeTaom-Bold.otf");
+    font-family: "Taom";
+    }
+
+    html {
+        margin-bottom: 50px;
+    }
+
+    .newjobssul{
+        font-family: 'Taom', sans-serif;
+        margin-top: 80px;
+        margin-left: 50px;
+        display: inline-block;
+        border-bottom: 3px solid #aee6cb;
+    }
 
     .entire {
-        background-color: #daf1de;
+        text-align:center;
+        {#padding-top: 30px;#}
+        padding-bottom: 5px;
+        background-color: #f0f0f0;
+        border-top: 1px solid #aee6cb;
+        border-bottom: 1px solid #aee6cb;
     }
+
     .post_list_container{
         margin-top: 30px;
         margin-left: 50px;
@@ -30,9 +52,9 @@
         height: 16px;
     }
     .create_post_button_container{
-            text-align: right;
-            margin-bottom: 50px;
-        }
+        text-align: right;
+        margin-bottom: 50px;
+    }
 
     .category{
         text-decoration: none;
@@ -41,13 +63,14 @@
     }
 
     .d6 {
+        display: inline-block;
         text-align: right;
-        margin-right: 50px;
     }
 
     .d6 form {
       height: 42px;
     }
+
     .d6 input {
       height: 100%;
       width: 0;
@@ -76,16 +99,21 @@
       font-size: 16px;
       color: white;
     }
+
     </style>
 
+    <html>
 
-    <div class="d6">
-        <form>
-          <input type="text" placeholder="검색어 입력" name="q">
-          <button type="submit"></button>
-        </form>
-    </div>
+<div class="newjobssul">
+    <h2>최신 잡썰</h2>
+</div>
 
+<div class="d6">
+    <form class="search">
+      <input type="text" placeholder="검색어 입력" name="q">
+      <button type="submit"></button>
+    </form>
+</div>
 
     <div class="entire">
         <div class="post_list_container">
@@ -122,8 +150,10 @@
         </table>
         </div>
         <div class="create_post_button_container">
-            <a href="{% url 'main:create' %}" class="btn btn-dark btn btn-primary btn-lg create_post_button">게시글 생성</a>
+            <a href="{% url 'main:create' %}" class="btn btn-lg create_post_button" style="background-color: #b7e6d6;">게시글 생성</a>
         </div>
     </div>
+
+    </html>
 
 {% endblock %}

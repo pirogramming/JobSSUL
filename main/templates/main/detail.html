@@ -7,25 +7,29 @@
 
     <style>
 
-    .post_category{
+    .content_container{
         @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
         font-family: 'Jeju Gothic', sans-serif;
-        font-size: 20px;
         margin-left: 50px;
-
+        margin-bottom: 0;
     }
-
+    p {
+        margin: 3px;
+    }
         .button_container{
+            margin-top: 50px;
             text-align: right;
             padding-right: 50px;
         }
 
         .content_container{
-            background-color: beige;
-            margin-left: 50px;
-            margin-right: 50px;
-            padding-top: 3px;
-            padding-bottom: 15px;
+            {#background-color: beige;#}
+            border: 3px solid grey;
+            width: 1300px;
+            margin-top: 150px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 50px 100px;
         }
     .main_button_container{
         text-align: center;
@@ -51,23 +55,44 @@
         height: 100px;
     }
 
+    textarea {
+        overflow: visible;
+
+    }
 
 
     </style>
 
 
+
     <div class="content_container">
-        <p class="post_category">작성자: {{ post.author.nickname }}</p>
-        <p class="post_category">제목: <span>{{ post.title }}</span></p>
-        <p class="post_category">내용: </p>
-        <textarea readonly rows="15" cols="110" class="post_category">{{ post.content }}</textarea>
-        <p class="post_category">시급: {{ post.payment }}</p>
-        <p class="post_category">지점: {{ post.reside }}</p>
+        <div class="row">
+             <div class="col-lg-8">
+                <h1 class="mt-4">{{ post.title }}</h1>
+                <p class="lead">
 
-        <p class="post_category">직종: {{ post.work_type }}</p>
-        <p class="post_category">별점: <img id=recommend_star src="{% static 'main/star.jpg' %}">{{ post.recommend }}</p>
-
+                                by {{ post.author.nickname }}</p>
+            </div>
+        </div>
+            <hr>
+        <div class="row">
+            <div class="col-lg-8">
+                <p>{{ post.updated_at }}</p>
+            </div>
+        </div>
+            <hr>
+        <div class="row">
+            <div class="col-lg-8">
+                <p style="flex-basis: 400px;">시급: {{ post.payment }}</p>
+                <p style="flex-basis: 400px;">지점: {{ post.reside }}</p>
+                <p>직종: {{ post.work_type }}</p>
+                <p>별점: <img id=recommend_star src="{% static 'main/star.jpg' %}">{{ post.recommend }}</p>
+            </div>
+        </div>
+            <hr>
+        <textarea readonly rows="15" cols="110">{{ post.content }}</textarea>
     </div>
+
 {% if request.user == post.author %}
 <div class="button_container">
 
