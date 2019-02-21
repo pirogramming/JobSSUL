@@ -215,10 +215,10 @@ def main_edit(request, post_pk):
     #     return redirect(f'/main/post/{post.pk}')
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
+        # print(form)
         if form.is_valid():
             print('ok')
             post = form.save()
-
             return redirect(f'/main/post/{post.pk}')
     else:
         form = PostForm(instance=post)
