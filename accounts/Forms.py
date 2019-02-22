@@ -10,7 +10,7 @@ from jobssul.widgets.daum_address_widget import DaumAddressWidget
 #회원가입폼
 class UserCreationForm(forms.ModelForm):
     email = forms.EmailField(
-        label=_('Email'),
+        label=_('이메일'),
         required=True,
         help_text="이메일은 인증 및 로그인 시 아이디로 쓰입니다.",
         widget=forms.EmailInput(
@@ -22,7 +22,7 @@ class UserCreationForm(forms.ModelForm):
         )
     )
     nickname = forms.CharField(
-        label=_('Nickname'),
+        label=_('닉네임'),
         required=True,
         widget=forms.TextInput(
             attrs={
@@ -33,7 +33,7 @@ class UserCreationForm(forms.ModelForm):
         )
     )
     username = forms.CharField(
-        label=_('Name'),
+        label=_('이름'),
         required=True,
         widget=forms.TextInput(
             attrs={
@@ -49,7 +49,7 @@ class UserCreationForm(forms.ModelForm):
         widget=DaumAddressWidget()
     )
     password1 = forms.CharField(
-        label=_('Password'),
+        label=_('비밀번호'),
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
@@ -59,7 +59,7 @@ class UserCreationForm(forms.ModelForm):
         )
     )
     password2 = forms.CharField(
-        label=_('Password confirmation'),
+        label=_('비밀번호 확인'),
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
@@ -135,3 +135,84 @@ class LoginForm(forms.ModelForm):
                     isinstance(field.widget, forms.TimeInput):
                 field.widget.attrs.update({'placeholder': field.label})
 
+class UpdateProfile(UserCreationForm):
+    email = forms.EmailField(
+        label=_('이메일'),
+        required=False,
+        help_text="이메일은 인증 및 로그인 시 아이디로 쓰입니다.",
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Email address'),
+                'required': 'True',
+            }
+        )
+    )
+    nickname = forms.CharField(
+        label=_('닉네임'),
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('닉네임'),
+                'required': 'True',
+            }
+        )
+    )
+    username = forms.CharField(
+        label=_('이름'),
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('이름'),
+                'required': 'True',
+            }
+        )
+    )
+    reside = forms.CharField(
+        label=_('거주지'),
+        required=False,
+        widget=DaumAddressWidget()
+    )
+    password1 = forms.CharField(
+        label=_('비밀번호'),
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Password'),
+                'required': 'True'
+            }
+        )
+    )
+    password2 = forms.CharField(
+        label=_('비밀번호 확인'),
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': _('Password confirmation'),
+                'required': 'True',
+            }
+        )
+    )
+
+    def clean_email(self):
+        username = self.cleaned_data.get('username')
+        email = self.cleaned_data.get('email')
+
+        if email and User.objects.filter(email=email).exclude(username=username).count():
+            raise forms.ValidationError(
+                'This email address is already in use. Please supply a different email address.')
+        return email
+
+    def save(self, commit=True):
+        user = super(UserCreationForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+
+        if commit:
+            user.save()
+
+        return user
+    class Meta:
+        model = User
+        fields = ('username', 'nickname', 'password1', 'password2', 'reside')
