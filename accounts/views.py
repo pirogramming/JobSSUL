@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -10,7 +10,7 @@ from .models import *
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .Forms import UserCreationForm, LoginForm
+from .Forms import UserCreationForm, LoginForm, UpdateProfile
 from main.models import Post, Comment
 from main.views import scrap_post
 from django.contrib.auth import login as auth_login
@@ -69,3 +69,18 @@ def mypage(request):
             'scrap_posts':scrap_posts,
         }
         return render(request, 'accounts/about.html', data)
+
+@login_required
+def edit_mypage(request):
+    args={}
+    if request.method=='POST':
+        form=UpdateProfile(request.POST, instance=request.user)
+        form.actual_user=request.user
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:user_profile')
+    else:
+        form = UpdateProfile()
+
+    args['form']=form
+    return render(request, 'accounts/edit_mypage.html', args)
