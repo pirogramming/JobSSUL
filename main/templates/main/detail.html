@@ -6,31 +6,29 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <style>
+        p {
+            margin: 3px;
+        }
 
-    .content_container{
-        @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
-        font-family: 'Jeju Gothic', sans-serif;
-        margin-left: 50px;
-        margin-bottom: 0;
-    }
-    p {
-        margin: 3px;
-    }
+        .entity {
+            @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+            font-family: 'Jeju Gothic', sans-serif;
+        }
         .button_container{
             margin-top: 50px;
             text-align: right;
-            padding-right: 50px;
+            margin-right: 200px;
         }
 
         .content_container{
-            {#background-color: beige;#}
-            border: 2px solid grey;
+            margin-left: auto;
+            margin-right:auto;
+            border: 3px solid grey;
             width: 1300px;
             margin-top: 150px;
-            margin-left: auto;
-            margin-right: auto;
             padding: 50px 100px;
         }
+
     .main_button_container{
         text-align: center;
         margin-bottom: 50px;
@@ -63,8 +61,7 @@
 
     </style>
 
-
-
+<div class="entity">
     <div class="content_container">
         <div class="row">
              <div class="col-lg-8">
@@ -84,7 +81,7 @@
         <div class="row">
             <div class="col-lg-8">
                 <p style="flex-basis: 400px;">시급: {{ post.payment }}</p>
-                <p style="flex-basis: 400px;">지점: {{ post.reside }}</p>
+                <p>지점: {{ post.reside }}</p>
                 <p>직종: {{ post.work_type }}</p>
                 <p>별점: <img id=recommend_star src="{% static 'main/star.jpg' %}">{{ post.recommend }}</p>
             </div>
@@ -92,17 +89,12 @@
             <hr>
         <textarea readonly rows="15" cols="110">{{ post.content }}</textarea>
     </div>
-
-{% if request.user == post.author %}
-<div class="button_container">
-
-    <a href="{% url 'main:edit' post.pk %}" class="btn btn-warning btn btn-primary btn-lg">게시글 수정</a>
-    <a href="{% url 'main:delete' post.pk %}" class="btn btn-danger btn btn-primary btn-lg">게시글 삭제</a>
-    {% else %}
-
-{% endif %}
-
-
+    {% if request.user == post.author %}
+        <div class="button_container">
+            <a href="{% url 'main:edit' post.pk %}" class="btn btn-warning btn btn-primary btn-lg">게시글 수정</a>
+            <a href="{% url 'main:delete' post.pk %}" class="btn btn-danger btn btn-primary btn-lg">게시글 삭제</a>
+        </div>
+    {% endif %}
 </div>
 
 <div id="like-section">
