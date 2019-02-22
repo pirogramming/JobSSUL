@@ -24,15 +24,18 @@ def main_page(request):
     users = User.objects.all()
     recommend_posts = set()
     if request.user.is_authenticated:
-        for user in users:
-            if user.reside:
-                user_reside_list = request.user.reside.split(' ')
-                if user_reside_list:
-                    recommend_posts = Post.objects.filter(
-                        Q(reside__icontains=user_reside_list[0]) and
-                        Q(reside__icontains=user_reside_list[1]) or
-                        Q(reside__icontains=user_reside_list[2])
-                )
+        try:
+            for user in users:
+                if user.reside:
+                    user_reside_list = request.user.reside.split(' ')
+                    if user_reside_list:
+                        recommend_posts = Post.objects.filter(
+                            Q(reside__icontains=user_reside_list[0]) and
+                            Q(reside__icontains=user_reside_list[1]) or
+                            Q(reside__icontains=user_reside_list[2])
+                    )
+        except ValueError or TypeError:
+            pass
 
           # posts = Post.objects.all().order_by('-updated_at')
     data = {
