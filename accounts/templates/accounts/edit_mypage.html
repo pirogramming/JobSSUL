@@ -19,10 +19,14 @@
     <form action="" method="POST">
     {% csrf_token %}
     {% for field in form %}
-    <div class="content_container">
-        {{ field.errors }}
-        {{ field.label_tag }}<br> {{ field }}
+          {%if field.label != _('이메일') %}
+                <div class="content_container">
+
+                {{ field.errors }}
+                {{ field.label_tag }}<br> {{ field }}
+
     </div>
+        {% endif %}
 {% endfor %}
 
 
