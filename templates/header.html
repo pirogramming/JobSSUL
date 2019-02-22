@@ -1,5 +1,4 @@
 {% load static %}
-{% load socialaccount %}
 
 <!doctype html>
 <html lang="en">
@@ -105,7 +104,7 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div class="row align-items-center justify-content-center" style="width: 800px;">
+            <div class="row align-items-center justify-content-center" style="width:50%; min-width: 700px;">
 
                             <form method="POST" action="{% url "main:category" %}" class="search_nav">
                                 {% csrf_token %}
@@ -165,23 +164,23 @@
             </div>
 
 
-            <ul class="nav nav-pills nav-justified">
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'notice:main' %}">공지썰 <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'claim:main' %}">건의썰</a>
-              </li>
-            </ul>
+          {% comment %}  <ul class="nav nav-pills nav-justified">
 
-            <ul id="info" class="nav nav-pills">
+            </ul>{% endcomment %}
+
+            <ul id="info" class="nav nav-pills" style="min-width: 400px">
+             <li class="nav-item">
+                <a class="nav-link" href="{% url 'notice:main' %}" style="padding:0px">공지썰 <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'claim:main' %}"style="padding:0px">건의썰</a>
+              </li>
                     {% if not user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="{% url "accounts:signup" %}">회원가입</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url "accounts:login" %}?next={{ request.path }}">로그인</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% provider_login_url 'google' %}?next={{ request.path }}">GMAIL 계정으로 로그인</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url "accounts:signup" %}"style="padding:0px">회원가입</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url "accounts:login" %}?next={{ request.path }}"style="padding:0px">로그인</a></li>
                     {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url "accounts:user_profile" %}">마이페이지</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url "accounts:logout" %}?next={{ request.path }}">로그아웃</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url "accounts:user_profile" %}"style="padding:0px">마이페이지</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url "accounts:logout" %}?next={{ request.path }}"style="padding:0px">로그아웃</a></li>
                     {% endif %}
             </ul>
       </div>

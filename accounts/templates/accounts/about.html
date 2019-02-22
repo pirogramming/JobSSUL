@@ -18,7 +18,8 @@
         {% if user.is_authenticated %}
         <div id="profile">
             <div>
-                <h3>프로필 페이지</h3>
+                <div class="button_container" style=" display: block; margin-bottom: 20px"><h3>프로필 페이지</h3><a href="{% url 'accounts:edit_mypage' %}" class="btn btn-warning btn btn-primary btn-lg">내정보 수정</a>
+            <div>
                 <table class="type01">
                     <tr>
                         <th>이름</th>
@@ -43,7 +44,6 @@
                 </table>
             </div>
 
-            <div>
                 <h3>내가쓴글</h3>
                 <table class="type01">
                     <tr>

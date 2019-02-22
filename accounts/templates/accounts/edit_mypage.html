@@ -1,0 +1,41 @@
+{% extends "header.html" %}
+{% load static %}
+
+{% block below_nav %}
+        <title>프로필 수정</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'accounts/about.css' %}">
+
+    <style>
+        #profile {
+            background-color: #daf1de;
+            padding: 10px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+    </style>
+    <body>
+        {{ form.media }}
+    <form action="" method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+          {%if field.label != _('이메일') %}
+                <div class="content_container">
+
+                {{ field.errors }}
+                {{ field.label_tag }}<br> {{ field }}
+
+    </div>
+        {% endif %}
+{% endfor %}
+
+
+
+
+
+<div class="button_container">
+    <button type="submit" class="btn btn-primary btn-lg">수정</button>
+    </div>
+    </form>
+{% endblock %}
+</body>
