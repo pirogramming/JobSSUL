@@ -1,12 +1,12 @@
-{% extends "header.html" %}
+{% extends "base.html" %}
 {% load static %}
 
-{% block below_nav %}
+{% block content %}
         <title>프로필 수정</title>
         <link rel="stylesheet" type="text/css" href="{% static 'accounts/about.css' %}">
 
     <style>
-        #profile {
+        .change {
             background-color: #daf1de;
             padding: 10px;
             margin-left: 20px;
@@ -15,6 +15,7 @@
 
     </style>
     <body>
+    <div class="change">
         {{ form.media }}
     <form action="" method="POST">
     {% csrf_token %}
@@ -25,10 +26,10 @@
                 {{ field.errors }}
                 {{ field.label_tag }}<br> {{ field }}
 
-    </div>
+                </div>
         {% endif %}
-{% endfor %}
-
+    {% endfor %}
+    </div>
 
 
 
